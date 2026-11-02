@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="SkillDef" format=3]
+
+[ext_resource type="Script" path="res://src/skills/skill_def.gd" id="1"]
+[ext_resource type="Script" path="res://src/skills/mage/frost_nova.gd" id="2"]
+
+[resource]
+script = ExtResource("1")
+id = &"frost_nova"
+display_name = "Frost Nova"
+description = "A ring of ice bursts out around you, hurting and chilling every enemy close by."
+effect = ExtResource("2")
+animation = "Spellcast_Shoot"
+hit_time = 0.25
+recovery = 0.45
+cooldown = 9.0
+cost = 20.0
+generate = 0.0
+damage_multiplier = 0.8
+damage_kind = 2
+reach = 0.0
+radius = 5.0
+cone_degrees = 90.0
+knockback = 1.0
+unlock_level = 2
+params = {
+"attack_slow": 0.4,
+"seconds": 3.0,
+"slow": 0.6
+}
