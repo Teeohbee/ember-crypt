@@ -22,6 +22,7 @@ func _ready() -> void:
 		spawned.add_child(Look.hero_light())
 		var hud := Hud.new(slot)
 		add_child(hud)
+		hud.add_child(ActionBar.new(slot))
 		huds.append(hud)
 		hud.add_child(PickupPopup.new(slot))
 	hero = Session.slots[0].hero
