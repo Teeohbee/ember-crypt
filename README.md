@@ -11,6 +11,14 @@ chosen hero, pause, and options (audio, display, gameplay, the pad layout). Ever
 pad, B always steps back, and the world never cuts away between menus. The hero can't move yet; that's
 M1.
 
+**M4 - loot.** Skeletons drop items and gold, rolled from seeded loot tables: rarity weights tilted
+by magic find, bases gated by item level and leaning toward your class, affixes by slot and level.
+Drops arc out of the corpse, land with a sound that tells you their rarity, and stand under a beam
+in its colour. Walk over gold; press A to pick up an item when nothing hostile is close. Each pickup
+shows a card with green / red changes over what you wear; hold D-pad up to put it on. Select opens
+the bags and paper doll (A wear / take off, X drop). Weapons and shields show in the hero's hands,
+and each class starts with its own. Content is data: `src/items/bases/` and `src/items/affixes/`.
+
 ## controls
 
 Pad first; keys exist for testing.
@@ -20,6 +28,9 @@ Pad first; keys exist for testing.
 | Menus | Left stick / D-pad, A, B | Arrows / WASD, Enter, Esc |
 | Options tabs | LB / RB | Q / E |
 | Pause | Start | Esc |
+| Pick up (loot in reach, nothing hostile close) | A | J |
+| Hold to equip what you picked up | D-pad up | F |
+| Inventory | Select | I / Tab |
 
 ## running
 
