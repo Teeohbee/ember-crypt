@@ -1,6 +1,7 @@
 class_name TestRoom
 extends Zone
-# The torchlit crypt from M0, with a few skeletons to hit.
+# The torchlit crypt from M0, with a few skeletons to hit: Minions ahead, a Warband led by an elite in
+# one far corner and a Coven in the other.
 
 func _init() -> void:
 	id = "test_room"
@@ -36,3 +37,13 @@ func build() -> void:
 	pack.count = 3
 	pack.position = Vector3(0, 0, -6)
 	add_child(pack)
+	var warband := SpawnPoint.new()
+	warband.pack = load("res://src/monsters/packs/warband.tres")
+	warband.elite_chance = 1.0
+	warband.elite_affixes = 1
+	warband.position = Vector3(10, 0, -11)
+	add_child(warband)
+	var coven := SpawnPoint.new()
+	coven.pack = load("res://src/monsters/packs/coven.tres")
+	coven.position = Vector3(-10, 0, -11)
+	add_child(coven)

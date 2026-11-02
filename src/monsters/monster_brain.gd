@@ -46,7 +46,7 @@ var _announced := false
 # The distance it closes to before stopping: just inside its shortest reach for brawlers, most of its
 # longest for shooters
 var _preferred := 1.5
-var _locomotion: Array[StringName] = []
+var _locomotion := PackedStringArray()
 
 func _init(owner_monster: Monster) -> void:
 	name = "Brain"
@@ -60,7 +60,7 @@ func _init(owner_monster: Monster) -> void:
 	if longest > 0.0:
 		_preferred = longest * 0.8 if monster.def.keep_away > 0.0 else shortest * 0.75
 	for animation in [monster.def.idle_animation, monster.def.walk_animation, monster.def.run_animation, BACKING_ANIMATION]:
-		_locomotion.append(StringName(animation))
+		_locomotion.append(animation)
 
 func _ready() -> void:
 	# Spread the thinking out, so a pack doesn't all decide on the same frame
@@ -235,15 +235,15 @@ func _animate() -> void:
 	if monster.skill_bar.busy or state == State.HURT:
 		return
 	var animations := monster.animations
-	var current := StringName(animations.current_animation)
-	if animations.is_playing() and not current in _locomotion and _move == Vector3.ZERO:
+	var current := animations.current_animation
+	if animations.is_playing() and not _locomotion.has(current) and _move == Vector3.ZERO:
 		return
 	var wanted := monster.def.idle_animation
 	if _backing:
 		wanted = BACKING_ANIMATION
 	elif _move != Vector3.ZERO:
 		wanted = monster.def.walk_animation if state == State.IDLE else monster.def.run_animation
-	if current != StringName(wanted):
+	if current != wanted:
 		animations.speed_scale = 1.0
 		monster.play(wanted, 0.2)
 
