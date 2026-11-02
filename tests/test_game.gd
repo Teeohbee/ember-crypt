@@ -29,6 +29,8 @@ func test_the_hud_shows_globes_and_skills_and_lb_drinks() -> void:
 	var game: Node = await open_screen(GAME)
 	var hero: Hero = game.hero
 	var bar: ActionBar = game.huds[0].get_node("ActionBar")
+	# Past every skill's unlock level (M5 gates them)
+	hero.progress.set_level(10, 0)
 	hero.health = hero.max_health() * 0.25
 	await press("potion")
 	assert_float(hero.health).is_greater(hero.max_health() * 0.5)

@@ -12,6 +12,7 @@ var model: HeroModel
 var motor: HeroMotor
 var skill_bar: SkillBar
 var potion: Potion
+var progress: HeroProgress
 var inventory := Inventory.new()
 var equipment: Equipment
 # Loot underfoot: gold scooped up, items picked up on A (M4)
@@ -42,6 +43,8 @@ func _init(chosen: HeroClass, player_slot: PlayerSlot) -> void:
 	add_child(skill_bar)
 	potion = Potion.new(self)
 	add_child(potion)
+	progress = HeroProgress.new(self)
+	add_child(progress)
 	equipment = Equipment.new(stats)
 	equipment.changed.connect(_show_gear)
 	StartingGear.give(chosen.id, equipment)

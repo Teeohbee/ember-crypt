@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="RuneDef" format=3]
+
+[ext_resource type="Script" path="res://src/skills/rune_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"leap_long_jump"
+skill = &"leap"
+display_name = "Long Jump"
+description = "Leap half as far again, and sooner."
+unlock_level = 12
+multiply = {
+"reach": 1.5,
+"cooldown": 0.8
+}
+overrides = {}
+params = {
+"distance_scale": 1.5
+}

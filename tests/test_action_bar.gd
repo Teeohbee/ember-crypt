@@ -66,6 +66,8 @@ func test_the_bar_mirrors_the_hero() -> void:
 	add_child(hero)
 	var bar: ActionBar = auto_free(ActionBar.new(slot))
 	add_child(bar)
+	# Past every skill's unlock level (M5 gates them)
+	hero.progress.set_level(10, 0)
 	hero.health = hero.max_health() * 0.5
 	hero.power = 30.0
 	hero.skill_bar.use(2, Vector3.FORWARD)

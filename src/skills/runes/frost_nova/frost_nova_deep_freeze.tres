@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="RuneDef" format=3]
+
+[ext_resource type="Script" path="res://src/skills/rune_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"frost_nova_deep_freeze"
+skill = &"frost_nova"
+display_name = "Deep Freeze"
+description = "A ring of frost two-fifths wider, on a longer cooldown."
+unlock_level = 11
+multiply = {
+"radius": 1.4,
+"cooldown": 1.2
+}
+overrides = {}
+params = {}

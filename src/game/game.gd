@@ -24,6 +24,9 @@ func _ready() -> void:
 		add_child(hud)
 		hud.add_child(ActionBar.new(slot))
 		hud.add_child(DeathScreen.new(slot, zone))
+		hud.add_child(XpBar.new(slot))
+		hud.add_child(LevelBanner.new(slot))
+		add_child(SkillsScreen.new(slot))
 		huds.append(hud)
 		hud.add_child(PickupPopup.new(slot))
 	hero = Session.slots[0].hero

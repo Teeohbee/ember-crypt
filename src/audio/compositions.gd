@@ -59,6 +59,12 @@ const SOUNDS := {
 	"pickup_gold": [0.35, [[0.0, 91, 0.2, "pluck", 0.28], [0.06, 96, 0.25, "pluck", 0.25]]],
 	"pickup": [0.4, [[0.0, 50, 0.2, "thud", 0.55], [0.03, 74, 0.3, "pluck", 0.2]]],
 	"equip": [1.4, [[0.0, 41, 0.3, "thud", 0.7], [0.04, 62, 1.2, "bell", 0.2], [0.04, 74, 1.0, "bell", 0.1]]],
+	# M5 Progression
+	# Level up: a toll under a bell arpeggio climbing D minor to the high A, the fifth, left ringing
+	"level_up": [3.5, [[0.0, 38, 3.5, "toll", 0.4], [0.0, 62, 2.2, "bell", 0.2], [0.12, 65, 2.1, "bell", 0.2],
+		[0.24, 69, 2.0, "bell", 0.2], [0.36, 74, 2.0, "bell", 0.22], [0.56, 81, 2.6, "bell", 0.24], [0.56, 50, 0.3, "thud", 0.4]]],
+	# A rune set into a skill: a bright little chime
+	"rune": [1.0, [[0.0, 81, 0.1, "pluck", 0.2], [0.04, 74, 0.9, "bell", 0.18], [0.1, 78, 0.8, "bell", 0.12]]],
 }
 
 const MUSIC := ["title", "crypt"]

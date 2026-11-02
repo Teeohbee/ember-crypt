@@ -40,6 +40,14 @@ shows a card with green / red changes over what you wear; hold D-pad up to put i
 the bags and paper doll (A wear / take off, X drop). Weapons and shields show in the hero's hands,
 and each class starts with its own. Content is data: `src/items/bases/` and `src/items/affixes/`.
 
+**M5 - progression.** Kills pay XP (more for tougher monsters and elites) up a level curve to 30; each
+level grows the class's stats, heals, and sets off a shaft of gold light, a toll and a banner naming
+what it unlocked. Skills stay locked until their `SkillDef.unlock_level`. Each skill takes one rune
+(`RuneDef`, in `src/skills/runes/<skill id>/`), chosen on the skills screen (D-pad left). Characters
+are saved to `user://characters.json` - class, level, XP, runes, bags, gear, zone - on level-ups,
+pickups, checkpoints and leaving; the main menu has Continue, a character list (X deletes) and New
+Game.
+
 ## controls
 
 Pad first; keys exist for testing.
@@ -54,6 +62,8 @@ Pad first; keys exist for testing.
 | Pick up (loot in reach, nothing hostile close) | A | J |
 | Hold to equip what you picked up | D-pad up | F |
 | Inventory | Select | I / Tab |
+
+| Skills screen | D-pad left | P |
 
 ## running
 
