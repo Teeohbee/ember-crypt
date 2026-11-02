@@ -42,6 +42,7 @@ var _backing := false
 var _home_set := false
 var _returning := false
 var _blocked := false
+var _announced := false
 # The distance it closes to before stopping: just inside its shortest reach for brawlers, most of its
 # longest for shooters
 var _preferred := 1.5
@@ -140,6 +141,10 @@ func alert(to: Combatant) -> void:
 		return
 	target = to
 	_returning = false
+	if monster.elite and not _announced:
+		# An elite noticing you gets its own bell
+		_announced = true
+		Sound.play("elite")
 	if state == State.IDLE:
 		_set_state(State.CHASE)
 	for mate in pack:
