@@ -12,6 +12,8 @@ signal runes_changed
 var hero: Hero
 # Skill id -> rune id
 var runes := {}
+# The level before the last level-up, so a jump of several levels can list everything it unlocked
+var level_before := 1
 
 func _init(owner_hero: Hero) -> void:
 	name = "Progress"
@@ -36,6 +38,7 @@ func gain_xp(amount: int) -> void:
 	var after := Levels.add_xp(hero.level, hero.xp, amount)
 	set_level(after[0], after[1])
 	if hero.level > before:
+		level_before = before
 		hero.heal(hero.max_health())
 		levelled_up.emit(hero.level)
 		Events.hero_levelled_up.emit(hero, hero.level)
@@ -66,6 +69,13 @@ func unlocks_at(level: int) -> Array[String]:
 			for rune in RuneLibrary.runes_for(skill.id):
 				if rune.unlock_level == level:
 					found.append("New rune: %s" % rune.display_name)
+	return found
+
+# Everything unlocked by the levels after `from` up to and including `to`
+func unlocks_between(from: int, to: int) -> Array[String]:
+	var found: Array[String] = []
+	for level in range(from + 1, to + 1):
+		found.append_array(unlocks_at(level))
 	return found
 
 func rune_for(skill_id: StringName) -> RuneDef:
