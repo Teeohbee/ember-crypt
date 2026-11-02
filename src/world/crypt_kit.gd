@@ -49,7 +49,8 @@ static func wall(parent: Node3D, from: Vector2i, to: Vector2i, piece_for: Callab
 		var corner := from + step * i
 		var middle := (Vector2(corner) + Vector2(step) * 0.5 - Vector2(0.5, 0.5)) * CELL
 		var piece: String = piece_for.call(i) if piece_for.is_valid() else "wall"
-		place(parent, piece, Vector3(middle.x, 0, middle.y), yaw)
+		# Walls dissolve when they stand between the camera and a hero (WallFade)
+		place(parent, piece, Vector3(middle.x, 0, middle.y), yaw).add_to_group(WallFade.GROUP)
 
 # A box of collision for walking into, sized in metres.
 static func blocker(parent: Node3D, centre: Vector3, size: Vector3) -> StaticBody3D:

@@ -17,9 +17,12 @@ static func resolve(event: DamageEvent, attacker: Stats, defender: Stats, rng: R
 	return event
 
 # source hits target with skill for multiplier x the source's weapon damage. Returns the resolved
-# event, or null if the target was already dead.
+# event, or null if the target was already dead or rolling clear.
 static func hit(source: Combatant, target: Combatant, skill: SkillDef, multiplier := -1.0) -> DamageEvent:
 	if not is_instance_valid(target) or not target.alive:
+		return null
+	if target.invulnerable:
+		Feedback.evaded(target)
 		return null
 	var event := DamageEvent.new()
 	event.source = source

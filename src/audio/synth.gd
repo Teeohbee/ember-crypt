@@ -4,6 +4,7 @@ extends RefCounted
 # saves them as WAVs; tools/render_audio.gd runs it headless and the game only ever plays the files.
 
 const MIX_RATE := 22050
+const NOISE_VOICES := ["crunch", "whoosh"]
 
 static func empty_buffer(seconds: float) -> PackedFloat32Array:
 	var buffer := PackedFloat32Array()
@@ -24,8 +25,12 @@ static func to_stream(buffer: PackedFloat32Array) -> AudioStreamWAV:
 static func note_frequency(midi_note: float) -> float:
 	return 440.0 * pow(2.0, (midi_note - 69.0) / 12.0)
 
-# Adds one note. Voices: "pad", "bell", "toll", "pluck", "sub", "thud", "hiss".
+# Adds one note. Voices: "pad", "bell", "toll", "pluck", "sub", "thud", "hiss", and the noise voices
+# "crunch" and "whoosh", for which the note sets brightness instead of pitch (127 is brightest).
 static func add_note(buffer: PackedFloat32Array, start: float, midi_note: float, length: float, voice: String, volume: float) -> void:
+	if voice in NOISE_VOICES:
+		add_noise(buffer, start, midi_note / 127.0, length, voice, volume)
+		return
 	var first := int(start * MIX_RATE)
 	var frequency := note_frequency(midi_note)
 	for offset in int(length * MIX_RATE):
@@ -82,6 +87,29 @@ static func add_wind(buffer: PackedFloat32Array, start: float, length: float, vo
 		smoothed += (rng.randf_range(-1.0, 1.0) - smoothed) * brightness
 		var swell := sin(PI * time / length)
 		buffer[first + offset] += smoothed * swell * swell * volume * 6.0
+
+# Noise through a one-pole low-pass. "crunch" is a hard knock that dies fast: bone, wood, a blade
+# biting. "whoosh" swells and brightens through the middle, like something swung past the ear. Seeded
+# by its start and brightness, so a render is repeatable.
+static func add_noise(buffer: PackedFloat32Array, start: float, brightness: float, length: float, voice: String, volume: float) -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash([start, brightness, voice])
+	var first := int(start * MIX_RATE)
+	var smoothed := 0.0
+	for offset in int(length * MIX_RATE):
+		if first + offset >= buffer.size():
+			return
+		var time := float(offset) / MIX_RATE
+		var envelope := 0.0
+		var cutoff := brightness
+		if voice == "crunch":
+			envelope = minf(time / 0.002, 1.0) * exp(-time * 28.0)
+		else:
+			var swell := sin(PI * time / length)
+			envelope = swell * swell
+			cutoff = brightness * (0.25 + 0.75 * swell)
+		smoothed += (rng.randf_range(-1.0, 1.0) - smoothed) * clampf(cutoff * cutoff, 0.005, 1.0)
+		buffer[first + offset] += smoothed * envelope * volume * (1.0 + (1.0 - cutoff) * 3.0)
 
 # A feedback echo, in place: each repeat comes back quieter.
 static func add_echo(buffer: PackedFloat32Array, delay: float, feedback: float) -> void:
