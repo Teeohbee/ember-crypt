@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="MonsterDef" format=3]
+
+[ext_resource type="Script" path="res://src/monsters/monster_def.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/kaykit/skeletons/characters/Skeleton_Warrior.glb" id="2"]
+[ext_resource type="Script" path="res://src/skills/skill_def.gd" id="3"]
+[ext_resource type="Resource" path="res://src/skills/monsters/warrior_smash.tres" id="4"]
+[ext_resource type="Resource" path="res://src/skills/monsters/warrior_chop.tres" id="5"]
+[ext_resource type="PackedScene" path="res://assets/kaykit/skeletons/weapons/Skeleton_Axe.gltf" id="10"]
+[ext_resource type="PackedScene" path="res://assets/kaykit/skeletons/weapons/Skeleton_Shield_Large_A.gltf" id="11"]
+
+[resource]
+script = ExtResource("1")
+id = &"skeleton_warrior"
+display_name = "Skeleton Warrior"
+model = ExtResource("2")
+base_stats = {
+&"armour": 40.0,
+&"damage": 7.0,
+&"max_health": 110.0,
+&"move_speed": 2.6
+}
+skills = Array[ExtResource("3")]([ExtResource("4"), ExtResource("5")])
+weapon_right = ExtResource("10")
+weapon_left = ExtResource("11")
+archetype = &"tank"
+block = 0.6
+flinch_cooldown = 4.0
+xp = 24
+level = 2

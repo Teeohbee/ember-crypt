@@ -2,6 +2,9 @@
 
 [ext_resource type="Script" path="res://src/monsters/monster_def.gd" id="1"]
 [ext_resource type="PackedScene" path="res://assets/kaykit/skeletons/characters/Skeleton_Minion.glb" id="2"]
+[ext_resource type="Script" path="res://src/skills/skill_def.gd" id="3"]
+[ext_resource type="Resource" path="res://src/skills/monsters/skeleton_slash.tres" id="4"]
+[ext_resource type="PackedScene" path="res://assets/kaykit/skeletons/weapons/Skeleton_Blade.gltf" id="10"]
 
 [resource]
 script = ExtResource("1")
@@ -13,4 +16,7 @@ base_stats = {
 &"max_health": 30.0,
 &"move_speed": 3.5
 }
+skills = Array[ExtResource("3")]([ExtResource("4")])
+weapon_right = ExtResource("10")
+archetype = &"melee"
 xp = 8

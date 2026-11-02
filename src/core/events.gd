@@ -6,6 +6,8 @@ extends Node
 signal damage_dealt(event: DamageEvent)
 signal hero_spawned(hero: Hero)
 signal hero_died(hero: Hero, event: DamageEvent)
+# Back on their feet at a checkpoint after dying (M3)
+signal hero_respawned(hero: Hero)
 signal hero_levelled_up(hero: Hero, level: int)
 signal monster_spawned(monster: Monster)
 signal monster_killed(monster: Monster, event: DamageEvent)

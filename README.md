@@ -24,6 +24,14 @@ blows; Arcane Power flows back on its own. Three skills each on X, Y and B (A is
 Buffs and slows are timed `Statuses` on the stat sheet (`src/combat/statuses.gd`), so anything that
 reads move or attack speed slows down when chilled.
 
+**M3 - monsters.** The four skeletons fight back. Each has a `MonsterBrain` (idle, chase, attack,
+hurt, die) and its attacks are `SkillDef`s in `src/skills/monsters/`: Minions swarm, Warriors block
+hits from the front and telegraph a Grave Smash on the floor, Rogues kite with a crossbow, Mages raise
+Minions and throw witchfire. Monsters spawn in packs (`src/monsters/packs/`) that wake together, and a
+pack may be led by a named elite with affixes (Fast, Extra Health, Vampiric, Molten, Shielding; in
+`src/monsters/affixes/`) and a name plate. Die and "You Have Died" comes up; A rises at the last
+checkpoint.
+
 **M5 - progression.** Kills pay XP (more for tougher monsters and elites) up a level curve to 30; each
 level grows the class's stats, heals, and sets off a shaft of gold light, a toll and a banner naming
 what it unlocked. Skills stay locked until their `SkillDef.unlock_level`. Each skill takes one rune
