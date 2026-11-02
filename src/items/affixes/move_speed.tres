@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="AffixDef" format=3]
+
+[ext_resource type="Script" path="res://src/items/affix_def.gd" id="1_etpgq"]
+
+[resource]
+script = ExtResource("1_etpgq")
+id = &"move_speed"
+stat = &"move_speed"
+percent = true
+min_value = 0.04
+max_value = 0.08
+slots = Array[int]([5])
+prefix = "Fleet"
+step = 0.01

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="AffixDef" format=3]
+
+[ext_resource type="Script" path="res://src/items/affix_def.gd" id="1_n85nd"]
+
+[resource]
+script = ExtResource("1_n85nd")
+id = &"crit_damage"
+stat = &"crit_damage"
+min_value = 0.08
+max_value = 0.2
+slots = Array[int]([0, 6, 7])
+prefix = "Cruel"
+step = 0.01

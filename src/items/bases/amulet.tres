@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemBase" format=3]
+
+[ext_resource type="Script" path="res://src/items/item_base.gd" id="1_clba5"]
+
+[resource]
+script = ExtResource("1_clba5")
+id = &"amulet"
+display_name = "Amulet"
+slot = 7
+classes = PackedStringArray()
+kind = "amulet"

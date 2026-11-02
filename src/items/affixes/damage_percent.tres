@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="AffixDef" format=3]
+
+[ext_resource type="Script" path="res://src/items/affix_def.gd" id="1_ax68m"]
+
+[resource]
+script = ExtResource("1_ax68m")
+id = &"damage_percent"
+stat = &"damage"
+percent = true
+min_value = 0.04
+max_value = 0.1
+slots = Array[int]([0, 6, 7])
+prefix = "Savage"
+step = 0.01

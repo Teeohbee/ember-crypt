@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemBase" format=3]
+
+[ext_resource type="Script" path="res://src/items/item_base.gd" id="1_gsn07"]
+
+[resource]
+script = ExtResource("1_gsn07")
+id = &"iron_helm"
+display_name = "Iron Helm"
+slot = 2
+classes = PackedStringArray()
+base_stats = {
+&"armour": 9.0
+}
+min_level = 4
+kind = "helm"
