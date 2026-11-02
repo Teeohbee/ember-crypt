@@ -56,7 +56,8 @@ func nearest_item() -> FloorDrop:
 
 func hostile_close() -> bool:
 	for hostile in hero.hostiles():
-		if _flat_distance(hostile) < HOSTILE_CLEAR:
+		# A barrel isn't a threat
+		if hostile is not Breakable and _flat_distance(hostile) < HOSTILE_CLEAR:
 			return true
 	return false
 

@@ -4,6 +4,8 @@ class_name Targeting
 # doesn't flicker between two skeletons standing side by side. Pure functions over positions.
 
 const STICKINESS := 0.25
+# A barrel scores this much worse than a skeleton in the same spot: smash them on purpose, not by accident
+const BREAKABLE_PENALTY := 0.6
 
 # The best of candidates within max_range and cone_degrees (full width) of aim from origin, or null.
 static func best_target(origin: Vector3, aim: Vector3, candidates: Array, max_range: float,
@@ -26,6 +28,8 @@ static func best_target(origin: Vector3, aim: Vector3, candidates: Array, max_ra
 		var score := angle / maxf(cone_degrees * 0.5, 1.0) + distance / maxf(max_range, 0.01) * 0.5
 		if candidate == current:
 			score -= STICKINESS
+		if candidate.is_in_group(&"breakables"):
+			score += BREAKABLE_PENALTY
 		if score < best_score:
 			best_score = score
 			best = candidate

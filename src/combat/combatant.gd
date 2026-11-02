@@ -78,13 +78,17 @@ func revive() -> void:
 	health = max_health()
 	health_changed.emit(health, max_health())
 
-# Living combatants on the other side
+# Living combatants on the other side; for heroes, that includes things to smash (Breakable)
 func hostiles() -> Array[Combatant]:
 	var other: StringName = TEAM_GROUPS[Team.MONSTERS if team == Team.HEROES else Team.HEROES]
 	var found: Array[Combatant] = []
 	for node in get_tree().get_nodes_in_group(other):
 		if node is Combatant and node.alive:
 			found.append(node)
+	if team == Team.HEROES:
+		for node in get_tree().get_nodes_in_group(&"breakables"):
+			if node is Combatant and node.alive:
+				found.append(node)
 	return found
 
 # Spends power if there's enough; false (and nothing spent) if not

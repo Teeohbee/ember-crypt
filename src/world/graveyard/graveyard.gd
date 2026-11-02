@@ -186,7 +186,7 @@ func _lanterns() -> void:
 			light.set_script(Flicker)
 			add_child(light)
 
-# Jack-o'-lanterns with a little orange glow, pumpkins, bones, coffins and the odd bench
+# Jack-o'-lanterns with a little orange glow, pumpkins to smash, bones, coffins and the odd bench
 func _dressing(rng: RandomNumberGenerator) -> void:
 	for at: Vector3 in JACKS:
 		HalloweenKit.solid(self, ["pumpkin_orange_jackolantern", "pumpkin_yellow_jackolantern"][rng.randi_range(0, 1)], at, Vector2(1.2, 1.2), rng.randf_range(150, 210))
@@ -197,12 +197,17 @@ func _dressing(rng: RandomNumberGenerator) -> void:
 		glow.position = at + Vector3(0, 0.7, 0.6)
 		glow.set_script(Flicker)
 		add_child(glow)
-	for i in 16:
+	for i in 22:
 		var at := Vector3(rng.randf_range(-21, 21), 0, rng.randf_range(-19, 16))
 		if absf(at.x) < 3.5:
 			continue
-		var piece: String = ["pumpkin_orange", "pumpkin_orange_small", "pumpkin_yellow_small", "skull", "bone_A", "bone_B", "bone_C", "ribcage"][rng.randi_range(0, 7)]
-		HalloweenKit.place(self, piece, at, rng.randf_range(0, 360))
+		var piece: String = ["pumpkin_orange", "pumpkin_orange_small", "pumpkin_yellow_small", "pumpkin_yellow", "skull", "bone_A", "bone_C", "ribcage"][rng.randi_range(0, 7)]
+		if Breakable.is_breakable(piece):
+			var pumpkin := Breakable.make(piece, rng.randi_range(0, 3) * 90.0)
+			pumpkin.position = at
+			add_child(pumpkin)
+		else:
+			HalloweenKit.place(self, piece, at, rng.randf_range(0, 360))
 	HalloweenKit.place(self, "floor_dirt_grave", Vector3(-16, 0, -17))
 	HalloweenKit.solid(self, "coffin", Vector3(-12.5, 0, -17), Vector2(2.0, 3.0), 90.0)
 	HalloweenKit.solid(self, "coffin_decorated", Vector3(15, 0, 14.5), Vector2(2.0, 3.0), 90.0)

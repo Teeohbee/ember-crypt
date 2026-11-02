@@ -55,6 +55,13 @@ func hit(event: DamageEvent) -> void:
 		return
 	var target := event.target
 	var params: Dictionary = event.skill.params if event.skill else {}
+	# Smashing a barrel is a crunch and a jolt, not a fight: no number, no knockback
+	if target is Breakable:
+		if is_instance_valid(event.source):
+			sparks.spark(target.global_position, event.source.global_position)
+		hit_stop(0.03)
+		shake(0.1)
+		return
 	var on_hero := target.team == Combatant.Team.HEROES
 	var colour: Color = HURT if on_hero else (CRIT if event.crit else COLOURS.get(event.kind, Color.WHITE))
 	number(target.global_position + Vector3(0, NUMBER_HEIGHT, 0), str(maxi(roundi(event.amount), 1)), colour, event.crit)

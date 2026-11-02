@@ -64,7 +64,8 @@ headstones in thick fog behind an iron fence, with lanterns along the path and j
 between the graves; its mausoleum goes down into **the Ember Crypt**: a dungeon grown from a seed out of hand-made rooms (`src/world/dungeon/chunks/*.tres`; a new room is a new resource),
 with a checkpoint halfway and the boss in the furthest dead end. **Vargoth, the Bone Warden** fights
 in three phases - quicker each time, raising the dead from the second - and paints his slam on the
-floor before it lands; killing him opens a waypoint home. A uses whatever is in reach (waypoint,
+floor before it lands; killing him opens a waypoint home. Barrels, crates and kegs in the crypt and pumpkins in the
+graveyard smash at a blow, now and then spilling a little gold. A uses whatever is in reach (waypoint,
 stash, merchant, stairs) when nothing hostile is close. Waypoints you've touched, the crypt's seed and
 the stash are saved.
 
