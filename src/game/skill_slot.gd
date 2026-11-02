@@ -3,7 +3,8 @@ extends Control
 # One socket on the skill bar: the skill's icon (its texture if it has one, otherwise its initials on
 # a disc in the colour of its damage), a dark sweep that unwinds clockwise as the cooldown runs out
 # with the seconds left on top, a red wash when there isn't enough power, a gold flare when it comes
-# ready, and the pad button that fires it. An empty socket is just a dim ring. The potion uses one too.
+# ready, and the pad button that fires it. An empty socket is just a dim ring; one holding a skill the
+# hero hasn't reached yet shows a padlock and the level it opens at. The potion uses one too.
 
 const DIAMETER := 84.0
 const FLASH_SECONDS := 0.4
@@ -30,6 +31,8 @@ var used_flash := 0.0
 var denied_flash := 0.0
 # Draws a flask instead of initials (the potion)
 var flask := false
+# The level a skill waiting in this socket unlocks at; 0 when there's none waiting
+var locked_level := 0
 var _sweep := PackedVector2Array()
 static var _font: Font
 
@@ -50,7 +53,7 @@ func _place_glyph() -> void:
 	glyph.size = glyph.custom_minimum_size
 	glyph.position = Vector2((size.x - glyph.size.x) * 0.5, DIAMETER - glyph.size.y * 0.45)
 
-func show_skill(skill: SkillDef, cooldown_fraction: float, cooldown_left: float, can_afford: bool) -> void:
+func show_skill(skill: SkillDef, cooldown_fraction: float, cooldown_left: float, can_afford: bool, locked_at := 0) -> void:
 	var was_cooling := cooldown > 0.0
 	var next_initials := ""
 	if skill:
@@ -61,8 +64,9 @@ func show_skill(skill: SkillDef, cooldown_fraction: float, cooldown_left: float,
 		tint = KIND_COLOURS.get(skill.damage_kind, KIND_COLOURS[DamageEvent.Kind.PHYSICAL])
 	var next_countdown := str(ceili(cooldown_left)) if cooldown_left > 1.0 else ""
 	var changed := empty != (skill == null) or initials != next_initials or affordable != can_afford \
-		or countdown != next_countdown or not is_equal_approx(cooldown, cooldown_fraction)
+		or countdown != next_countdown or not is_equal_approx(cooldown, cooldown_fraction) or locked_level != locked_at
 	empty = skill == null
+	locked_level = locked_at
 	initials = next_initials
 	affordable = can_afford
 	countdown = next_countdown
@@ -94,6 +98,9 @@ func _draw() -> void:
 	draw_circle(centre, radius + 4.0, Color(UiTheme.VOID, 0.88))
 	if empty:
 		draw_arc(centre, radius, 0.0, TAU, 48, Color(UiTheme.BRONZE, 0.45), 2.0, true)
+		if locked_level > 0:
+			_draw_padlock(centre + Vector2(0, -radius * 0.18), radius * 0.36, Color(UiTheme.BRONZE, 0.75))
+			_letters("Lv %d" % locked_level, centre + Vector2(0, radius * 0.42), 18, Color(UiTheme.PARCHMENT, 0.7))
 		return
 	if icon:
 		var box := Rect2(centre - Vector2(radius, radius) * 0.86, Vector2(radius, radius) * 1.72)
@@ -149,3 +156,10 @@ func _letters(text: String, centre: Vector2, font_size: int, colour: Color) -> v
 	var at := centre + Vector2(-width * 0.5, font_size * 0.36)
 	draw_string(font, at + Vector2(0, 2), text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, Color(0, 0, 0, 0.75))
 	draw_string(font, at, text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, colour)
+
+# A padlock about `size` across: a shackle arc over a squared body
+func _draw_padlock(centre: Vector2, size: float, colour: Color) -> void:
+	var body := Rect2(centre + Vector2(-size * 0.5, -size * 0.05), Vector2(size, size * 0.75))
+	draw_arc(centre + Vector2(0, -size * 0.05), size * 0.32, PI, TAU, 16, colour, maxf(size * 0.14, 2.0), true)
+	draw_rect(body, colour)
+	draw_circle(centre + Vector2(0, size * 0.3), size * 0.1, Color(UiTheme.VOID, 0.9))
