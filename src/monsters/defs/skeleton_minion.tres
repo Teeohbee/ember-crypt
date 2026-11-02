@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="MonsterDef" format=3]
+
+[ext_resource type="Script" path="res://src/monsters/monster_def.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/kaykit/skeletons/characters/Skeleton_Minion.glb" id="2"]
+
+[resource]
+script = ExtResource("1")
+id = &"skeleton_minion"
+display_name = "Skeleton Minion"
+model = ExtResource("2")
+base_stats = {
+&"damage": 4.0,
+&"max_health": 30.0,
+&"move_speed": 3.5
+}
+xp = 8
