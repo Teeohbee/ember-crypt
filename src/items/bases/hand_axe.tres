@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemBase" format=3]
+
+[ext_resource type="PackedScene" path="res://assets/kaykit/adventurers/weapons/axe_1handed.gltf" id="1_e37al"]
+[ext_resource type="Script" path="res://src/items/item_base.gd" id="2_fwg51"]
+
+[resource]
+script = ExtResource("2_fwg51")
+id = &"hand_axe"
+display_name = "Hand Axe"
+model = ExtResource("1_e37al")
+classes = PackedStringArray("barbarian")
+base_stats = {
+&"damage": 3.0
+}
+kind = "axe"

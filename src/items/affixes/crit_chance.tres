@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="AffixDef" format=3]
+
+[ext_resource type="Script" path="res://src/items/affix_def.gd" id="1_wufii"]
+
+[resource]
+script = ExtResource("1_wufii")
+id = &"crit_chance"
+stat = &"crit_chance"
+min_value = 0.01
+max_value = 0.03
+slots = Array[int]([0, 4, 2, 6, 7])
+prefix = "Keen"
+step = 0.01

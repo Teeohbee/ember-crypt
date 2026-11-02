@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="PackDef" format=3]
+
+[ext_resource type="Script" path="res://src/monsters/pack_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"swarm"
+display_name = "Swarm"
+members = Array[StringName]([&"skeleton_minion", &"skeleton_minion", &"skeleton_minion", &"skeleton_minion", &"skeleton_minion"])

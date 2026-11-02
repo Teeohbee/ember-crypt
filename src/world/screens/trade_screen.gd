@@ -27,6 +27,8 @@ func _build() -> void:
 	for column in [left, right]:
 		column.chosen.connect(func(item: Item) -> void: _choose(column, item))
 		column.focused.connect(func(item: Item) -> void: details.text = describe(item))
+	# Gold and the stash change here; write them down on the way out
+	closed.connect(func() -> void: SaveGame.store(hero))
 	refresh()
 	if not left.focus_index(0):
 		right.focus_index(0)

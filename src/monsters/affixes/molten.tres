@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="EliteAffixDef" format=3]
+
+[ext_resource type="Script" path="res://src/monsters/elite_affix_def.gd" id="1"]
+[ext_resource type="Script" path="res://src/monsters/affixes/molten_affix.gd" id="2"]
+
+[resource]
+script = ExtResource("1")
+id = &"molten"
+display_name = "Molten"
+colour = Color(1, 0.45, 0.1, 1)
+flat = {
+&"resist": 0.3
+}
+behaviour = ExtResource("2")

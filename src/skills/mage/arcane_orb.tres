@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="SkillDef" format=3]
+
+[ext_resource type="Script" path="res://src/skills/skill_def.gd" id="1"]
+[ext_resource type="Script" path="res://src/skills/mage/arcane_orb.gd" id="2"]
+
+[resource]
+script = ExtResource("1")
+id = &"arcane_orb"
+display_name = "Arcane Orb"
+description = "A slow orb of arcane power that bursts on the first enemy it meets, hurting all around it."
+effect = ExtResource("2")
+animation = "Spellcast_Shoot"
+hit_time = 0.3
+recovery = 0.55
+cooldown = 0.0
+cost = 30.0
+generate = 0.0
+damage_multiplier = 2.4
+damage_kind = 4
+reach = 14.0
+radius = 3.0
+cone_degrees = 90.0
+knockback = 1.0
+unlock_level = 4
+params = {
+"range": 14.0,
+"speed": 7.0
+}

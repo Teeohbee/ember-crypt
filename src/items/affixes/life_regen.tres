@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="AffixDef" format=3]
+
+[ext_resource type="Script" path="res://src/items/affix_def.gd" id="1_q6g22"]
+
+[resource]
+script = ExtResource("1_q6g22")
+id = &"life_regen"
+stat = &"health_regen"
+min_value = 0.5
+max_value = 1.5
+slots = Array[int]([3, 7, 2])
+prefix = "Mending"
+step = 0.1

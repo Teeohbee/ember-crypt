@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="AffixDef" format=3]
+
+[ext_resource type="Script" path="res://src/items/affix_def.gd" id="1_1bfy6"]
+
+[resource]
+script = ExtResource("1_1bfy6")
+id = &"gold_find"
+stat = &"gold_find"
+min_value = 0.05
+max_value = 0.15
+weight = 6
+prefix = "Gilded"
+step = 0.01

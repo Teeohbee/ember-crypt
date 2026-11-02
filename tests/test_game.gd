@@ -24,3 +24,17 @@ func test_a_skill_hits_the_monster_in_front() -> void:
 	await get_tree().process_frame
 	Events.monster_killed.disconnect(count_kill)
 	assert_int(killed.size()).is_equal(1)
+
+func test_the_hud_shows_globes_and_skills_and_lb_drinks() -> void:
+	var game: Node = await open_screen(GAME)
+	var hero: Hero = game.hero
+	var bar: ActionBar = game.huds[0].get_node("ActionBar")
+	# Past every skill's unlock level (M5 gates them)
+	hero.progress.set_level(10, 0)
+	hero.health = hero.max_health() * 0.25
+	await press("potion")
+	assert_float(hero.health).is_greater(hero.max_health() * 0.5)
+	assert_float(hero.potion.cooldown_left).is_greater(0.0)
+	await frames(1)
+	assert_float(bar.health_globe.fraction).is_equal_approx(hero.health / hero.max_health(), 0.01)
+	assert_bool(bar.skill_slots[1].empty).is_false()

@@ -40,6 +40,18 @@ func play(animation: String, blend := 0.2, hold := false) -> void:
 	_holding = hold
 	animations.play(animation, blend)
 
+# Swaps whatever's in a hand for an item's model, held the way the rigs hold their own props (M4).
+# null leaves the hand empty.
+func hold(hand: String, base: ItemBase) -> void:
+	var bone := _rig.find_child(hand, true, false)
+	for prop in bone.get_children():
+		prop.free()
+	if base and base.model:
+		var prop: Node3D = base.model.instantiate()
+		prop.name = String(base.id)
+		prop.transform = base.grip()
+		bone.add_child(prop)
+
 # The props in each hand, by name
 func held_props() -> PackedStringArray:
 	var names := PackedStringArray()

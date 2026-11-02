@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="RuneDef" format=3]
+
+[ext_resource type="Script" path="res://src/skills/rune_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"bash_frenzy"
+skill = &"bash"
+display_name = "Frenzy"
+description = "Swings come quicker and every hit builds half again as much Fury."
+unlock_level = 3
+multiply = {
+"recovery": 0.7,
+"generate": 1.5
+}
+overrides = {}
+params = {}

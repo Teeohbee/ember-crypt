@@ -34,11 +34,9 @@ var carried := {}
 # Where heroes come into the next zone: "waypoint", "gate", "stairs"; empty is the zone's default
 var arrival := ""
 
-# A new hero starts in town with nothing carried and only the town's waypoint known
-func begin_new_hero() -> void:
-	zone_id = "town"
-	arrival = ""
+# Sets the world up for a character: the waypoints they've found and their crypt, nothing carried
+func enter_world(known_waypoints: Array, crypt_seed: int) -> void:
+	waypoints.assign(known_waypoints if not known_waypoints.is_empty() else ["town"])
+	dungeon_seed = crypt_seed
 	carried = {}
-	waypoints = ["town"]
-	dungeon_seed = 0
-	checkpoint = Vector3.INF
+	arrival = ""
