@@ -31,6 +31,8 @@ const ACTIONS := {
 	"skill_6": {"keys": [KEY_O], "triggers": [JOY_AXIS_TRIGGER_RIGHT]},
 	"potion": {"keys": [KEY_Q], "buttons": [JOY_BUTTON_LEFT_SHOULDER]},
 	"target_lock": {"keys": [KEY_SHIFT], "triggers": [JOY_AXIS_TRIGGER_LEFT]},
+	# M4: hold to wear what you just picked up
+	"equip": {"keys": [KEY_F], "buttons": [JOY_BUTTON_DPAD_UP]},
 }
 
 const UI_DIRECTIONS := {Vector2i.UP: "ui_up", Vector2i.DOWN: "ui_down", Vector2i.LEFT: "ui_left", Vector2i.RIGHT: "ui_right"}
