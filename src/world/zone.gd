@@ -9,6 +9,10 @@ var display_name := ""
 var music := "crypt"
 var hero_start := Vector3.ZERO
 
+# Override for a different light: the outdoor zones are moonlit
+func environment() -> Environment:
+	return Look.environment()
+
 # Override: lay out floors, walls, props, lights, SpawnPoints and Checkpoints
 func build() -> void:
 	pass

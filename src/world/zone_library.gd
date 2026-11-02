@@ -1,5 +1,8 @@
 class_name ZoneLibrary
-# Builds a zone by id. M6 adds the town, the dungeon and the graveyard here.
+# Builds a zone by id: the town, the graveyard, the crypt (and the M0 test room, for anything else).
+
+# Waypoints in the order the menu lists them: [zone id, name]
+const WAYPOINTS := [["town", "Emberfall"], ["graveyard", "The Hollow Graveyard"], ["crypt", "The Ember Crypt"]]
 
 static func make(id: String) -> Zone:
 	var zone: Zone

@@ -65,9 +65,15 @@ func _add_checkpoint(at: Vector3) -> void:
 	checkpoint.position = at
 	add_child(checkpoint)
 
-# The stairs back up and the waypoint, in the entrance room (filled in by the waypoint work)
-func _furnish_start(_at: Vector3) -> void:
-	pass
+# The stairs back up (the entry chunk puts them against the north wall) and the waypoint
+func _furnish_start(at: Vector3) -> void:
+	CryptKit.blocker(self, at + Vector3(0, 1.0, -7.5), Vector3(5.0, 2.0, 4.0))
+	var stairs := ZoneExit.new("Climb to the graveyard", "graveyard", "stairs")
+	stairs.position = at + Vector3(0, 0, -4.8)
+	add_child(stairs)
+	var waypoint := Waypoint.new(id)
+	waypoint.position = at + Vector3(6, 0, 5)
+	add_child(waypoint)
 
 # The boss and its arena (filled in by the boss work)
 func _furnish_boss(_at: Vector3) -> void:

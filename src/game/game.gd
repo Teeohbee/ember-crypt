@@ -9,18 +9,20 @@ var camera := GameCamera.new()
 var huds: Array[Hud] = []
 
 func _ready() -> void:
-	var env := WorldEnvironment.new()
-	env.environment = Look.environment()
-	add_child(env)
 	zone = ZoneLibrary.make(Session.zone_id)
+	var env := WorldEnvironment.new()
+	env.environment = zone.environment()
+	add_child(env)
 	add_child(zone)
 	for slot in Session.slots:
 		var spawned := Hero.new(Session.hero_class, slot)
 		spawned.position = zone.hero_start
 		add_child(spawned)
 		spawned.add_child(Look.hero_light())
+		Travel.restore(spawned)
 		var hud := Hud.new(slot)
 		add_child(hud)
+		hud.add_child(InteractPrompt.new(hud))
 		huds.append(hud)
 	hero = Session.slots[0].hero
 	add_child(camera)

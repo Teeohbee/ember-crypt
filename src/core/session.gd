@@ -25,3 +25,20 @@ func heroes() -> Array[Hero]:
 # M6 World
 # The crypt's layout seed; 0 until it's first entered, then the same crypt every visit
 var dungeon_seed := 0
+# Zones the heroes have found a waypoint in; the town's is always known
+var waypoints: Array[String] = ["town"]
+# The town stash: one chest shared by every hero (M5 saves it)
+var stash := Inventory.new(60)
+# What each slot's hero carries between zones, by slot index (see Travel)
+var carried := {}
+# Where heroes come into the next zone: "waypoint", "gate", "stairs"; empty is the zone's default
+var arrival := ""
+
+# A new hero starts in town with nothing carried and only the town's waypoint known
+func begin_new_hero() -> void:
+	zone_id = "town"
+	arrival = ""
+	carried = {}
+	waypoints = ["town"]
+	dungeon_seed = 0
+	checkpoint = Vector3.INF

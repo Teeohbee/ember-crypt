@@ -125,6 +125,7 @@ func _choose(index: int, quietly := false) -> void:
 func _enter_crypt() -> void:
 	screen = Screen.LEAVING
 	Session.hero_class = Session.CLASSES[chosen]
+	Session.begin_new_hero()
 	Sound.play("select")
 	_diorama.heroes[chosen].play(Session.hero_class.chosen, 0.2, true)
 	_fade(_class_panel, false)
