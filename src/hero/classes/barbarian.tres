@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="HeroClass" format=3]
+
+[ext_resource type="Script" path="res://src/hero/hero_class.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/kaykit/adventurers/characters/Barbarian.glb" id="2"]
+
+[resource]
+script = ExtResource("1")
+id = "barbarian"
+display_name = "Barbarian"
+epithet = "Wrath of the Hill Clans"
+blurb = "Wades into the thick of it with a great axe. Every blow builds Fury, and Fury is spent on earth-splitting leaps and cleaves that hit everything in reach."
+model = ExtResource("2")
+held = PackedStringArray("2H_Axe")
+idle = "2H_Melee_Idle"
+chosen = "Cheer"
+power_name = "Fury"
+power_colour = Color(0.78, 0.2, 0.13, 1)
+ratings = {
+"Damage": 4,
+"Difficulty": 2,
+"Range": 1,
+"Toughness": 5
+}

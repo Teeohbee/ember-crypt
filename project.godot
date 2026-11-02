@@ -21,6 +21,7 @@ boot_splash/show_image=false
 
 Settings="*res://src/core/settings.gd"
 Controls="*res://src/core/controls.gd"
+Session="*res://src/core/session.gd"
 Sound="*res://src/audio/sound.gd"
 Music="*res://src/audio/music.gd"
 SceneManager="*res://src/core/scene_manager.gd"
