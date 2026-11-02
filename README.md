@@ -32,6 +32,14 @@ pack may be led by a named elite with affixes (Fast, Extra Health, Vampiric, Mol
 `src/monsters/affixes/`) and a name plate. Die and "You Have Died" comes up; A rises at the last
 checkpoint.
 
+**M4 - loot.** Skeletons drop items and gold, rolled from seeded loot tables: rarity weights tilted
+by magic find, bases gated by item level and leaning toward your class, affixes by slot and level.
+Drops arc out of the corpse, land with a sound that tells you their rarity, and stand under a beam
+in its colour. Walk over gold; press A to pick up an item when nothing hostile is close. Each pickup
+shows a card with green / red changes over what you wear; hold D-pad up to put it on. Select opens
+the bags and paper doll (A wear / take off, X drop). Weapons and shields show in the hero's hands,
+and each class starts with its own. Content is data: `src/items/bases/` and `src/items/affixes/`.
+
 ## controls
 
 Pad first; keys exist for testing.
@@ -43,6 +51,9 @@ Pad first; keys exist for testing.
 | Skills | A, X, Y, B, RB, RT | J, K, L, ;, U, O |
 | Potion | LB | Q |
 | Pause | Start | Esc |
+| Pick up (loot in reach, nothing hostile close) | A | J |
+| Hold to equip what you picked up | D-pad up | F |
+| Inventory | Select | I / Tab |
 
 ## running
 

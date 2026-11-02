@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemBase" format=3]
+
+[ext_resource type="Script" path="res://src/items/item_base.gd" id="1_ep6rn"]
+
+[resource]
+script = ExtResource("1_ep6rn")
+id = &"ring"
+display_name = "Ring"
+slot = 6
+classes = PackedStringArray()
+kind = "ring"

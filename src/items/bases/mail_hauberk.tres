@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemBase" format=3]
+
+[ext_resource type="Script" path="res://src/items/item_base.gd" id="1_gqckm"]
+
+[resource]
+script = ExtResource("1_gqckm")
+id = &"mail_hauberk"
+display_name = "Mail Hauberk"
+slot = 3
+classes = PackedStringArray()
+base_stats = {
+&"armour": 16.0
+}
+min_level = 4
+kind = "chest"

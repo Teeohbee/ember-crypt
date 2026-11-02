@@ -15,3 +15,7 @@ extends Resource
 @export var slots: Array[ItemBase.Slot] = []
 @export var min_level := 1
 @export var weight := 10
+# The word a magic item takes from it: "Keen Hand Axe"
+@export var prefix := ""
+# Rolled values round to this: 1 for whole numbers, 0.01 for whole percents
+@export var step := 1.0

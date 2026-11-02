@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="AffixDef" format=3]
+
+[ext_resource type="Script" path="res://src/items/affix_def.gd" id="1_kjudk"]
+
+[resource]
+script = ExtResource("1_kjudk")
+id = &"armour"
+stat = &"armour"
+min_value = 3.0
+max_value = 8.0
+slots = Array[int]([1, 2, 3, 4, 5])
+weight = 14
+prefix = "Sturdy"

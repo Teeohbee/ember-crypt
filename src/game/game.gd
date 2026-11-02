@@ -7,6 +7,7 @@ var zone: Zone
 var hero: Hero
 var camera := GameCamera.new()
 var huds: Array[Hud] = []
+var loot := LootDropper.new()
 
 func _ready() -> void:
 	var env := WorldEnvironment.new()
@@ -24,12 +25,17 @@ func _ready() -> void:
 		hud.add_child(ActionBar.new(slot))
 		hud.add_child(DeathScreen.new(slot, zone))
 		huds.append(hud)
+		hud.add_child(PickupPopup.new(slot))
 	hero = Session.slots[0].hero
 	add_child(camera)
 	zone.populate()
 	var pause := PauseMenu.new()
 	pause.name = "PauseMenu"
 	add_child(pause)
+	# M4: drops from kills, and each player's inventory (after the pause menu, so it hears Start first)
+	add_child(loot)
+	for slot in Session.slots:
+		add_child(InventoryScreen.new(slot))
 	Music.play(zone.music)
 	Events.zone_entered.emit(zone)
 	_announce_zone.call_deferred()

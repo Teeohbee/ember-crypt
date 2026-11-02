@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ItemBase" format=3]
+
+[ext_resource type="PackedScene" path="res://assets/kaykit/adventurers/weapons/dagger.gltf" id="1_6ww3d"]
+[ext_resource type="Script" path="res://src/items/item_base.gd" id="2_ogd37"]
+
+[resource]
+script = ExtResource("2_ogd37")
+id = &"dagger"
+display_name = "Dagger"
+model = ExtResource("1_6ww3d")
+classes = PackedStringArray()
+base_stats = {
+&"crit_chance": 0.04,
+&"damage": 2.0
+}
+kind = "dagger"

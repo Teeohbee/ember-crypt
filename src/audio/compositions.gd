@@ -47,6 +47,18 @@ const SOUNDS := {
 	# Death: the big bell, low, on D minor. Coming back: D major rising, the only major chord in the game
 	"hero_death": [4.0, [[0.0, 26, 4.0, "toll", 0.55], [0.0, 38, 3.0, "toll", 0.35], [0.0, 50, 2.5, "bell", 0.12], [0.0, 53, 2.5, "bell", 0.1]]],
 	"respawn": [2.5, [[0.0, 62, 2.0, "bell", 0.22], [0.12, 66, 2.0, "bell", 0.2], [0.24, 69, 2.1, "bell", 0.2], [0.36, 74, 2.0, "bell", 0.18], [0.0, 38, 0.5, "thud", 0.4]]],
+	# M4 Loot
+	# Drops land with a sound that says how rare they are before you read the name: a dull knock for
+	# normal, a bell for magic, a high shimmer for rare, a toll and a rising D minor peal for legendary.
+	"drop": [0.3, [[0.0, 45, 0.25, "thud", 0.6], [0.02, 69, 0.12, "pluck", 0.12]]],
+	"drop_magic": [1.2, [[0.0, 45, 0.25, "thud", 0.5], [0.02, 81, 1.1, "bell", 0.2]]],
+	"drop_rare": [1.8, [[0.0, 45, 0.25, "thud", 0.5], [0.02, 86, 1.6, "bell", 0.18], [0.1, 93, 1.4, "bell", 0.12], [0.2, 98, 1.2, "bell", 0.08]]],
+	"drop_legendary": [4.0, [[0.0, 38, 4.0, "toll", 0.45], [0.0, 26, 1.5, "sub", 0.3], [0.15, 74, 2.5, "bell", 0.16],
+		[0.3, 77, 2.5, "bell", 0.16], [0.45, 81, 2.5, "bell", 0.16], [0.6, 86, 2.5, "bell", 0.18]]],
+	"gold": [0.5, [[0.0, 88, 0.2, "pluck", 0.3], [0.05, 93, 0.2, "pluck", 0.25], [0.11, 91, 0.2, "pluck", 0.22], [0.18, 96, 0.2, "pluck", 0.18]]],
+	"pickup_gold": [0.35, [[0.0, 91, 0.2, "pluck", 0.28], [0.06, 96, 0.25, "pluck", 0.25]]],
+	"pickup": [0.4, [[0.0, 50, 0.2, "thud", 0.55], [0.03, 74, 0.3, "pluck", 0.2]]],
+	"equip": [1.4, [[0.0, 41, 0.3, "thud", 0.7], [0.04, 62, 1.2, "bell", 0.2], [0.04, 74, 1.0, "bell", 0.1]]],
 }
 
 const MUSIC := ["title", "crypt"]

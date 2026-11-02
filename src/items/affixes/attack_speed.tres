@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="AffixDef" format=3]
+
+[ext_resource type="Script" path="res://src/items/affix_def.gd" id="1_s1m4x"]
+
+[resource]
+script = ExtResource("1_s1m4x")
+id = &"attack_speed"
+stat = &"attack_speed"
+percent = true
+min_value = 0.04
+max_value = 0.08
+slots = Array[int]([0, 4, 6])
+prefix = "Swift"
+step = 0.01
