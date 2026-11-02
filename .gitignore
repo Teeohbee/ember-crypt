@@ -1,0 +1,27 @@
+# Godot 4+ specific ignores
+.godot/
+/build/
+.nomedia
+
+# Godot-specific ignores
+.import/
+export.cfg
+export_credentials.cfg
+
+# Imported translations (automatically generated from CSV files)
+*.translation
+
+# Mono-specific ignores
+.mono/
+data_*/
+mono_crash.*.json
+
+
+# Addons are installed by gd-plug (see plug.gd), only gd-plug itself is tracked
+.plugged/
+addons/*
+!addons/gd-plug/
+
+# gdUnit4 test reports
+/reports/
+.tmp_*/
