@@ -47,3 +47,7 @@ func build() -> void:
 	coven.pack = load("res://src/monsters/packs/coven.tres")
 	coven.position = Vector3(-10, 0, -11)
 	add_child(coven)
+	# M6: the way out to the real world
+	var waypoint := Waypoint.new("")
+	waypoint.position = Vector3(-6, 0, 6)
+	add_child(waypoint)

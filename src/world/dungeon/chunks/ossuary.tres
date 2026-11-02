@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="RoomChunk" format=3]
+
+[ext_resource type="Script" path="res://src/world/dungeon/room_chunk.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"ossuary"
+kinds = PackedStringArray("fight")
+weight = 10
+props = [["table_long", Vector3(-6, 0, -5), 0.0], ["table_long", Vector3(6, 0, -5), 0.0], ["candle_lit", Vector3(-6, 1, -5.5), 0.0], ["candle_thin_lit", Vector3(6, 1, -4.5), 0.0], ["candle_triple", Vector3(-4.5, 0, -8), 0.0], ["candle_triple", Vector3(4.5, 0, -8), 0.0], ["trunk_large_A", Vector3(-8, 0, 8), 0.0], ["trunk_large_B", Vector3(8, 0, 8), 0.0], ["box_large", Vector3(-8, 0, 4.5), 0.0]]
+packs = PackedVector3Array(0, 0, -4, -4, 0, 5, 4, 0, 5)
+pack_size = 2
+fires = PackedVector3Array(-4, 0, 1, 4, 0, 1)
+rubble = 0.25

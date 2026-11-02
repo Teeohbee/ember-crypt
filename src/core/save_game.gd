@@ -66,7 +66,8 @@ func create(hero_class: HeroClass) -> Dictionary:
 		"id": "%d_%d" % [Time.get_unix_time_from_system(), randi()],
 		"name": _new_name(hero_class.id),
 		"class": hero_class.id,
-		"level": 1, "xp": 0, "runes": {}, "inventory": {}, "equipment": {}, "zone": "",
+		"level": 1, "xp": 0, "runes": {}, "inventory": {}, "equipment": {}, "zone": "town",
+		"waypoints": ["town"], "dungeon_seed": 0,
 		"played": _now(),
 	}
 	characters.append(record)
@@ -83,6 +84,7 @@ func choose(id: String) -> void:
 	Session.hero_class = class_of(record)
 	Session.zone_id = record.zone
 	Session.checkpoint = Vector3.INF
+	Session.enter_world(record.waypoints, record.dungeon_seed)
 	save_to_disk()
 
 func delete(id: String) -> void:
@@ -104,6 +106,8 @@ func store(hero: Hero) -> void:
 	record.inventory = hero.inventory.to_dict()
 	record.equipment = hero.equipment.to_dict()
 	record.zone = Session.zone_id
+	record.waypoints = Session.waypoints.duplicate()
+	record.dungeon_seed = Session.dungeon_seed
 	record.played = _now()
 	save_to_disk()
 
@@ -132,12 +136,19 @@ func _on_hero_spawned(hero: Hero) -> void:
 func load_from_disk() -> void:
 	characters.clear()
 	current_id = ""
+	Session.stash.load_dict({})
 	if not FileAccess.file_exists(path):
 		return
 	var parser := JSON.new()
 	if parser.parse(FileAccess.get_file_as_string(path)) != OK or not parser.data is Dictionary:
 		push_warning("Characters file %s couldn't be read; starting with none" % path)
 		return
+	# M6: the town stash, shared by every character
+	var stash: Variant = parser.data.get("stash")
+	if stash is Dictionary:
+		stash = stash.duplicate(true)
+		stash.items = _known_items(stash.get("items", []))
+		Session.stash.load_dict(stash)
 	var saved: Variant = parser.data.get("characters", [])
 	if not saved is Array:
 		return
@@ -155,7 +166,7 @@ func save_to_disk() -> void:
 	if file == null:
 		push_warning("Couldn't write characters file %s: %s" % [temporary, error_string(FileAccess.get_open_error())])
 		return
-	file.store_string(JSON.stringify({"version": FORMAT_VERSION, "characters": characters}, "\t"))
+	file.store_string(JSON.stringify({"version": FORMAT_VERSION, "characters": characters, "stash": Session.stash.to_dict()}, "\t"))
 	file.close()
 	var error := DirAccess.rename_absolute(ProjectSettings.globalize_path(temporary), ProjectSettings.globalize_path(path))
 	if error != OK:
@@ -176,6 +187,10 @@ func _clean(data: Variant) -> Dictionary:
 	}
 	for key in ["runes", "inventory", "equipment"]:
 		record[key] = data.get(key) if data.get(key) is Dictionary else {}
+	# M6: waypoints found and the crypt's seed
+	var waypoints: Variant = data.get("waypoints")
+	record.waypoints = waypoints.filter(func(id: Variant) -> bool: return id is String) if waypoints is Array else ["town"]
+	record.dungeon_seed = _int(data.get("dungeon_seed"), 0)
 	return record
 
 func _known_items(list: Variant) -> Array:

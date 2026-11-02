@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="RoomChunk" format=3]
+
+[ext_resource type="Script" path="res://src/world/dungeon/room_chunk.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"feast_hall"
+kinds = PackedStringArray("fight")
+weight = 8
+props = [["table_long_decorated_A", Vector3(-4, 0, 0), 0.0], ["table_long_tablecloth", Vector3(4, 0, 0), 0.0], ["stool", Vector3(-5.4, 0, -1), 0.0], ["stool", Vector3(-5.4, 0, 1.2), 0.0], ["chair", Vector3(5.4, 0, 0.5), 270.0], ["plate_food_A", Vector3(-4, 1, -1), 0.0], ["plate_food_B", Vector3(4, 1, 1), 0.0], ["candle_triple", Vector3(4, 1, -1), 0.0], ["barrel_large", Vector3(-8, 0, -8), 0.0], ["keg", Vector3(8, 0, -8), 0.0]]
+packs = PackedVector3Array(0, 0, -5, 0, 0, 5)
+pack_size = 4
+fires = PackedVector3Array(-7.5, 0, 7.5, 7.5, 0, 7.5)
+rubble = 0.12

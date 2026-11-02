@@ -157,3 +157,28 @@ func test_nothing_is_written_without_a_character() -> void:
 	var hero := _hero()
 	SaveGame.store(hero)
 	assert_bool(FileAccess.file_exists(scratch_path)).is_false()
+
+# M6 World
+func test_a_new_character_starts_in_town_knowing_only_its_waypoint() -> void:
+	var record := SaveGame.create(Session.CLASSES[1])
+	assert_str(Session.zone_id).is_equal("town")
+	assert_array(record.waypoints).contains_exactly(["town"])
+	Session.enter_world([], 0)
+
+func test_waypoints_the_crypt_and_the_shared_stash_come_back() -> void:
+	SaveGame.create(Session.CLASSES[0])
+	var hero: Hero = auto_free(Hero.new(Session.CLASSES[0], PlayerSlot.new(0)))
+	Session.waypoints.append("graveyard")
+	Session.dungeon_seed = 1234
+	var item := Item.new()
+	item.base = ItemLibrary.base(StringName(fixture_id))
+	Session.stash.add(item)
+	SaveGame.store(hero)
+	Session.enter_world([], 0)
+	SaveGame.load_from_disk()
+	assert_int(Session.stash.items.size()).is_equal(1)
+	SaveGame.choose(SaveGame.characters[0].id)
+	assert_array(Session.waypoints).contains_exactly(["town", "graveyard"])
+	assert_int(Session.dungeon_seed).is_equal(1234)
+	Session.enter_world([], 0)
+	Session.stash.load_dict({})

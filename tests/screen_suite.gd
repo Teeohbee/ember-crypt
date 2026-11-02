@@ -3,7 +3,7 @@ class_name ScreenSuite
 extends GdUnitTestSuite
 # Base for suites that drive real screens with real input. Settings are kept in a scratch file, so a
 # test never writes the player's settings.json; characters likewise, so none of the player's show up
-# and none are written; and nothing is left paused.
+# and none are written; nothing is left paused, and the world is back to the test room.
 
 # One file per process, so suites running side by side in other worktrees don't share it
 var scratch_path := "user://test_settings_%d.json" % OS.get_process_id()
@@ -33,6 +33,9 @@ func after_test() -> void:
 	SaveGame.path = _real_saves_path
 	SaveGame.load_from_disk()
 	SceneManager.speed_scale = 1.0
+	# Choosing a character sends Session to their zone (a new one's is the town)
+	Session.zone_id = ""
+	Session.enter_world([], 0)
 
 # A screen added to the tree for this test only
 func open_screen(path: String) -> Node:

@@ -10,16 +10,17 @@ var huds: Array[Hud] = []
 var loot := LootDropper.new()
 
 func _ready() -> void:
-	var env := WorldEnvironment.new()
-	env.environment = Look.environment()
-	add_child(env)
 	zone = ZoneLibrary.make(Session.zone_id)
+	var env := WorldEnvironment.new()
+	env.environment = zone.environment()
+	add_child(env)
 	add_child(zone)
 	for slot in Session.slots:
 		var spawned := Hero.new(Session.hero_class, slot)
 		spawned.position = zone.hero_start
 		add_child(spawned)
 		spawned.add_child(Look.hero_light())
+		Travel.restore(spawned)
 		var hud := Hud.new(slot)
 		add_child(hud)
 		hud.add_child(ActionBar.new(slot))
@@ -27,6 +28,8 @@ func _ready() -> void:
 		hud.add_child(XpBar.new(slot))
 		hud.add_child(LevelBanner.new(slot))
 		add_child(SkillsScreen.new(slot))
+		hud.add_child(InteractPrompt.new(hud))
+		hud.add_child(BossBar.new(slot))
 		huds.append(hud)
 		hud.add_child(PickupPopup.new(slot))
 	hero = Session.slots[0].hero

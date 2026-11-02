@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="RoomChunk" format=3]
+
+[ext_resource type="Script" path="res://src/world/dungeon/room_chunk.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"pillared_hall"
+kinds = PackedStringArray("fight")
+weight = 12
+props = [["pillar", Vector3(-5, 0, -5), 0.0], ["pillar", Vector3(5, 0, -5), 0.0], ["pillar", Vector3(-5, 0, 5), 0.0], ["pillar", Vector3(5, 0, 5), 0.0], ["rubble_half", Vector3(-8, 0, 7), 90.0], ["sword_shield_broken", Vector3(7.5, 0, -8), 0.0], ["candle_melted", Vector3(6.2, 0, 6.2), 0.0], ["candle_lit", Vector3(-6.2, 0, -6.2), 0.0]]
+packs = PackedVector3Array(-3, 0, -3, 4, 0, 3)
+pack_size = 3
+fires = PackedVector3Array()
+rubble = 0.18

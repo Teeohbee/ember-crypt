@@ -65,12 +65,21 @@ func _physics_process(delta: float) -> void:
 	if motor.rolling:
 		return
 	var picking_up := pickup.physics_step()
+	if not picking_up and slot.just_pressed(SKILL_ACTIONS[0]) and _interact():
+		return
 	for i in SKILL_ACTIONS.size():
 		if i == 0 and picking_up:
 			continue
 		if slot.pressed(SKILL_ACTIONS[i]) and skill_bar.can_use(i):
 			skill_bar.use(i, aim_direction())
 			break
+
+# A uses whatever is in reach (a waypoint, the stash) when nothing hostile is close (M6)
+func _interact() -> bool:
+	var found := Interactable.find_for(self)
+	if found:
+		found.use(self)
+	return found != null
 
 # Where the player is pointing: the left stick if held, otherwise the way the hero faces
 func aim_direction() -> Vector3:

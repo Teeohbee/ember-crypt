@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="RoomChunk" format=3]
+
+[ext_resource type="Script" path="res://src/world/dungeon/room_chunk.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"throne_room"
+kinds = PackedStringArray("boss")
+weight = 10
+props = [["pillar_decorated", Vector3(-6, 0, -6), 0.0], ["pillar_decorated", Vector3(6, 0, -6), 0.0], ["pillar_decorated", Vector3(-6, 0, 6), 0.0], ["pillar_decorated", Vector3(6, 0, 6), 0.0], ["chest_gold", Vector3(-7.6, 0, -8.2), 0.0], ["coin_stack_large", Vector3(7.6, 0, -8.2), 0.0], ["sword_shield_gold", Vector3(-8, 0, 8), 0.0], ["candle_triple", Vector3(8, 0, 8), 0.0]]
+packs = PackedVector3Array()
+pack_size = 0
+fires = PackedVector3Array(-3.5, 0, -3.5, 3.5, 0, -3.5, -3.5, 0, 3.5, 3.5, 0, 3.5)
+rubble = 0.3

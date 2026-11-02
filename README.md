@@ -56,6 +56,17 @@ are saved to `user://characters.json` - class, level, XP, runes, bags, gear, zon
 pickups, checkpoints and leaving; the main menu has Continue, a character list (X deletes) and New
 Game.
 
+**M6 - the world.** New characters start in **Emberfall**, a walled town square under the moon with
+a waypoint, a shared stash (A moves items between bag and chest) and a merchant (A buys and sells;
+she pays a quarter of what she charges). The north gate leads to **the Hollow Graveyard**, rows of
+graves in thick fog, and the mausoleum there goes down into **the Ember Crypt**: a dungeon grown
+from a seed out of hand-made rooms (`src/world/dungeon/chunks/*.tres`; a new room is a new resource),
+with a checkpoint halfway and the boss in the furthest dead end. **Vargoth, the Bone Warden** fights
+in three phases - quicker each time, raising the dead from the second - and paints his slam on the
+floor before it lands; killing him opens a waypoint home. A uses whatever is in reach (waypoint,
+stash, merchant, stairs) when nothing hostile is close. Waypoints you've touched, the crypt's seed and
+the stash are saved. The graveyard is built from the dungeon kit until the Halloween Bits pack lands.
+
 ## controls
 
 Pad first; keys exist for testing.

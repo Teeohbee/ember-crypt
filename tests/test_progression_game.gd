@@ -13,6 +13,8 @@ func test_the_character_arrives_as_saved_earns_xp_and_is_saved_on_leaving() -> v
 	var record := SaveGame.create(Session.CLASSES[0])
 	record.level = 5
 	record.xp = 10
+	# New characters start in town; the test room has something to kill
+	Session.zone_id = ""
 	var game: Node = await open_screen(GAME)
 	var hero: Hero = game.hero
 	assert_int(hero.level).is_equal(5)

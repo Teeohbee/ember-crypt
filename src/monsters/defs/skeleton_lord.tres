@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="MonsterDef" format=3]
+
+[ext_resource type="Script" path="res://src/monsters/monster_def.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/kaykit/skeletons/characters/Skeleton_Warrior.glb" id="2"]
+[ext_resource type="Script" path="res://src/skills/skill_def.gd" id="3"]
+[ext_resource type="Resource" path="res://src/skills/boss/lord_cleave.tres" id="4"]
+[ext_resource type="Resource" path="res://src/skills/boss/lord_slam.tres" id="5"]
+[ext_resource type="Resource" path="res://src/skills/boss/lord_summon.tres" id="6"]
+[ext_resource type="PackedScene" path="res://assets/kaykit/skeletons/weapons/Skeleton_Axe.gltf" id="10"]
+
+[resource]
+script = ExtResource("1")
+id = &"skeleton_lord"
+display_name = "Vargoth, the Bone Warden"
+model = ExtResource("2")
+scale = 1.8
+base_stats = {
+&"armour": 30.0,
+&"damage": 14.0,
+&"max_health": 900.0,
+&"move_speed": 3.4
+}
+skills = Array[ExtResource("3")]([ExtResource("4"), ExtResource("5"), ExtResource("6")])
+weapon_right = ExtResource("10")
+archetype = &"boss"
+aggro_range = 13.0
+leash = 30.0
+flinch_cooldown = 99.0
+xp = 500
+level = 6
+is_boss = true
+idle_animation = "2H_Melee_Idle"
