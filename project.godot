@@ -17,6 +17,11 @@ config/icon="res://icon.svg"
 boot_splash/bg_color=Color(0.039, 0.031, 0.027, 1)
 boot_splash/show_image=false
 
+[autoload]
+
+Sound="*res://src/audio/sound.gd"
+Music="*res://src/audio/music.gd"
+
 [display]
 
 window/size/viewport_width=1920
