@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="SkillDef" format=3]
+
+[ext_resource type="Script" path="res://src/skills/skill_def.gd" id="1"]
+[ext_resource type="Script" path="res://src/skills/monsters/summon.gd" id="2"]
+
+[resource]
+script = ExtResource("1")
+id = &"mage_raise_dead"
+display_name = "Raise Dead"
+effect = ExtResource("2")
+animation = "Spellcast_Summon"
+hit_time = 1.0
+recovery = 1.6
+cooldown = 9.0
+reach = 12.0
+damage_multiplier = 0.0
+params = {
+"count": 2,
+"max_alive": 4,
+"monster": &"skeleton_minion"
+}

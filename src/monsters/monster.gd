@@ -1,7 +1,7 @@
 class_name Monster
 extends Combatant
 # A monster in the world: its def's model and stats, flinching when hit and falling when killed. It has
-# no mind of its own here; a brain (M3) drives it through skill_bar and velocity.
+# no mind of its own here; its MonsterBrain drives it through skill_bar and velocity.
 
 const CORPSE_SECONDS := 4.0
 
@@ -9,6 +9,7 @@ var def: MonsterDef
 var model: Node3D
 var animations: AnimationPlayer
 var skill_bar: SkillBar
+var brain: MonsterBrain
 var elite := false
 var affixes: Array[StringName] = []
 var _holding := false
@@ -36,6 +37,8 @@ func _init(monster_def: MonsterDef) -> void:
 			for prop in bone.get_children():
 				if not prop.name in def.held:
 					prop.free()
+	_arm(def.weapon_right, "handslot.r")
+	_arm(def.weapon_left, "handslot.l")
 	for looping in [def.idle_animation, def.walk_animation, def.run_animation]:
 		if animations.has_animation(looping):
 			animations.get_animation(looping).loop_mode = Animation.LOOP_LINEAR
@@ -43,6 +46,8 @@ func _init(monster_def: MonsterDef) -> void:
 	for i in mini(def.skills.size(), SkillBar.SLOTS):
 		skill_bar.set_skill(i, def.skills[i])
 	add_child(skill_bar)
+	brain = MonsterBrain.new(self)
+	add_child(brain)
 
 func _ready() -> void:
 	super()
@@ -52,6 +57,23 @@ func _ready() -> void:
 		if alive and not _holding and finished != StringName(def.idle_animation):
 			play(def.idle_animation))
 	Events.monster_spawned.emit(self)
+
+# Shields and elite affixes soften a hit before the usual bookkeeping
+func take_hit(event: DamageEvent) -> void:
+	if alive:
+		brain.mitigate(event)
+	super(event)
+
+# KayKit skeletons come empty-handed; weapons ride a BoneAttachment3D on the hand slot bone
+func _arm(weapon: PackedScene, bone: String) -> void:
+	var rig: Skeleton3D = model.find_child("Skeleton3D", true, false)
+	if weapon == null or rig == null or rig.find_bone(bone) < 0:
+		return
+	var attachment := BoneAttachment3D.new()
+	attachment.name = bone.replace(".", "_")
+	attachment.bone_name = bone
+	rig.add_child(attachment)
+	attachment.add_child(weapon.instantiate())
 
 func play(animation: String, blend := 0.15, hold := false) -> void:
 	_holding = hold

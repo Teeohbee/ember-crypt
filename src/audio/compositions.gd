@@ -33,6 +33,20 @@ const SOUNDS := {
 		[0.0, 81, 0.8, "bell", 0.12]]],
 	"teleport": [0.8, [[0.0, 90, 0.25, "hiss", 0.3], [0.0, 81, 0.5, "bell", 0.15], [0.06, 74, 0.5, "bell", 0.15],
 		[0.12, 86, 0.5, "bell", 0.1]]],
+	# M3 Monsters
+	# A big attack winding up: a knock and a sour minor second
+	"telegraph": [0.6, [[0.0, 45, 0.5, "thud", 0.6], [0.0, 57, 0.45, "pluck", 0.3], [0.1, 58, 0.45, "bell", 0.16]]],
+	# Bones clawing out of the floor: a sub swell under a slow, crooked chord
+	"summon": [2.0, [[0.0, 38, 2.0, "sub", 0.5], [0.0, 61, 1.8, "bell", 0.15], [0.15, 62, 1.7, "bell", 0.12], [0.3, 68, 1.5, "bell", 0.1]]],
+	"quarrel": [0.3, [[0.0, 64, 0.25, "pluck", 0.5], [0.0, 40, 0.15, "thud", 0.45]]],
+	"witchfire": [0.7, [[0.0, 73, 0.6, "bell", 0.16], [0.03, 80, 0.5, "bell", 0.1], [0.0, 49, 0.3, "thud", 0.3]]],
+	# An elite pack: a toll a tritone off the key
+	"elite": [2.2, [[0.0, 39, 2.2, "toll", 0.4], [0.0, 51, 1.5, "bell", 0.15], [0.1, 57, 1.4, "bell", 0.12]]],
+	"shield": [0.8, [[0.0, 74, 0.8, "bell", 0.18], [0.05, 81, 0.7, "bell", 0.12], [0.0, 50, 0.3, "thud", 0.3]]],
+	"molten": [0.5, [[0.0, 40, 0.3, "thud", 0.6], [0.05, 34, 0.4, "thud", 0.5]]],
+	# Death: the big bell, low, on D minor. Coming back: D major rising, the only major chord in the game
+	"hero_death": [4.0, [[0.0, 26, 4.0, "toll", 0.55], [0.0, 38, 3.0, "toll", 0.35], [0.0, 50, 2.5, "bell", 0.12], [0.0, 53, 2.5, "bell", 0.1]]],
+	"respawn": [2.5, [[0.0, 62, 2.0, "bell", 0.22], [0.12, 66, 2.0, "bell", 0.2], [0.24, 69, 2.1, "bell", 0.2], [0.36, 74, 2.0, "bell", 0.18], [0.0, 38, 0.5, "thud", 0.4]]],
 	# M4 Loot
 	# Drops land with a sound that says how rare they are before you read the name: a dull knock for
 	# normal, a bell for magic, a high shimmer for rare, a toll and a rising D minor peal for legendary.

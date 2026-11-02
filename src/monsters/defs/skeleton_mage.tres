@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="MonsterDef" format=3]
+
+[ext_resource type="Script" path="res://src/monsters/monster_def.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/kaykit/skeletons/characters/Skeleton_Mage.glb" id="2"]
+[ext_resource type="Script" path="res://src/skills/skill_def.gd" id="3"]
+[ext_resource type="Resource" path="res://src/skills/monsters/mage_raise_dead.tres" id="4"]
+[ext_resource type="Resource" path="res://src/skills/monsters/mage_witchfire.tres" id="5"]
+[ext_resource type="PackedScene" path="res://assets/kaykit/skeletons/weapons/Skeleton_Staff.gltf" id="10"]
+
+[resource]
+script = ExtResource("1")
+id = &"skeleton_mage"
+display_name = "Skeleton Mage"
+model = ExtResource("2")
+base_stats = {
+&"damage": 6.0,
+&"max_health": 45.0,
+&"move_speed": 3.0,
+&"resist": 0.2
+}
+skills = Array[ExtResource("3")]([ExtResource("4"), ExtResource("5")])
+weapon_right = ExtResource("10")
+archetype = &"caster"
+keep_away = 6.0
+aggro_range = 14.0
+xp = 20
+level = 2
