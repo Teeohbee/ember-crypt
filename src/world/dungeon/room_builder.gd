@@ -34,13 +34,13 @@ static func build(parent: Node3D, room: DungeonLayout.Room, seed_value: int) -> 
 	rng.seed = hash([seed_value, room.cell])
 	var c := room.cell * SPACING
 	var rubble := room.chunk.rubble if room.chunk else 0.18
-	_floor(parent, c - Vector2i(HALF, HALF), c + Vector2i(HALF, HALF), rubble, rng)
+	floor_tiles(parent, c - Vector2i(HALF, HALF), c + Vector2i(HALF, HALF), rubble, rng)
 	var low := c + Vector2i(-HALF, -HALF)
 	var high := c + Vector2i(HALF + 1, HALF + 1)
-	_wall(parent, low, Vector2i(high.x, low.y), room.has_door(DungeonLayout.NORTH), false, rng)
-	_wall(parent, Vector2i(low.x, high.y), high, room.has_door(DungeonLayout.SOUTH), true, rng)
-	_wall(parent, low, Vector2i(low.x, high.y), room.has_door(DungeonLayout.WEST), false, rng)
-	_wall(parent, Vector2i(high.x, low.y), high, room.has_door(DungeonLayout.EAST), false, rng)
+	wall_run(parent, low, Vector2i(high.x, low.y), _door(room, DungeonLayout.NORTH), false, rng)
+	wall_run(parent, Vector2i(low.x, high.y), high, _door(room, DungeonLayout.SOUTH), true, rng)
+	wall_run(parent, low, Vector2i(low.x, high.y), _door(room, DungeonLayout.WEST), false, rng)
+	wall_run(parent, Vector2i(high.x, low.y), high, _door(room, DungeonLayout.EAST), false, rng)
 	if room.has_door(DungeonLayout.EAST):
 		_passage(parent, Vector2i(c.x + HALF + 1, c.y), true, rng)
 	if room.has_door(DungeonLayout.SOUTH):
@@ -49,15 +49,18 @@ static func build(parent: Node3D, room: DungeonLayout.Room, seed_value: int) -> 
 	if room.chunk:
 		_furnish(parent, room.chunk, centre(room.cell))
 
-static func _floor(parent: Node3D, from: Vector2i, to: Vector2i, rubble: float, rng: RandomNumberGenerator) -> void:
+static func _door(room: DungeonLayout.Room, direction: int) -> int:
+	return DOOR_SLOT if room.has_door(direction) else -1
+
+static func floor_tiles(parent: Node3D, from: Vector2i, to: Vector2i, rubble: float, rng: RandomNumberGenerator) -> void:
 	for x in range(from.x, to.x + 1):
 		for z in range(from.y, to.y + 1):
 			var piece := "floor_tile_large_rocks" if rng.randf() < rubble else "floor_tile_large"
 			CryptKit.place(parent, piece, Vector3(x, 0, z) * CryptKit.CELL, rng.randi_range(0, 3) * 90.0)
 
-# A run of wall between grid corners `from` and `to` (one line), with a doorway in the middle slot if
-# `door`. Low runs are balustrades with a plain gap for the door.
-static func _wall(parent: Node3D, from: Vector2i, to: Vector2i, door: bool, low: bool, rng: RandomNumberGenerator) -> void:
+# A run of wall between grid corners `from` and `to` (one line), with a doorway at piece number
+# door_slot (-1 for none). Low runs are balustrades with a plain gap for the door.
+static func wall_run(parent: Node3D, from: Vector2i, to: Vector2i, door_slot: int, low: bool, rng: RandomNumberGenerator) -> void:
 	var step := Vector2i(signi(to.x - from.x), signi(to.y - from.y))
 	var count := maxi(absi(to.x - from.x), absi(to.y - from.y))
 	var along_x := step.y == 0
@@ -65,7 +68,7 @@ static func _wall(parent: Node3D, from: Vector2i, to: Vector2i, door: bool, low:
 		var corner := from + step * i
 		var middle2 := (Vector2(corner) + Vector2(step) * 0.5 - Vector2(0.5, 0.5)) * CryptKit.CELL
 		var middle := Vector3(middle2.x, 0, middle2.y)
-		var is_door := door and i == DOOR_SLOT
+		var is_door := i == door_slot
 		if low:
 			if not is_door:
 				CryptKit.place(parent, "barrier", middle, 0.0 if along_x else 90.0)
@@ -97,13 +100,13 @@ static func _block(parent: Node3D, middle: Vector3, length: float, along_x: bool
 
 # The one-tile passage at `cell` joining a room to the next one east (east_west) or south.
 static func _passage(parent: Node3D, cell: Vector2i, east_west: bool, rng: RandomNumberGenerator) -> void:
-	_floor(parent, cell, cell, 0.3, rng)
+	floor_tiles(parent, cell, cell, 0.3, rng)
 	if east_west:
-		_wall(parent, cell, cell + Vector2i(1, 0), false, false, rng)
-		_wall(parent, cell + Vector2i(0, 1), cell + Vector2i(1, 1), false, true, rng)
+		wall_run(parent, cell, cell + Vector2i(1, 0), -1, false, rng)
+		wall_run(parent, cell + Vector2i(0, 1), cell + Vector2i(1, 1), -1, true, rng)
 	else:
-		_wall(parent, cell, cell + Vector2i(0, 1), false, false, rng)
-		_wall(parent, cell + Vector2i(1, 0), cell + Vector2i(1, 1), false, false, rng)
+		wall_run(parent, cell, cell + Vector2i(0, 1), -1, false, rng)
+		wall_run(parent, cell + Vector2i(1, 0), cell + Vector2i(1, 1), -1, false, rng)
 
 # Two torches on the north wall, either side of where a doorway would be. Only one casts shadows,
 # to keep the Deck's shadow atlas light.

@@ -137,3 +137,32 @@ static func spotlight(colour := MOONLIGHT, energy := 6.0, angle := 22.0) -> Spot
 	light.shadow_enabled = true
 	light.light_volumetric_fog_energy = 2.5
 	return light
+
+# M6 World
+
+# Outdoors at night: the same grade, but a deep blue-black sky, a colder and slightly brighter ambient
+# for the moon, and thicker, bluer fog lying over everything.
+static func night_environment(fog := 0.028) -> Environment:
+	var env := environment()
+	env.background_color = Color("06080e")
+	env.ambient_light_color = Color("2c3850")
+	env.ambient_light_energy = 0.6
+	env.volumetric_fog_density = fog
+	env.volumetric_fog_albedo = Color("8d9bb5")
+	env.volumetric_fog_emission = Color("0a0d16")
+	env.volumetric_fog_length = 40.0
+	return env
+
+# The moon: one cold directional light, low and from the north-west so headstones throw long shadows
+# toward the camera. Shadows only reach as far as the camera can see, for the Deck.
+static func moon(energy := 0.55) -> DirectionalLight3D:
+	var light := DirectionalLight3D.new()
+	light.name = "Moon"
+	light.light_color = MOONLIGHT
+	light.light_energy = energy
+	light.rotation_degrees = Vector3(-38, 150, 0)
+	light.shadow_enabled = true
+	light.directional_shadow_mode = DirectionalLight3D.SHADOW_PARALLEL_2_SPLITS
+	light.directional_shadow_max_distance = 40.0
+	light.light_volumetric_fog_energy = 0.8
+	return light

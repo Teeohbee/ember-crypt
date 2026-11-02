@@ -7,6 +7,8 @@ const WAYPOINTS := [["town", "Emberfall"], ["graveyard", "The Hollow Graveyard"]
 static func make(id: String) -> Zone:
 	var zone: Zone
 	match id:
+		"town":
+			zone = Town.new()
 		"crypt":
 			if Session.dungeon_seed == 0:
 				Session.dungeon_seed = randi_range(1, 1 << 30)
