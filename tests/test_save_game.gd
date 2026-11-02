@@ -85,8 +85,11 @@ func test_a_hero_comes_back_exactly() -> void:
 	Session.zone_id = ""
 
 	SaveGame.load_from_disk()
+	Session.checkpoint = Vector3(4, 0, 4)
 	SaveGame.choose(SaveGame.characters[0].id)
 	assert_str(Session.zone_id).is_equal("crypt_depths")
+	# A checkpoint from whatever was played before doesn't carry into the restored zone
+	assert_vector(Session.checkpoint).is_equal(Vector3.INF)
 	var again := _hero()
 	assert_int(again.level).is_equal(6)
 	assert_int(again.xp).is_equal(33)
