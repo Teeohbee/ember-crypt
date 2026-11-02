@@ -66,3 +66,11 @@ func test_a_buys_from_the_merchant_and_sells_to_him() -> void:
 	assert_int(hero.inventory.gold).is_equal(500 - Pricing.buy_price(helm) + Pricing.sell_price(helm))
 	assert_str(screen.gold_label.text).is_equal("Gold  %d" % hero.inventory.gold)
 	await press("ui_cancel")
+
+func test_an_items_line_spells_out_its_affixes() -> void:
+	var item := _item("Brutal Axe")
+	item.affixes = [{"id": &"crit_chance", "value": 0.03}, {"id": &"armour", "value": 7.0}]
+	var line := TradeScreen.describe(item)
+	assert_str(line).contains("+3% Critical Hit Chance")
+	assert_str(line).contains("+7 Armour")
+	assert_str(line).contains("4 Damage")

@@ -1,11 +1,9 @@
 class_name AffixDef
 extends Resource
 # One magic property an item can roll: "+12% Attack Speed". Rolls a value between min and max, scaled
-# up with item level.
+# up with item level. StatText words it.
 
 @export var id: StringName
-# Shown with the rolled value: "+%d Armour", "+%d%% Critical Hit Damage"
-@export var text := ""
 @export var stat: StringName
 # Whether the rolled value is a flat amount or a percent (fraction) modifier
 @export var percent := false
