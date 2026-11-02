@@ -43,6 +43,45 @@ func test_bash_without_a_target_still_catches_whatever_is_in_front() -> void:
 	BASH.instantiate_effect().execute(hero, BASH, null, Vector3.FORWARD)
 	assert_float(monster.health).is_less(before)
 
+func test_bash_catches_up_to_three_in_its_arc_and_nothing_behind() -> void:
+	var hero := _hero(0, Vector3.ZERO)
+	var target := _monster(Vector3(0, 0, -1.5))
+	var aside := [_monster(Vector3(-1.1, 0, -1.2)), _monster(Vector3(1.1, 0, -1.2)), _monster(Vector3(0, 0, -2.4))]
+	var behind := _monster(Vector3(0, 0, 1.5))
+	for monster: Monster in aside + [target, behind]:
+		monster.stats.set_base(Stats.MAX_HEALTH, 1000.0)
+		monster.revive()
+	hero.power = 0.0
+	BASH.instantiate_effect().execute(hero, BASH, target, Vector3.FORWARD)
+	assert_float(target.health).is_less(1000.0)
+	var caught := aside.filter(func(monster: Monster) -> bool: return monster.health < 1000.0)
+	assert_int(caught.size()).is_equal(BASH.params.max_targets - 1)
+	assert_float(behind.health).is_equal(1000.0)
+	assert_float(hero.power).is_equal(BASH.generate * BASH.params.max_targets)
+
+func test_bash_swings_faster_than_its_animation_was_drawn() -> void:
+	var hero := _hero(0, Vector3.ZERO)
+	hero.play_skill_animation(BASH, 1.0)
+	assert_float(hero.model.animations.speed_scale).is_equal_approx(BASH.params.anim_speed, 0.001)
+	assert_float(BASH.hit_time).is_less_equal(0.25)
+
+func test_a_killing_blow_throws_the_body_further() -> void:
+	var hero := _hero(0, Vector3.ZERO)
+	var tough := _monster(Vector3(0, 0, -1.5))
+	tough.stats.set_base(Stats.MAX_HEALTH, 1000.0)
+	tough.revive()
+	var weak := _monster(Vector3(10, 0, -1.5))
+	weak.health = 1.0
+	BASH.instantiate_effect().execute(hero, BASH, tough, Vector3.FORWARD)
+	hero.global_position = Vector3(10, 0, 0)
+	BASH.instantiate_effect().execute(hero, BASH, weak, Vector3.FORWARD)
+	for monster in [tough, weak]:
+		var shove: Shove = monster.get_node("Shove")
+		for i in 90:
+			if is_instance_valid(shove):
+				shove._physics_process(STEP)
+	assert_float(-weak.global_position.z - 1.5).is_greater((-tough.global_position.z - 1.5) * 2.0)
+
 func test_bash_generates_fury_through_the_skill_bar() -> void:
 	var hero := _hero(0, Vector3.ZERO)
 	_monster(Vector3(0, 0, -1.5))

@@ -13,9 +13,10 @@ M1.
 
 **M1 - feel.** The hero gets up to speed quickly, walks or runs by how far the stick is pushed, and
 rolls out of trouble on LT or a flick of the right stick (untouchable for most of the roll). Each
-class has its primary on A: the Barbarian's Bash steps in to reach and knocks skeletons back; the Mage's Magic Missile curls
-onto whatever aim assist picked. Hits land with a hit-stop, a white flash and squash, a damage number,
-camera shake, rumble and a crunch; skeletons burst into bones and their corpses sink away. The camera
+class has its primary on A: the Barbarian's Bash steps in to reach and sweeps up to three skeletons
+back; the Mage's Magic Missile curls onto whatever aim assist picked. Hits land with a hit-stop, a
+white flash and squash, sparks, a damage number, camera shake, rumble and a crunch; killing blows
+throw the body, which bursts into bones and sinks away. The camera
 leans ahead of a running hero and dithers away any wall in the way. Hit feel is tuned in one place,
 `src/core/feedback.gd`, and per skill through its `params` (`hit_stop`, `shake`, `strike_range`...).
 

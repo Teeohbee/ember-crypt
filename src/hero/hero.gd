@@ -95,7 +95,8 @@ func _show_gear(gear_slot: ItemBase.Slot, item: Item) -> void:
 func play_skill_animation(skill: SkillDef, speed: float) -> void:
 	if skill.animation != "":
 		model.play(skill.animation, 0.08)
-		model.animations.speed_scale = speed
+		# params "anim_speed" plays a clip quicker than it was drawn, so a swing lands at hit_time
+		model.animations.speed_scale = speed * float(skill.params.get("anim_speed", 1.0))
 
 func _on_hurt(_event: DamageEvent) -> void:
 	if not skill_bar.busy and alive:
