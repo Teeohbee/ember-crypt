@@ -23,6 +23,7 @@ const ACTIONS := {
 	"tab_next": {"keys": [KEY_E], "buttons": [JOY_BUTTON_RIGHT_SHOULDER]},
 	"pause": {"keys": [KEY_ESCAPE], "buttons": [JOY_BUTTON_START]},
 	"inventory": {"keys": [KEY_I, KEY_TAB], "buttons": [JOY_BUTTON_BACK]},
+	"skills_menu": {"keys": [KEY_P], "buttons": [JOY_BUTTON_DPAD_LEFT]},
 	"skill_1": {"keys": [KEY_J], "buttons": [A]},
 	"skill_2": {"keys": [KEY_K], "buttons": [X]},
 	"skill_3": {"keys": [KEY_L], "buttons": [Y]},
