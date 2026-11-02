@@ -64,6 +64,8 @@ func _hero() -> Hero:
 func _barrel(at: Vector3) -> Breakable:
 	var barrel: Breakable = auto_free(Breakable.make("barrel_small"))
 	barrel.position = at
+	# Gold only where a test asks for it, so no stray coins outlive their test
+	barrel.gold_chance = 0.0
 	add_child(barrel)
 	return barrel
 
