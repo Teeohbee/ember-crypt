@@ -11,6 +11,14 @@ chosen hero, pause, and options (audio, display, gameplay, the pad layout). Ever
 pad, B always steps back, and the world never cuts away between menus. The hero can't move yet; that's
 M1.
 
+**M1 - feel.** The hero gets up to speed quickly, walks or runs by how far the stick is pushed, and
+rolls out of trouble on the right stick (untouchable for most of the roll). Each class has its primary
+on A: the Barbarian's Bash steps in to reach and knocks skeletons back; the Mage's Magic Missile curls
+onto whatever aim assist picked. Hits land with a hit-stop, a white flash and squash, a damage number,
+camera shake, rumble and a crunch; skeletons burst into bones and their corpses sink away. The camera
+leans ahead of a running hero and dithers away any wall in the way. Hit feel is tuned in one place,
+`src/core/feedback.gd`, and per skill through its `params` (`hit_stop`, `shake`, `strike_range`...).
+
 ## controls
 
 Pad first; keys exist for testing.
@@ -19,6 +27,9 @@ Pad first; keys exist for testing.
 |---|---|---|
 | Menus | Left stick / D-pad, A, B | Arrows / WASD, Enter, Esc |
 | Options tabs | LB / RB | Q / E |
+| Move | Left stick | WASD / arrows |
+| Primary skill | A | J |
+| Evade roll | Right stick (flick) | C |
 | Pause | Start | Esc |
 
 ## running
