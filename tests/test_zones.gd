@@ -56,3 +56,18 @@ func test_the_path_from_the_gate_to_the_crypt_door_is_clear() -> void:
 		var box: BoxShape3D = body.get_child(0).shape
 		var solid := AABB(body.position - box.size * 0.5, box.size)
 		assert_bool(solid.intersects(lane)).override_failure_message("something solid at %s blocks the path" % body.position).is_false()
+
+func test_the_town_is_dressed_for_harvest_and_guarded() -> void:
+	var town: Town = _build("town")
+	var pieces := town.find_children("*", "Node3D", true, false) \
+		.filter(func(node: Node3D) -> bool: return node.scene_file_path.contains("/halloween/"))
+	assert_int(pieces.size()).is_greater(30)
+	assert_int(town.find_children("Guard*", "Node3D", true, false).size()).is_equal(2)
+
+func test_nothing_solid_stands_between_the_waypoint_and_the_gate() -> void:
+	var town: Town = _build("town")
+	var lane := AABB(Vector3(-1.0, 0.0, -12.5), Vector3(2.0, 2.0, 14.0))
+	for body: StaticBody3D in _named(town, "StaticBody3D"):
+		var box: BoxShape3D = body.get_child(0).shape
+		var solid := AABB(body.position - box.size * 0.5, box.size)
+		assert_bool(solid.intersects(lane)).override_failure_message("something solid at %s blocks the road" % body.position).is_false()
