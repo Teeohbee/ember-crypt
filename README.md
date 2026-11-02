@@ -11,6 +11,14 @@ chosen hero, pause, and options (audio, display, gameplay, the pad layout). Ever
 pad, B always steps back, and the world never cuts away between menus. The hero can't move yet; that's
 M1.
 
+**M3 - monsters.** The four skeletons fight back. Each has a `MonsterBrain` (idle, chase, attack,
+hurt, die) and its attacks are `SkillDef`s in `src/skills/monsters/`: Minions swarm, Warriors block
+hits from the front and telegraph a Grave Smash on the floor, Rogues kite with a crossbow, Mages raise
+Minions and throw witchfire. Monsters spawn in packs (`src/monsters/packs/`) that wake together, and a
+pack may be led by a named elite with affixes (Fast, Extra Health, Vampiric, Molten, Shielding; in
+`src/monsters/affixes/`) and a name plate. Die and "You Have Died" comes up; A rises at the last
+checkpoint.
+
 ## controls
 
 Pad first; keys exist for testing.
