@@ -13,6 +13,8 @@ var motor: HeroMotor
 var skill_bar: SkillBar
 var inventory := Inventory.new()
 var equipment: Equipment
+# Loot underfoot: gold scooped up, items picked up on A (M4)
+var pickup: HeroPickup
 var level := 1
 var xp := 0
 
@@ -38,6 +40,9 @@ func _init(chosen: HeroClass, player_slot: PlayerSlot) -> void:
 		skill_bar.set_skill(i, chosen.skills[i])
 	add_child(skill_bar)
 	equipment = Equipment.new(stats)
+	equipment.changed.connect(_show_gear)
+	StartingGear.give(chosen.id, equipment)
+	pickup = HeroPickup.new(self)
 
 func _ready() -> void:
 	super()
@@ -49,7 +54,10 @@ func _physics_process(delta: float) -> void:
 	if not alive:
 		return
 	motor.physics_step(delta)
+	var picking_up := pickup.physics_step()
 	for i in SKILL_ACTIONS.size():
+		if i == 0 and picking_up:
+			continue
 		if slot.pressed(SKILL_ACTIONS[i]) and skill_bar.can_use(i):
 			skill_bar.use(i, aim_direction())
 			break
@@ -58,6 +66,12 @@ func _physics_process(delta: float) -> void:
 func aim_direction() -> Vector3:
 	var stick := slot.move_vector()
 	return Vector3(stick.x, 0, stick.y).normalized() if stick.length() > 0.1 else facing()
+
+# Weapons and shields show in the hands; the rest of the gear has no model
+func _show_gear(gear_slot: ItemBase.Slot, item: Item) -> void:
+	if gear_slot == ItemBase.Slot.WEAPON or gear_slot == ItemBase.Slot.OFFHAND:
+		var hand: String = item.base.hand_bone if item else HeroModel.HAND_SLOTS[0 if gear_slot == ItemBase.Slot.WEAPON else 1]
+		model.hold(hand, item.base if item else null)
 
 func play_skill_animation(skill: SkillDef, speed: float) -> void:
 	if skill.animation != "":
