@@ -97,6 +97,8 @@ func _furnish_start(at: Vector3) -> void:
 	waypoint.position = at + Vector3(6, 0, 5)
 	add_child(waypoint)
 
-# The boss and its arena (filled in by the boss work)
-func _furnish_boss(_at: Vector3) -> void:
-	pass
+# The boss waits in the middle of its throne room
+func _furnish_boss(at: Vector3) -> void:
+	var boss := BossSpawn.new()
+	boss.position = at
+	add_child(boss)

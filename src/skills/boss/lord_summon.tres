@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="SkillDef" format=3]
+
+[ext_resource type="Script" path="res://src/skills/skill_def.gd" id="1"]
+[ext_resource type="Script" path="res://src/world/boss/boss_summon.gd" id="2"]
+
+[resource]
+script = ExtResource("1")
+id = &"lord_summon"
+display_name = "Call the Guard"
+effect = ExtResource("2")
+animation = "Spellcast_Summon"
+hit_time = 1.0
+recovery = 1.8
+cooldown = 16.0
+reach = 40.0
+params = {
+"count": 3,
+"monster": &"skeleton_minion"
+}

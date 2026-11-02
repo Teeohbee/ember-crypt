@@ -91,3 +91,19 @@ func test_preparing_to_travel_sets_where_and_forgets_the_checkpoint() -> void:
 	assert_str(Session.zone_id).is_equal("crypt")
 	assert_str(Session.arrival).is_equal("waypoint")
 	assert_vector(Session.checkpoint).is_equal(Vector3.INF)
+
+func test_the_game_builds_the_crypt_with_its_boss_waiting() -> void:
+	Session.zone_id = "crypt"
+	var game: Node = await open_screen("res://src/game/game.tscn")
+	assert_object(game.zone).is_instanceof(Dungeon)
+	assert_vector(game.hero.global_position).is_equal(game.zone.hero_start)
+	assert_int(get_tree().get_nodes_in_group(&"bosses").size()).is_equal(1)
+	assert_int(get_tree().get_nodes_in_group(&"monsters").size()).is_greater(5)
+
+func test_in_town_the_prompt_names_what_a_would_use() -> void:
+	Session.zone_id = "town"
+	var game: Node = await open_screen("res://src/game/game.tscn")
+	var prompt: InteractPrompt = game.huds[0].get_node("InteractPrompt")
+	game.hero.global_position = game.zone.stash.global_position + Vector3(0, 0, 1)
+	prompt.refresh()
+	assert_object(prompt.showing).is_same(game.zone.stash)

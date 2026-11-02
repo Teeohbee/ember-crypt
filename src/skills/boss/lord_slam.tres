@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="SkillDef" format=3]
+
+[ext_resource type="Script" path="res://src/skills/skill_def.gd" id="1"]
+[ext_resource type="Script" path="res://src/world/boss/boss_slam.gd" id="2"]
+
+[resource]
+script = ExtResource("1")
+id = &"lord_slam"
+display_name = "Grave Breaker"
+effect = ExtResource("2")
+animation = "2H_Melee_Attack_Chop"
+hit_time = 1.2
+recovery = 2.0
+cooldown = 7.0
+reach = 6.0
+damage_multiplier = 2.4
+radius = 3.2
+knockback = 4.0
+params = {
+"ahead": 3.0
+}

@@ -30,7 +30,8 @@ func test_the_crypt_has_packs_a_checkpoint_and_walls_to_bump_into() -> void:
 	for room: DungeonLayout.Room in dungeon.layout.rooms.values():
 		if room.kind in [&"fight", &"checkpoint"]:
 			packs += room.chunk.packs.size()
-	assert_int(dungeon.spawn_points().size()).is_equal(packs)
+	assert_int(dungeon.spawn_points().size()).is_equal(packs + 1)
+	assert_int(dungeon.find_children("*", "BossSpawn", true, false).size()).is_equal(1)
 	assert_int(dungeon.find_children("*", "Checkpoint", true, false).size()).is_equal(2)
 	assert_int(dungeon.find_children("*", "StaticBody3D", true, false).size()).is_greater(100)
 	assert_vector(dungeon.hero_start).is_equal(RoomBuilder.centre(dungeon.layout.start.cell) + Vector3(0, 0, 3))
