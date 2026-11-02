@@ -17,7 +17,7 @@ extends Resource
 # Seconds from the start until the caster can act again
 @export var recovery := 0.5
 @export var cooldown := 0.0
-# Power spent to use it (the Mage's Arcane), and gained when it hits (the Barbarian's Fury)
+# Power spent to use it (the Mage's Arcane), and gained per foe it hits (the Barbarian's Fury)
 @export var cost := 0.0
 @export var generate := 0.0
 @export var damage_multiplier := 1.0

@@ -107,8 +107,6 @@ func _fire_later(index: int, skill: SkillDef, target: Combatant, aim: Vector3, d
 	if not is_instance_valid(target) or not target.alive:
 		target = null
 	skill.instantiate_effect().execute(caster, skill, target, aim)
-	if target and skill.generate > 0.0:
-		caster.gain_power(skill.generate)
 	fired.emit(index, skill, target)
 
 func _process(delta: float) -> void:

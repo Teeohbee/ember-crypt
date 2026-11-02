@@ -53,6 +53,24 @@ func test_bash_generates_fury_through_the_skill_bar() -> void:
 	hero.skill_bar.use(0, Vector3.FORWARD)
 	assert_float(hero.power).is_equal(BASH.generate)
 
+func test_bash_landing_on_whatever_is_in_front_builds_fury() -> void:
+	var hero := _hero(0, Vector3.ZERO)
+	_monster(Vector3(0.4, 0, -1.6))
+	hero.power = 0.0
+	BASH.instantiate_effect().execute(hero, BASH, null, Vector3.FORWARD)
+	assert_float(hero.power).is_equal(BASH.generate)
+
+func test_a_bash_that_whiffs_builds_no_fury() -> void:
+	var hero := _hero(0, Vector3.ZERO)
+	var fled := _monster(Vector3(0, 0, -6))
+	var skill: SkillDef = BASH.duplicate()
+	skill.hit_time = 0.0
+	hero.skill_bar.set_skill(0, skill)
+	hero.power = 0.0
+	hero.skill_bar.use_on(0, fled)
+	assert_float(fled.health).is_equal(fled.max_health())
+	assert_float(hero.power).is_equal(0.0)
+
 func test_a_missile_curls_onto_its_target_and_hurts_it() -> void:
 	var hero := _hero(1, Vector3.ZERO)
 	# Off to one side of where the hero aims: the bolt has to bend to reach it

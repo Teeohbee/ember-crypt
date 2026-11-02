@@ -39,5 +39,8 @@ static func hit(source: Combatant, target: Combatant, skill: SkillDef, multiplie
 	var life := source.stats.value(Stats.LIFE_ON_HIT)
 	if life > 0.0 and source.alive:
 		source.heal(life)
+	# Fury comes from blows that land, not swings: per foe hit, like life on hit
+	if skill and skill.generate > 0.0 and source.alive:
+		source.gain_power(skill.generate)
 	Feedback.hit(event)
 	return event
