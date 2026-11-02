@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="RuneDef" format=3]
+
+[ext_resource type="Script" path="res://src/skills/rune_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"arcane_orb_obliteration"
+skill = &"arcane_orb"
+display_name = "Obliteration"
+description = "A bigger, angrier orb: 40% more damage in a wider blast, for a fifth more Arcane Power."
+unlock_level = 8
+multiply = {
+"damage_multiplier": 1.4,
+"radius": 1.3,
+"cost": 1.2
+}
+overrides = {}
+params = {}

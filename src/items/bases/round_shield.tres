@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemBase" format=3]
+
+[ext_resource type="PackedScene" path="res://assets/kaykit/adventurers/weapons/shield_round_barbarian.gltf" id="1_hblv0"]
+[ext_resource type="Script" path="res://src/items/item_base.gd" id="2_fijv7"]
+
+[resource]
+script = ExtResource("2_fijv7")
+id = &"round_shield"
+display_name = "Round Shield"
+slot = 1
+model = ExtResource("1_hblv0")
+hand_bone = "handslot_l"
+classes = PackedStringArray()
+base_stats = {
+&"armour": 12.0
+}
+kind = "shield"
+grip_offset = Vector3(0, 0.017, 0.156)
+grip_degrees = Vector3(0, 0, 0)

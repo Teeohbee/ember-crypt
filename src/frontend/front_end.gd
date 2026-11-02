@@ -2,10 +2,12 @@ extends Node3D
 # Title, main menu, options and class select, all in front of one crypt so the world never cuts
 # away: the camera glides between shots and the UI fades over it. B steps back a screen.
 #
-#   title --A--> menu --New Game--> class select --A--> (the crypt)
+#   title --A--> menu --New Game--> class select --A--> (the crypt, as a new character)
+#                  |--Continue--> (the crypt, as the last character played)
+#                  |--Characters--> character list --A--> (the crypt, as them)
 #                  \--Options--> options
 
-enum Screen { TITLE, MENU, OPTIONS, CLASS_SELECT, LEAVING }
+enum Screen { TITLE, MENU, OPTIONS, CLASS_SELECT, LEAVING, CHARACTERS }
 
 const GAME := "res://src/game/game.tscn"
 const SHOT_SECONDS := 1.4
@@ -25,6 +27,8 @@ var chosen := 0
 var _camera := Camera3D.new()
 var _look_at := TITLE_SHOT[1]
 var _shot_tween: Tween
+# Each control's running fade
+var _fades := {}
 var _time := 0.0
 var _diorama := Diorama.new()
 
@@ -36,6 +40,11 @@ var _menu_layer := Control.new()
 var _menu_box := VBoxContainer.new()
 var _options := OptionsMenu.new()
 var _class_panel := ClassPanel.new()
+var _characters := CharacterList.new()
+var _continue: Button
+var _characters_item: Button
+# Under the menu: who Continue plays
+var _resume := UiTheme.text("", 26, UiTheme.FADED)
 var _prompts: PromptBar
 
 func _ready() -> void:
@@ -51,6 +60,12 @@ func _ready() -> void:
 	_centre(_options)
 	_class_panel.hide()
 	_ui.add_child(_class_panel)
+	_characters.hide()
+	_ui.add_child(_characters)
+	_characters.back.connect(func() -> void: _show(Screen.MENU))
+	_characters.focused.connect(func(record: Dictionary) -> void:
+		_diorama.spotlight(Session.CLASSES.find(SaveGame.class_of(record))))
+	_characters.chosen.connect(_play)
 	_prompts = PromptBar.in_corner(_root_control())
 	_show(Screen.TITLE)
 	Music.play("title")
@@ -97,6 +112,7 @@ func _show(next: Screen) -> void:
 	_fade(_title, next == Screen.TITLE)
 	_fade(_menu_layer, next == Screen.MENU)
 	_fade(_class_panel, next == Screen.CLASS_SELECT)
+	_fade(_characters, next == Screen.CHARACTERS)
 	match next:
 		Screen.TITLE:
 			_glide(TITLE_SHOT)
@@ -105,10 +121,14 @@ func _show(next: Screen) -> void:
 		Screen.MENU:
 			_glide(MENU_SHOT)
 			_diorama.spotlight(-1)
+			_refresh_menu()
 			_menu.take_focus()
 			_prompts.show_prompts([["a", "Select"], ["b", "Back"]])
 		Screen.OPTIONS:
 			_options.open()
+			_prompts.show_prompts([])
+		Screen.CHARACTERS:
+			_characters.open()
 			_prompts.show_prompts([])
 		Screen.CLASS_SELECT:
 			_choose(chosen, true)
@@ -122,15 +142,38 @@ func _choose(index: int, quietly := false) -> void:
 	_diorama.spotlight(chosen)
 	_class_panel.show_class(Session.CLASSES[chosen], chosen == 0)
 
+# A new character of the chosen class
 func _enter_crypt() -> void:
+	SaveGame.create(Session.CLASSES[chosen])
+	_leave()
+
+# An existing character, from Continue or the character list
+func _play(id: String) -> void:
+	SaveGame.choose(id)
+	_leave()
+
+# Into the crypt as SaveGame's current character: their hero cheers, then the scene changes
+func _leave() -> void:
 	screen = Screen.LEAVING
-	Session.hero_class = Session.CLASSES[chosen]
+	var index := Session.CLASSES.find(Session.hero_class)
 	Sound.play("select")
-	_diorama.heroes[chosen].play(Session.hero_class.chosen, 0.2, true)
+	_diorama.spotlight(index)
+	_diorama.heroes[index].play(Session.hero_class.chosen, 0.2, true)
+	get_viewport().gui_release_focus()
 	_fade(_class_panel, false)
+	_fade(_menu_layer, false)
+	_fade(_characters, false)
 	_prompts.show_prompts([])
 	await get_tree().create_timer(1.3).timeout
-	SceneManager.go_to(GAME)
+	if is_inside_tree():
+		SceneManager.go_to(GAME)
+
+# Continue and Characters only when there's someone to continue as
+func _refresh_menu() -> void:
+	var last := SaveGame.last_played()
+	_menu.set_enabled(_continue, not last.is_empty())
+	_menu.set_enabled(_characters_item, not last.is_empty())
+	_resume.text = "" if last.is_empty() else "Continue as %s, level %d %s" % [last.name, last.level, SaveGame.class_of(last).display_name]
 
 func _glide(shot: Array) -> void:
 	if _shot_tween:
@@ -142,7 +185,11 @@ func _glide(shot: Array) -> void:
 func _fade(control: CanvasItem, on: bool) -> void:
 	if on == control.visible and is_equal_approx(control.modulate.a, 1.0 if on else 0.0):
 		return
+	# A fade still running the other way would otherwise hide the control after it's been shown
+	if _fades.has(control):
+		_fades[control].kill()
 	var tween := create_tween()
+	_fades[control] = tween
 	if on:
 		control.modulate.a = 0.0
 		control.show()
@@ -224,9 +271,12 @@ func _build_menu() -> void:
 	_menu_box.custom_minimum_size.x = 520
 	_menu_box.add_child(UiTheme.heading("Ember Crypt", 64, UiTheme.GOLD))
 	_menu_box.add_child(UiTheme.divider(440))
-	_menu.add_item("Continue", func() -> void: pass, false)
+	_continue = _menu.add_item("Continue", func() -> void: _play(SaveGame.last_played().id), false)
+	_characters_item = _menu.add_item("Characters", func() -> void: _show(Screen.CHARACTERS), false)
 	_menu.add_item("New Game", func() -> void: _show(Screen.CLASS_SELECT))
 	_menu.add_item("Options", func() -> void: _show(Screen.OPTIONS))
 	_menu.add_item("Quit", func() -> void: get_tree().quit())
 	_menu_box.add_child(_menu)
+	_resume.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_menu_box.add_child(_resume)
 	_menu_layer.hide()

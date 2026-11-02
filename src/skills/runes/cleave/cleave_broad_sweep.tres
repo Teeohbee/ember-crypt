@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="RuneDef" format=3]
+
+[ext_resource type="Script" path="res://src/skills/rune_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"cleave_broad_sweep"
+skill = &"cleave"
+display_name = "Broad Sweep"
+description = "A wider arc that reaches a fifth further."
+unlock_level = 5
+multiply = {
+"cone_degrees": 1.5,
+"radius": 1.2
+}
+overrides = {}
+params = {}

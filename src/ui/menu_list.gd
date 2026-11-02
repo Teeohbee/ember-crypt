@@ -28,6 +28,12 @@ func add_item(label: String, on_choose: Callable, enabled := true) -> Button:
 	_link()
 	return button
 
+# Greys an item out (or back in) after the menu is built, keeping the wrap-around right
+func set_enabled(button: Button, enabled: bool) -> void:
+	button.disabled = not enabled
+	button.focus_mode = Control.FOCUS_ALL if enabled else Control.FOCUS_NONE
+	_link()
+
 func take_focus() -> void:
 	var enabled := _enabled()
 	if enabled.is_empty():

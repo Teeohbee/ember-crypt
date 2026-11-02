@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="EliteAffixDef" format=3]
+
+[ext_resource type="Script" path="res://src/monsters/elite_affix_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"extra_health"
+display_name = "Extra Health"
+colour = Color(0.85, 0.2, 0.2, 1)
+percent = {
+&"max_health": 1.0
+}

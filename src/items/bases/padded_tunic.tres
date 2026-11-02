@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemBase" format=3]
+
+[ext_resource type="Script" path="res://src/items/item_base.gd" id="1_kh7t0"]
+
+[resource]
+script = ExtResource("1_kh7t0")
+id = &"padded_tunic"
+display_name = "Padded Tunic"
+slot = 3
+classes = PackedStringArray()
+base_stats = {
+&"armour": 8.0
+}
+kind = "chest"

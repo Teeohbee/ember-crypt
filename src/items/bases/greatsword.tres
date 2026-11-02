@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ItemBase" format=3]
+
+[ext_resource type="PackedScene" path="res://assets/kaykit/adventurers/weapons/sword_2handed.gltf" id="1_uudov"]
+[ext_resource type="Script" path="res://src/items/item_base.gd" id="2_kythk"]
+
+[resource]
+script = ExtResource("2_kythk")
+id = &"greatsword"
+display_name = "Greatsword"
+model = ExtResource("1_uudov")
+classes = PackedStringArray("barbarian")
+base_stats = {
+&"damage": 8.0
+}
+min_level = 4
+kind = "sword"
+two_handed = true

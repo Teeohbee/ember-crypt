@@ -25,7 +25,7 @@ static func to_stream(buffer: PackedFloat32Array) -> AudioStreamWAV:
 static func note_frequency(midi_note: float) -> float:
 	return 440.0 * pow(2.0, (midi_note - 69.0) / 12.0)
 
-# Adds one note. Voices: "pad", "bell", "toll", "pluck", "sub", "thud", and the noise voices
+# Adds one note. Voices: "pad", "bell", "toll", "pluck", "sub", "thud", "hiss", and the noise voices
 # "crunch" and "whoosh", for which the note sets brightness instead of pitch (127 is brightest).
 static func add_note(buffer: PackedFloat32Array, start: float, midi_note: float, length: float, voice: String, volume: float) -> void:
 	if voice in NOISE_VOICES:
@@ -66,6 +66,12 @@ static func voice_sample(voice: String, frequency: float, time: float, length: f
 			# A pitch that falls as it fades: a soft knock on wood
 			var falling := TAU * frequency * (time - time * time * 6.0)
 			return attack * release * sin(falling) * exp(-time * 30.0)
+		"hiss":
+			# Noise that swells and dies over the note, tinted by its pitch: a whoosh, a gust of frost
+			var sample_index := floorf(time * MIX_RATE)
+			var noise := fposmod(sin(sample_index * 12.9898) * 43758.5453, 1.0) * 2.0 - 1.0
+			var shape := sin(PI * minf(time / maxf(length, 0.001), 1.0))
+			return shape * shape * noise * (0.6 + 0.4 * sin(phase))
 	return 0.0
 
 # Wind or breath: noise through a gentle low-pass, swelling in and out. Seeded so a render is repeatable.

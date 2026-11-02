@@ -19,6 +19,43 @@ camera shake, rumble and a crunch; skeletons burst into bones and their corpses 
 leans ahead of a running hero and dithers away any wall in the way. Hit feel is tuned in one place,
 `src/core/feedback.gd`, and per skill through its `params` (`hit_stop`, `shake`, `strike_range`...).
 
+**M2 - the combat kit.** Health and power globes either side of a skill bar, D3 style: a socket per
+button with a cooldown sweep, a red wash when you can't afford it and a shake when you press it anyway.
+A health potion on LB heals 60% and then needs 30 seconds. Fury drains away steadily, so keep landing
+blows; Arcane Power flows back on its own. Three skills each on X, Y and B (A is the primary, M1):
+
+- Barbarian: **Cleave** (an arc of axe, costs Fury), **Leap** (crash down on a target), **War Cry**
+  (armour for you and allies close by, and 30 Fury to start a fight with)
+- Mage: **Frost Nova** (hurts and chills everything close), **Arcane Orb** (a slow orb that bursts on
+  the first thing it meets), **Teleport** (blink along the stick, never through a wall)
+
+Buffs and slows are timed `Statuses` on the stat sheet (`src/combat/statuses.gd`), so anything that
+reads move or attack speed slows down when chilled.
+
+**M3 - monsters.** The four skeletons fight back. Each has a `MonsterBrain` (idle, chase, attack,
+hurt, die) and its attacks are `SkillDef`s in `src/skills/monsters/`: Minions swarm, Warriors block
+hits from the front and telegraph a Grave Smash on the floor, Rogues kite with a crossbow, Mages raise
+Minions and throw witchfire. Monsters spawn in packs (`src/monsters/packs/`) that wake together, and a
+pack may be led by a named elite with affixes (Fast, Extra Health, Vampiric, Molten, Shielding; in
+`src/monsters/affixes/`) and a name plate. Die and "You Have Died" comes up; A rises at the last
+checkpoint.
+
+**M4 - loot.** Skeletons drop items and gold, rolled from seeded loot tables: rarity weights tilted
+by magic find, bases gated by item level and leaning toward your class, affixes by slot and level.
+Drops arc out of the corpse, land with a sound that tells you their rarity, and stand under a beam
+in its colour. Walk over gold; press A to pick up an item when nothing hostile is close. Each pickup
+shows a card with green / red changes over what you wear; hold D-pad up to put it on. Select opens
+the bags and paper doll (A wear / take off, X drop). Weapons and shields show in the hero's hands,
+and each class starts with its own. Content is data: `src/items/bases/` and `src/items/affixes/`.
+
+**M5 - progression.** Kills pay XP (more for tougher monsters and elites) up a level curve to 30; each
+level grows the class's stats, heals, and sets off a shaft of gold light, a toll and a banner naming
+what it unlocked. Skills stay locked until their `SkillDef.unlock_level`. Each skill takes one rune
+(`RuneDef`, in `src/skills/runes/<skill id>/`), chosen on the skills screen (D-pad left). Characters
+are saved to `user://characters.json` - class, level, XP, runes, bags, gear, zone - on level-ups,
+pickups, checkpoints and leaving; the main menu has Continue, a character list (X deletes) and New
+Game.
+
 ## controls
 
 Pad first; keys exist for testing.
@@ -28,9 +65,15 @@ Pad first; keys exist for testing.
 | Menus | Left stick / D-pad, A, B | Arrows / WASD, Enter, Esc |
 | Options tabs | LB / RB | Q / E |
 | Move | Left stick | WASD / arrows |
-| Primary skill | A | J |
+| Skills | A, X, Y, B, RB, RT | J, K, L, ;, U, O |
+| Potion | LB | Q |
 | Evade roll | Right stick (flick) | C |
 | Pause | Start | Esc |
+| Pick up (loot in reach, nothing hostile close) | A | J |
+| Hold to equip what you picked up | D-pad up | F |
+| Inventory | Select | I / Tab |
+
+| Skills screen | D-pad left | P |
 
 ## running
 

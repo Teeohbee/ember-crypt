@@ -17,6 +17,8 @@ extends Resource
 @export var power_colour := Color.WHITE
 # 1-5 each, for the class select bars: toughness, damage, range, difficulty
 @export var ratings := {"Toughness": 3, "Damage": 3, "Range": 3, "Difficulty": 3}
+# What each level after the first adds, Stats names to flat amounts (M5)
+@export var growth := {}
 # Starting stat sheet, Stats names to values; anything missing uses Stats.DEFAULTS
 @export var base_stats := {}
 # Skills in button order: A, X, Y, B, RB, RT. Index 0 is the primary.

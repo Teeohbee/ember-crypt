@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="RuneDef" format=3]
+
+[ext_resource type="Script" path="res://src/skills/rune_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"bash_onslaught"
+skill = &"bash"
+display_name = "Onslaught"
+description = "A heavier blow: 40% more damage, and it throws the dead back twice as far."
+unlock_level = 8
+multiply = {
+"damage_multiplier": 1.4,
+"knockback": 2.0
+}
+overrides = {}
+params = {}

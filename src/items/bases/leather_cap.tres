@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemBase" format=3]
+
+[ext_resource type="Script" path="res://src/items/item_base.gd" id="1_agha8"]
+
+[resource]
+script = ExtResource("1_agha8")
+id = &"leather_cap"
+display_name = "Leather Cap"
+slot = 2
+classes = PackedStringArray()
+base_stats = {
+&"armour": 4.0
+}
+kind = "helm"

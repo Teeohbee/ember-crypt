@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="SkillDef" format=3]
+
+[ext_resource type="Script" path="res://src/skills/skill_def.gd" id="1"]
+[ext_resource type="Script" path="res://src/skills/monsters/bolt_shot.gd" id="2"]
+
+[resource]
+script = ExtResource("1")
+id = &"mage_witchfire"
+display_name = "Witchfire"
+effect = ExtResource("2")
+animation = "Spellcast_Shoot"
+hit_time = 0.45
+recovery = 1.0
+cooldown = 2.2
+reach = 10.0
+damage_multiplier = 1.2
+damage_kind = 4
+params = {
+"sound": "witchfire",
+"colour": Color(0.62, 0.38, 1, 1),
+"look": "witchfire",
+"speed": 10.0
+}

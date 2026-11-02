@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="AffixDef" format=3]
+
+[ext_resource type="Script" path="res://src/items/affix_def.gd" id="1_lrojh"]
+
+[resource]
+script = ExtResource("1_lrojh")
+id = &"cooldown"
+stat = &"cooldown_reduction"
+min_value = 0.02
+max_value = 0.05
+slots = Array[int]([2, 1, 6, 7])
+min_level = 3
+weight = 6
+prefix = "Hastening"
+step = 0.01

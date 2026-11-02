@@ -3,7 +3,10 @@
 [ext_resource type="Script" path="res://src/hero/hero_class.gd" id="1"]
 [ext_resource type="PackedScene" path="res://assets/kaykit/adventurers/characters/Barbarian.glb" id="2"]
 [ext_resource type="Script" path="res://src/skills/skill_def.gd" id="3"]
-[ext_resource type="Resource" path="res://src/skills/barbarian/bash.tres" id="4"]
+[ext_resource type="Resource" path="res://src/skills/barbarian/bash.tres" id="7"]
+[ext_resource type="Resource" path="res://src/skills/barbarian/cleave.tres" id="4"]
+[ext_resource type="Resource" path="res://src/skills/barbarian/leap.tres" id="5"]
+[ext_resource type="Resource" path="res://src/skills/barbarian/war_cry.tres" id="6"]
 
 [resource]
 script = ExtResource("1")
@@ -17,10 +20,24 @@ idle = "2H_Melee_Idle"
 chosen = "Cheer"
 power_name = "Fury"
 power_colour = Color(0.78, 0.2, 0.13, 1)
+growth = {
+&"armour": 3.0,
+&"damage": 1.2,
+&"max_health": 14.0
+}
 ratings = {
 "Damage": 4,
 "Difficulty": 2,
 "Range": 1,
 "Toughness": 5
 }
-skills = Array[ExtResource("3")]([ExtResource("4"), null, null, null])
+base_stats = {
+&"armour": 25.0,
+&"damage": 12.0,
+&"health_regen": 1.0,
+&"max_health": 160.0,
+&"max_power": 100.0,
+&"power_regen": -3.0
+}
+skills = Array[ExtResource("3")]([ExtResource("7"), ExtResource("4"), ExtResource("5"), ExtResource("6")])
+starting_power = 0.0

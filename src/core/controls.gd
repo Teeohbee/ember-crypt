@@ -23,6 +23,8 @@ const ACTIONS := {
 	"tab_next": {"keys": [KEY_E], "buttons": [JOY_BUTTON_RIGHT_SHOULDER]},
 	"pause": {"keys": [KEY_ESCAPE], "buttons": [JOY_BUTTON_START]},
 	"inventory": {"keys": [KEY_I, KEY_TAB], "buttons": [JOY_BUTTON_BACK]},
+	"skills_menu": {"keys": [KEY_P], "buttons": [JOY_BUTTON_DPAD_LEFT]},
+	"menu_delete": {"keys": [KEY_DELETE, KEY_X], "buttons": [X]},
 	"skill_1": {"keys": [KEY_J], "buttons": [A]},
 	"skill_2": {"keys": [KEY_K], "buttons": [X]},
 	"skill_3": {"keys": [KEY_L], "buttons": [Y]},
@@ -33,6 +35,8 @@ const ACTIONS := {
 	"target_lock": {"keys": [KEY_SHIFT], "triggers": [JOY_AXIS_TRIGGER_LEFT]},
 	# The evade is the right stick (read through PlayerSlot.aim_vector); this is its debug key
 	"evade": {"keys": [KEY_C]},
+	# M4: hold to wear what you just picked up
+	"equip": {"keys": [KEY_F], "buttons": [JOY_BUTTON_DPAD_UP]},
 }
 
 const UI_DIRECTIONS := {Vector2i.UP: "ui_up", Vector2i.DOWN: "ui_down", Vector2i.LEFT: "ui_left", Vector2i.RIGHT: "ui_right"}

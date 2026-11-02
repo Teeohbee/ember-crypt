@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ItemBase" format=3]
+
+[ext_resource type="PackedScene" path="res://assets/kaykit/adventurers/weapons/sword_1handed.gltf" id="1_76hlc"]
+[ext_resource type="Script" path="res://src/items/item_base.gd" id="2_hqr3c"]
+
+[resource]
+script = ExtResource("2_hqr3c")
+id = &"short_sword"
+display_name = "Short Sword"
+model = ExtResource("1_76hlc")
+classes = PackedStringArray("barbarian")
+base_stats = {
+&"crit_chance": 0.02,
+&"damage": 3.0
+}
+min_level = 2
+kind = "sword"
