@@ -68,7 +68,8 @@ func refresh() -> void:
 	power_globe.set_values(hero.power, hero.max_power())
 	var bar := hero.skill_bar
 	for i in skill_slots.size():
-		var skill := bar.skills[i] if i < bar.skills.size() else null
+		# A skill the hero's level hasn't unlocked yet (M5) shows as an empty socket
+		var skill := bar.skills[i] if i < bar.skills.size() and bar.is_unlocked(i) else null
 		var affordable := skill == null or hero.power + 0.001 >= skill.cost
 		skill_slots[i].show_skill(skill, bar.cooldown_fraction(i), bar.cooldown_left(i), affordable)
 	potion_slot.show_skill(_potion_def(), hero.potion.cooldown_fraction(), hero.potion.cooldown_left, true)
