@@ -21,3 +21,7 @@ func heroes() -> Array[Hero]:
 		if is_instance_valid(slot.hero):
 			all.append(slot.hero)
 	return all
+
+# M6 World
+# The crypt's layout seed; 0 until it's first entered, then the same crypt every visit
+var dungeon_seed := 0

@@ -3,7 +3,8 @@ extends RefCounted
 # The shape of a generated dungeon before any of it is built: rooms on a grid, which neighbours each
 # opens on to, and what each room is for. Pure and seeded, so a seed is always the same crypt and the
 # tests can poke it. Rooms grow as a tree from the entrance, so there's one way to every room, and the
-# boss waits in the room furthest in - always a dead end, so it can't be walked past.
+# boss waits in the room furthest in - always a dead end, so it can't be walked past. The entrance
+# never opens north: that wall holds the stairs back up.
 
 const NORTH := 1
 const EAST := 2
@@ -55,7 +56,7 @@ static func generate(seed_number: int, room_count: int, chunks: Array[RoomChunk]
 		var from: Room = order[order.size() - 1 - rng.randi_range(0, mini(GROW_FROM_NEWEST, order.size()) - 1)]
 		var direction: int = DIRECTIONS.keys()[rng.randi_range(0, 3)]
 		var cell: Vector2i = from.cell + DIRECTIONS[direction]
-		if layout.rooms.has(cell):
+		if layout.rooms.has(cell) or (from == layout.start and direction == NORTH):
 			continue
 		order.append(layout._add(cell, from, direction))
 	layout._assign_kinds()

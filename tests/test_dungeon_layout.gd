@@ -88,3 +88,7 @@ func test_rooms_get_a_chunk_made_for_their_kind() -> void:
 	for room: DungeonLayout.Room in layout.rooms.values():
 		if room.kind in [&"fight", &"checkpoint"]:
 			assert_array([&"hall", &"ossuary"]).contains([room.chunk.id])
+
+func test_the_entrance_never_opens_north_where_the_stairs_are() -> void:
+	for seed_value in 30:
+		assert_bool(DungeonLayout.generate(seed_value, 10, _chunks()).start.has_door(DungeonLayout.NORTH)).is_false()

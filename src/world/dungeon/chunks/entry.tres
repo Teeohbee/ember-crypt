@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="RoomChunk" format=3]
+
+[ext_resource type="Script" path="res://src/world/dungeon/room_chunk.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"entry"
+kinds = PackedStringArray("start")
+weight = 10
+props = [["stairs", Vector3(0, 0, -9.5), 0.0], ["barrel_large", Vector3(-8, 0, -7.6), 0.0], ["barrel_small", Vector3(-6.4, 0, -8.6), 0.0], ["crates_stacked", Vector3(8, 0, -7.8), 0.0], ["candle_triple", Vector3(-3.6, 0, -9), 0.0], ["candle_triple", Vector3(3.6, 0, -9), 0.0], ["rubble_half", Vector3(-8, 0, 7.5), 90.0]]
+packs = PackedVector3Array()
+pack_size = 0
+fires = PackedVector3Array(-5.5, 0, -4)
+rubble = 0.1
