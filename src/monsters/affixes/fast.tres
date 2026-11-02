@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="EliteAffixDef" format=3]
+
+[ext_resource type="Script" path="res://src/monsters/elite_affix_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"fast"
+display_name = "Fast"
+colour = Color(0.55, 0.85, 1, 1)
+percent = {
+&"attack_speed": 0.3,
+&"move_speed": 0.45
+}

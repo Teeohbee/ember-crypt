@@ -22,6 +22,7 @@ func _ready() -> void:
 		var hud := Hud.new(slot)
 		add_child(hud)
 		hud.add_child(ActionBar.new(slot))
+		hud.add_child(DeathScreen.new(slot, zone))
 		huds.append(hud)
 	hero = Session.slots[0].hero
 	add_child(camera)
