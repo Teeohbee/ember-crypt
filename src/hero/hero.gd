@@ -49,6 +49,8 @@ func _physics_process(delta: float) -> void:
 	if not alive:
 		return
 	motor.physics_step(delta)
+	if motor.rolling:
+		return
 	for i in SKILL_ACTIONS.size():
 		if slot.pressed(SKILL_ACTIONS[i]) and skill_bar.can_use(i):
 			skill_bar.use(i, aim_direction())
