@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="MonsterDef" format=3]
+
+[ext_resource type="Script" path="res://src/monsters/monster_def.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/kaykit/skeletons/characters/Skeleton_Rogue.glb" id="2"]
+[ext_resource type="Script" path="res://src/skills/skill_def.gd" id="3"]
+[ext_resource type="Resource" path="res://src/skills/monsters/rogue_quarrel.tres" id="4"]
+[ext_resource type="PackedScene" path="res://assets/kaykit/skeletons/weapons/Skeleton_Crossbow.gltf" id="10"]
+
+[resource]
+script = ExtResource("1")
+id = &"skeleton_rogue"
+display_name = "Skeleton Rogue"
+model = ExtResource("2")
+base_stats = {
+&"damage": 5.0,
+&"max_health": 40.0,
+&"move_speed": 4.0
+}
+skills = Array[ExtResource("3")]([ExtResource("4")])
+weapon_right = ExtResource("10")
+archetype = &"ranged"
+keep_away = 5.0
+aggro_range = 14.0
+xp = 14
+idle_animation = "2H_Ranged_Aiming"
