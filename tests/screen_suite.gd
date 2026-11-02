@@ -17,6 +17,8 @@ func before_test() -> void:
 
 func after_test() -> void:
 	get_tree().paused = false
+	# A hit-stop left running would slow the next test
+	Feedback.reset()
 	DirAccess.remove_absolute(ProjectSettings.globalize_path(scratch_path))
 	Settings.path = _real_path
 	Settings.load_from_disk()
