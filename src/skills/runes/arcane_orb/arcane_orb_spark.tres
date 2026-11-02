@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="RuneDef" format=3]
+
+[ext_resource type="Script" path="res://src/skills/rune_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"arcane_orb_spark"
+skill = &"arcane_orb"
+display_name = "Spark"
+description = "A crackling orb of lightning that costs 30% less."
+unlock_level = 13
+multiply = {
+"cost": 0.7
+}
+overrides = {
+"damage_kind": 3
+}
+params = {}

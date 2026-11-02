@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="RuneDef" format=3]
+
+[ext_resource type="Script" path="res://src/skills/rune_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"frost_nova_shatter"
+skill = &"frost_nova"
+display_name = "Shatter"
+description = "The ice bursts outward for twice the damage."
+unlock_level = 6
+multiply = {
+"damage_multiplier": 2.0
+}
+overrides = {}
+params = {}

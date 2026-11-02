@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="RuneDef" format=3]
+
+[ext_resource type="Script" path="res://src/skills/rune_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"teleport_wormhole"
+skill = &"teleport"
+display_name = "Wormhole"
+description = "Ready to blink again 40% sooner."
+unlock_level = 10
+multiply = {
+"cooldown": 0.6
+}
+overrides = {}
+params = {}

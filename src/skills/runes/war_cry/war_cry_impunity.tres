@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="RuneDef" format=3]
+
+[ext_resource type="Script" path="res://src/skills/rune_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"war_cry_impunity"
+skill = &"war_cry"
+display_name = "Impunity"
+description = "A roar that carries twice as far and lasts half as long again."
+unlock_level = 14
+multiply = {
+"radius": 2.0
+}
+overrides = {}
+params = {
+"duration_scale": 1.5
+}

@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="RuneDef" format=3]
+
+[ext_resource type="Script" path="res://src/skills/rune_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"magic_missile_charged_blast"
+skill = &"magic_missile"
+display_name = "Charged Blast"
+description = "Crackles with lightning for 35% more damage, for a quarter more Arcane Power."
+unlock_level = 3
+multiply = {
+"damage_multiplier": 1.35,
+"cost": 1.25
+}
+overrides = {
+"damage_kind": 3
+}
+params = {}

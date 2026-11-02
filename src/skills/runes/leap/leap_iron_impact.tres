@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="RuneDef" format=3]
+
+[ext_resource type="Script" path="res://src/skills/rune_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"leap_iron_impact"
+skill = &"leap"
+display_name = "Iron Impact"
+description = "Land like a falling anvil: 60% more damage in a smaller crater."
+unlock_level = 7
+multiply = {
+"damage_multiplier": 1.6,
+"radius": 0.8
+}
+overrides = {}
+params = {}

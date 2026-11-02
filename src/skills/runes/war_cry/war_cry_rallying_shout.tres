@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="RuneDef" format=3]
+
+[ext_resource type="Script" path="res://src/skills/rune_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"war_cry_rallying_shout"
+skill = &"war_cry"
+display_name = "Rallying Shout"
+description = "Ready to shout again a quarter sooner."
+unlock_level = 9
+multiply = {
+"cooldown": 0.75
+}
+overrides = {}
+params = {}
