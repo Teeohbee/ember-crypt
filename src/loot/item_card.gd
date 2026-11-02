@@ -57,7 +57,11 @@ func show_item(item: Item, worn: Array[Item], class_id: String, equipped := fals
 		_rows.add_child(_rule())
 		_add("If equipped", 22, UiTheme.FADED)
 		var deltas := ItemCompare.deltas(item, worn)
-		if deltas.is_empty():
+		if worn.is_empty():
+			# Every line above is a gain; no need to list them twice
+			_add("Fills an empty slot", 26, BETTER)
+			deltas.clear()
+		elif deltas.is_empty():
 			_add("No change", 24, UiTheme.FADED)
 		for delta in deltas:
 			_add(delta.text, 26, BETTER if delta.better else WORSE)

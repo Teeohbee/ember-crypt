@@ -10,7 +10,7 @@ const DOLL_ORDER: Array[ItemBase.Slot] = [ItemBase.Slot.HEAD, ItemBase.Slot.WEAP
 const DOLL_COLUMNS := 2
 const BAG_COLUMNS := 6
 const SHEET: Array[StringName] = [Stats.DAMAGE, Stats.MAX_HEALTH, Stats.ARMOUR, Stats.RESIST, Stats.CRIT_CHANCE,
-	Stats.CRIT_DAMAGE, Stats.ATTACK_SPEED, Stats.MOVE_SPEED, Stats.LIFE_ON_HIT, Stats.MAGIC_FIND, Stats.GOLD_FIND]
+	Stats.CRIT_DAMAGE, Stats.ATTACK_SPEED, Stats.MAGIC_FIND]
 const DROP := &"skill_2"
 
 var slot: PlayerSlot
@@ -54,6 +54,17 @@ func _ready() -> void:
 	right.add_child(card)
 	_empty_note = UiTheme.text("", 26, UiTheme.FADED)
 	right.add_child(_empty_note)
+	var gap := Control.new()
+	gap.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	right.add_child(gap)
+	var sheet_panel := PanelContainer.new()
+	var sheet_rows := VBoxContainer.new()
+	sheet_panel.add_child(sheet_rows)
+	sheet_rows.add_child(UiTheme.heading("Character", 30, UiTheme.FADED))
+	_sheet.columns = 2
+	_sheet.add_theme_constant_override("h_separation", 24)
+	sheet_rows.add_child(_sheet)
+	right.add_child(sheet_panel)
 	columns.add_child(right)
 	_prompts = PromptBar.in_corner(_root)
 	_link_focus()
@@ -79,9 +90,6 @@ func _doll_panel() -> Control:
 		_hook(square)
 		grid.add_child(square)
 		doll.append(square)
-	_sheet.columns = 2
-	_sheet.add_theme_constant_override("h_separation", 24)
-	rows.add_child(_sheet)
 	return panel
 
 func _bag_panel() -> Control:
