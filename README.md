@@ -118,5 +118,5 @@ tests/run.sh res://tests/test_front_end.gd   # one suite
 
 ## credits
 
-- Characters, weapons and dungeon: KayKit by Kay Lousberg, CC0
+- Characters, weapons, dungeon and Halloween Bits: KayKit by Kay Lousberg, CC0
 - Cinzel (Natanael Gama) and Alegreya Sans (Huerta Tipográfica), SIL Open Font License
