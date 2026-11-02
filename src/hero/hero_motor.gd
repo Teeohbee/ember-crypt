@@ -156,6 +156,8 @@ func _slide(delta: float) -> void:
 			return
 		var normal := collision.get_normal()
 		normal.y = 0.0
+		if normal.length_squared() < 0.0001:
+			return
 		normal = normal.normalized()
 		motion = collision.get_remainder().slide(normal)
 		hero.velocity = hero.velocity.slide(normal)
