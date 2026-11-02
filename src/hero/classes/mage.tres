@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="HeroClass" format=3]
+
+[ext_resource type="Script" path="res://src/hero/hero_class.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/kaykit/adventurers/characters/Mage.glb" id="2"]
+
+[resource]
+script = ExtResource("1")
+id = "mage"
+display_name = "Mage"
+epithet = "Keeper of the Last Library"
+blurb = "Keeps the dead at a distance with missiles, frost and arcane fire. Arcane Power drains with every spell and flows back when you hold off, so pacing is everything."
+model = ExtResource("2")
+held = PackedStringArray("2H_Staff")
+idle = "2H_Melee_Idle"
+chosen = "Spellcast_Raise"
+power_name = "Arcane Power"
+power_colour = Color(0.36, 0.42, 0.95, 1)
+ratings = {
+"Damage": 5,
+"Difficulty": 4,
+"Range": 5,
+"Toughness": 1
+}
