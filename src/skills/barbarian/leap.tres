@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="SkillDef" format=3]
+
+[ext_resource type="Script" path="res://src/skills/skill_def.gd" id="1"]
+[ext_resource type="Script" path="res://src/skills/barbarian/leap.gd" id="2"]
+
+[resource]
+script = ExtResource("1")
+id = &"leap"
+display_name = "Leap"
+description = "Hurl yourself at an enemy and crash down, striking everything around where you land."
+effect = ExtResource("2")
+animation = "Jump_Full_Short"
+hit_time = 0.15
+recovery = 0.8
+cooldown = 8.0
+cost = 15.0
+generate = 0.0
+damage_multiplier = 1.8
+damage_kind = 0
+reach = 9.0
+radius = 3.5
+cone_degrees = 90.0
+knockback = 1.5
+unlock_level = 4
+params = {
+"distance": 7.0,
+"flight": 0.55,
+"height": 2.2
+}

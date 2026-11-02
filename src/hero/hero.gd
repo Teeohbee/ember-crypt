@@ -11,6 +11,7 @@ var hero_class: HeroClass
 var model: HeroModel
 var motor: HeroMotor
 var skill_bar: SkillBar
+var potion: Potion
 var inventory := Inventory.new()
 var equipment: Equipment
 var level := 1
@@ -37,6 +38,8 @@ func _init(chosen: HeroClass, player_slot: PlayerSlot) -> void:
 	for i in mini(chosen.skills.size(), SkillBar.SLOTS):
 		skill_bar.set_skill(i, chosen.skills[i])
 	add_child(skill_bar)
+	potion = Potion.new(self)
+	add_child(potion)
 	equipment = Equipment.new(stats)
 
 func _ready() -> void:
@@ -49,6 +52,8 @@ func _physics_process(delta: float) -> void:
 	if not alive:
 		return
 	motor.physics_step(delta)
+	if slot.just_pressed(&"potion") and not potion.drink():
+		Sound.play("denied")
 	for i in SKILL_ACTIONS.size():
 		if slot.pressed(SKILL_ACTIONS[i]) and skill_bar.can_use(i):
 			skill_bar.use(i, aim_direction())
