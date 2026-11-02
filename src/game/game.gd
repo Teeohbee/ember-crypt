@@ -21,6 +21,7 @@ func _ready() -> void:
 		spawned.add_child(Look.hero_light())
 		var hud := Hud.new(slot)
 		add_child(hud)
+		hud.add_child(ActionBar.new(slot))
 		hud.add_child(XpBar.new(slot))
 		hud.add_child(LevelBanner.new(slot))
 		add_child(SkillsScreen.new(slot))

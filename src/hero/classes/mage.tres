@@ -2,6 +2,10 @@
 
 [ext_resource type="Script" path="res://src/hero/hero_class.gd" id="1"]
 [ext_resource type="PackedScene" path="res://assets/kaykit/adventurers/characters/Mage.glb" id="2"]
+[ext_resource type="Script" path="res://src/skills/skill_def.gd" id="3"]
+[ext_resource type="Resource" path="res://src/skills/mage/frost_nova.tres" id="4"]
+[ext_resource type="Resource" path="res://src/skills/mage/arcane_orb.tres" id="5"]
+[ext_resource type="Resource" path="res://src/skills/mage/teleport.tres" id="6"]
 
 [resource]
 script = ExtResource("1")
@@ -26,3 +30,11 @@ ratings = {
 "Range": 5,
 "Toughness": 1
 }
+base_stats = {
+&"damage": 14.0,
+&"max_health": 100.0,
+&"max_power": 100.0,
+&"power_regen": 12.0
+}
+skills = Array[ExtResource("3")]([null, ExtResource("4"), ExtResource("5"), ExtResource("6")])
+starting_power = 100.0

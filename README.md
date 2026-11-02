@@ -11,6 +11,19 @@ chosen hero, pause, and options (audio, display, gameplay, the pad layout). Ever
 pad, B always steps back, and the world never cuts away between menus. The hero can't move yet; that's
 M1.
 
+**M2 - the combat kit.** Health and power globes either side of a skill bar, D3 style: a socket per
+button with a cooldown sweep, a red wash when you can't afford it and a shake when you press it anyway.
+A health potion on LB heals 60% and then needs 30 seconds. Fury drains away steadily, so keep landing
+blows; Arcane Power flows back on its own. Three skills each on X, Y and B (A is the primary, M1):
+
+- Barbarian: **Cleave** (an arc of axe, costs Fury), **Leap** (crash down on a target), **War Cry**
+  (armour for you and allies close by, and 30 Fury to start a fight with)
+- Mage: **Frost Nova** (hurts and chills everything close), **Arcane Orb** (a slow orb that bursts on
+  the first thing it meets), **Teleport** (blink along the stick, never through a wall)
+
+Buffs and slows are timed `Statuses` on the stat sheet (`src/combat/statuses.gd`), so anything that
+reads move or attack speed slows down when chilled.
+
 **M5 - progression.** Kills pay XP (more for tougher monsters and elites) up a level curve to 30; each
 level grows the class's stats, heals, and sets off a shaft of gold light, a toll and a banner naming
 what it unlocked. Skills stay locked until their `SkillDef.unlock_level`. Each skill takes one rune
@@ -27,6 +40,8 @@ Pad first; keys exist for testing.
 |---|---|---|
 | Menus | Left stick / D-pad, A, B | Arrows / WASD, Enter, Esc |
 | Options tabs | LB / RB | Q / E |
+| Skills | A, X, Y, B, RB, RT | J, K, L, ;, U, O |
+| Potion | LB | Q |
 | Pause | Start | Esc |
 | Skills screen | D-pad left | P |
 
