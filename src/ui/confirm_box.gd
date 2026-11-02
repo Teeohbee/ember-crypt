@@ -7,6 +7,8 @@ signal answered(yes: bool)
 var _question := UiTheme.heading("", 40, UiTheme.PARCHMENT)
 var _menu := MenuList.new()
 var _on_yes := Callable()
+var _no: Button
+var _yes: Button
 
 func _ready() -> void:
 	custom_minimum_size.x = 640
@@ -15,12 +17,15 @@ func _ready() -> void:
 	add_child(column)
 	column.add_child(_question)
 	column.add_child(UiTheme.divider(480))
-	_menu.add_item("Stay", func() -> void: _answer(false))
-	_menu.add_item("Leave", func() -> void: _answer(true))
+	_no = _menu.add_item("Stay", func() -> void: _answer(false))
+	_yes = _menu.add_item("Leave", func() -> void: _answer(true))
 	column.add_child(_menu)
 
-func ask(question: String, on_yes: Callable) -> void:
+# The answers default to Stay / Leave; a screen asking something else names its own
+func ask(question: String, on_yes: Callable, yes_label := "Leave", no_label := "Stay") -> void:
 	_question.text = question
+	_yes.text = yes_label
+	_no.text = no_label
 	_on_yes = on_yes
 	show()
 	_menu.reset()
