@@ -44,13 +44,10 @@ func build() -> void:
 	CryptKit.place(self, "rubble_half", Vector3(-19, 0, 12), 40)
 	CryptKit.place(self, "rubble_half", Vector3(18, 0, -17), 200)
 	var monsters := Dungeon.pack_monsters()
+	var made := Dungeon.packs()
 	for pack: Vector3 in PACKS:
-		var point := SpawnPoint.new()
-		point.monsters = monsters
-		point.count = 3
+		var point := Dungeon.pack_point(pack, 3, 0, rng, monsters, made)
 		point.scatter = 2.0
-		point.elite_chance = 0.1
-		point.position = pack
 		add_child(point)
 	var checkpoint := Checkpoint.new()
 	checkpoint.position = Vector3(0, 0, 0)
