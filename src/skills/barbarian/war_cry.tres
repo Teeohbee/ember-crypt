@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="SkillDef" format=3]
+
+[ext_resource type="Script" path="res://src/skills/skill_def.gd" id="1"]
+[ext_resource type="Script" path="res://src/skills/barbarian/war_cry.gd" id="2"]
+
+[resource]
+script = ExtResource("1")
+id = &"war_cry"
+display_name = "War Cry"
+description = "A bellow that hardens you and your allies with armour and a little extra damage, and stokes 30 Fury."
+effect = ExtResource("2")
+animation = "Cheer"
+hit_time = 0.3
+recovery = 0.6
+cooldown = 15.0
+cost = 0.0
+generate = 0.0
+damage_multiplier = 0.0
+damage_kind = 0
+reach = 0.0
+radius = 8.0
+cone_degrees = 90.0
+knockback = 0.0
+unlock_level = 6
+params = {
+"armour": 30.0,
+"armour_percent": 0.25,
+"damage_percent": 0.1,
+"fury": 30.0,
+"seconds": 8.0
+}
