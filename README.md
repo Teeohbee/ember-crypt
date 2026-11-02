@@ -21,8 +21,8 @@ leans ahead of a running hero and dithers away any wall in the way. Hit feel is 
 
 **M2 - the combat kit.** Health and power globes either side of a skill bar, D3 style: a socket per
 button with a cooldown sweep, a red wash when you can't afford it and a shake when you press it anyway.
-A health potion on LB heals 60% and then needs 30 seconds. Fury drains away steadily, so keep landing
-blows; Arcane Power flows back on its own. Three skills each on X, Y and B (A is the primary, M1):
+A health potion on LB heals 60% and then needs 30 seconds. Fury holds while you fight and drains once
+things go quiet for a few seconds; Arcane Power flows back on its own. Three skills each on X, Y and B (A is the primary, M1):
 
 - Barbarian: **Cleave** (an arc of axe, costs Fury), **Leap** (crash down on a target), **War Cry**
   (armour for you and allies close by, and 30 Fury to start a fight with)

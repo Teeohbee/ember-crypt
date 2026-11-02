@@ -60,3 +60,38 @@ func _dummy(at: Vector3) -> Combatant:
 	dummy.health = 10.0
 	add_child(dummy)
 	return dummy
+
+func test_fury_holds_while_fighting_and_drains_once_its_quiet() -> void:
+	var barbarian: Combatant = auto_free(_dummy(Vector3.ZERO))
+	var skeleton: Combatant = auto_free(_dummy(Vector3(0, 0, -1.5)))
+	skeleton.stats.set_base(Stats.MAX_HEALTH, 1000.0)
+	skeleton.revive()
+	barbarian.stats.set_base(Stats.POWER_REGEN, -3.0)
+	barbarian.power = 50.0
+	Combat.hit(barbarian, skeleton, null, 0.1)
+	barbarian._process(Combatant.DECAY_DELAY - 0.5)
+	assert_float(barbarian.power).is_equal(50.0)
+	barbarian._process(1.0)
+	assert_float(barbarian.power).is_less(50.0)
+
+func test_taking_a_hit_counts_as_fighting() -> void:
+	var barbarian: Combatant = auto_free(_dummy(Vector3.ZERO))
+	barbarian.stats.set_base(Stats.MAX_HEALTH, 1000.0)
+	barbarian.revive()
+	barbarian.stats.set_base(Stats.POWER_REGEN, -3.0)
+	barbarian.power = 50.0
+	barbarian._process(Combatant.DECAY_DELAY + 1.0)
+	var drained := barbarian.power
+	barbarian.take_hit(_event(1.0))
+	barbarian._process(1.0)
+	assert_float(barbarian.power).is_equal(drained)
+
+func test_arcane_flows_back_even_mid_fight() -> void:
+	var mage: Combatant = auto_free(_dummy(Vector3.ZERO))
+	mage.stats.set_base(Stats.MAX_HEALTH, 1000.0)
+	mage.revive()
+	mage.stats.set_base(Stats.POWER_REGEN, 12.0)
+	mage.power = 10.0
+	mage.take_hit(_event(1.0))
+	mage._process(1.0)
+	assert_float(mage.power).is_equal_approx(22.0, 0.001)

@@ -12,6 +12,9 @@ signal power_changed(power: float, max_power: float)
 enum Team { HEROES, MONSTERS }
 
 const TEAM_GROUPS := {Team.HEROES: &"heroes", Team.MONSTERS: &"monsters"}
+# Power that decays (Fury) holds while fighting and only starts draining this long after the last
+# blow landed or taken, as in D3
+const DECAY_DELAY := 4.0
 
 var team := Team.MONSTERS
 var stats := Stats.new()
@@ -21,6 +24,8 @@ var power := 0.0
 var rng := RandomNumberGenerator.new()
 # While true, hits pass through: a hero's evade roll
 var invulnerable := false
+# Seconds since this combatant last landed or took a hit
+var since_fighting := INF
 var alive: bool:
 	get: return health > 0.0
 
@@ -35,7 +40,10 @@ func _process(delta: float) -> void:
 	var regen := stats.value(Stats.HEALTH_REGEN)
 	if regen != 0.0 and health < max_health():
 		heal(regen * delta)
+	since_fighting += delta
 	var power_regen := stats.value(Stats.POWER_REGEN)
+	if power_regen < 0.0 and since_fighting < DECAY_DELAY:
+		power_regen = 0.0
 	if power_regen != 0.0:
 		var before := power
 		power = clampf(power + power_regen * delta, 0.0, max_power())
@@ -48,6 +56,7 @@ func max_health() -> float:
 func take_hit(event: DamageEvent) -> void:
 	if not alive or invulnerable:
 		return
+	since_fighting = 0.0
 	health = maxf(health - event.amount, 0.0)
 	event.killed = health <= 0.0
 	health_changed.emit(health, max_health())

@@ -36,6 +36,7 @@ static func hit(source: Combatant, target: Combatant, skill: SkillDef, multiplie
 	event.amount = source.stats.value(Stats.DAMAGE) * maxf(multiplier, 0.0)
 	resolve(event, source.stats, target.stats, source.rng)
 	target.take_hit(event)
+	source.since_fighting = 0.0
 	var life := source.stats.value(Stats.LIFE_ON_HIT)
 	if life > 0.0 and source.alive:
 		source.heal(life)
