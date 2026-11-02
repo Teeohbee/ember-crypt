@@ -18,6 +18,12 @@ const SOUNDS := {
 	"open": [1.0, [[0.0, 50, 1.0, "bell", 0.18], [0.0, 38, 0.3, "thud", 0.5]]],
 	"denied": [0.25, [[0.0, 45, 0.2, "thud", 0.6], [0.09, 44, 0.16, "thud", 0.5]]],
 	"select": [3.5, [[0.0, 50, 3.5, "toll", 0.45], [0.0, 62, 2.0, "bell", 0.15], [0.0, 69, 2.0, "bell", 0.1]]],
+	# M5 Progression
+	# Level up: a toll under a bell arpeggio climbing D minor and landing on F#, the bright major third
+	"level_up": [3.5, [[0.0, 38, 3.5, "toll", 0.4], [0.0, 62, 2.2, "bell", 0.2], [0.12, 65, 2.1, "bell", 0.2],
+		[0.24, 69, 2.0, "bell", 0.2], [0.36, 74, 2.0, "bell", 0.22], [0.56, 78, 2.6, "bell", 0.24], [0.56, 50, 0.3, "thud", 0.4]]],
+	# A rune set into a skill: a bright little chime
+	"rune": [1.0, [[0.0, 81, 0.1, "pluck", 0.2], [0.04, 74, 0.9, "bell", 0.18], [0.1, 78, 0.8, "bell", 0.12]]],
 }
 
 const MUSIC := ["title", "crypt"]

@@ -11,6 +11,7 @@ var hero_class: HeroClass
 var model: HeroModel
 var motor: HeroMotor
 var skill_bar: SkillBar
+var progress: HeroProgress
 var inventory := Inventory.new()
 var equipment: Equipment
 var level := 1
@@ -37,6 +38,8 @@ func _init(chosen: HeroClass, player_slot: PlayerSlot) -> void:
 	for i in mini(chosen.skills.size(), SkillBar.SLOTS):
 		skill_bar.set_skill(i, chosen.skills[i])
 	add_child(skill_bar)
+	progress = HeroProgress.new(self)
+	add_child(progress)
 	equipment = Equipment.new(stats)
 
 func _ready() -> void:

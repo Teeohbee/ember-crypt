@@ -15,6 +15,11 @@ idle = "2H_Melee_Idle"
 chosen = "Spellcast_Raise"
 power_name = "Arcane Power"
 power_colour = Color(0.36, 0.42, 0.95, 1)
+growth = {
+&"damage": 1.6,
+&"max_health": 8.0,
+&"max_power": 2.0
+}
 ratings = {
 "Damage": 5,
 "Difficulty": 4,

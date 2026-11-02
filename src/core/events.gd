@@ -6,6 +6,7 @@ extends Node
 signal damage_dealt(event: DamageEvent)
 signal hero_spawned(hero: Hero)
 signal hero_died(hero: Hero, event: DamageEvent)
+signal hero_levelled_up(hero: Hero, level: int)
 signal monster_spawned(monster: Monster)
 signal monster_killed(monster: Monster, event: DamageEvent)
 signal skill_used(caster: Combatant, skill: SkillDef)
