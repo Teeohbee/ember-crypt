@@ -47,7 +47,7 @@ func _ready() -> void:
 	get_tree().scene_changed.connect(reset)
 
 func hit(event: DamageEvent) -> void:
-	if event == null or not is_instance_valid(event.target):
+	if event == null or not is_instance_valid(event.target) or not event.target.is_inside_tree():
 		return
 	var target := event.target
 	var params: Dictionary = event.skill.params if event.skill else {}
@@ -139,6 +139,8 @@ func _process(delta: float) -> void:
 	trauma = maxf(trauma - TRAUMA_DECAY * unstopped, 0.0)
 
 func _on_monster_killed(monster: Monster, event: DamageEvent) -> void:
+	if not is_instance_valid(monster) or not monster.is_inside_tree():
+		return
 	var away := Vector3.ZERO
 	if event and is_instance_valid(event.source):
 		away = monster.global_position - event.source.global_position
