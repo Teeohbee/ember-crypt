@@ -1,17 +1,18 @@
 class_name XpBar
 extends Control
-# The XP bar: a thin gold line along the bottom of the screen with the hero's level at its left end,
+# The XP bar: a thin gold line along the bottom of the screen, under the action bar, with the hero's level at its left end,
 # notched in tenths the way Diablo's is. It fills smoothly as XP comes in, sweeps to the end and empties
 # on a level-up, and at the level cap it stays full.
 
 const WIDTH := 880.0
-const HEIGHT := 10.0
-const FROM_BOTTOM := 18.0
+const HEIGHT := 8.0
+# Under the action bar, which stands 22 px clear of the bottom edge
+const FROM_BOTTOM := 7.0
 const NOTCHES := 10
 
 var slot: PlayerSlot
 var hero: Hero
-var level_label := UiTheme.heading("1", 26, UiTheme.GOLD)
+var level_label := UiTheme.heading("1", 20, UiTheme.GOLD)
 # What's drawn, 0-1; eases towards the hero's real fraction
 var shown := 0.0
 var _tween: Tween
@@ -26,7 +27,7 @@ func _init(player_slot: PlayerSlot) -> void:
 	grow_vertical = Control.GROW_DIRECTION_BEGIN
 	level_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	level_label.custom_minimum_size = Vector2(60, 0)
-	level_label.position = Vector2(-72, -14)
+	level_label.position = Vector2(-70, -9)
 	add_child(level_label)
 
 func _ready() -> void:
