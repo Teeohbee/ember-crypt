@@ -9,6 +9,8 @@ static func make(id: String) -> Zone:
 	match id:
 		"town":
 			zone = Town.new()
+		"graveyard":
+			zone = Graveyard.new()
 		"crypt":
 			if Session.dungeon_seed == 0:
 				Session.dungeon_seed = randi_range(1, 1 << 30)

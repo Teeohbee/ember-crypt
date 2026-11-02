@@ -31,3 +31,12 @@ func test_heroes_come_into_town_where_they_arrived_from() -> void:
 	assert_vector(_build("town", "gate").hero_start).is_equal(Town.ARRIVALS["gate"])
 	assert_vector(_build("town", "waypoint").hero_start).is_equal(Town.ARRIVALS["waypoint"])
 	assert_vector(_build("town").hero_start).is_equal(Town.ARRIVALS[""])
+
+func test_the_graveyard_has_monsters_a_checkpoint_and_ways_back_and_down() -> void:
+	var graveyard: Graveyard = _build("graveyard", "stairs")
+	assert_int(graveyard.spawn_points().size()).is_equal(Graveyard.PACKS.size())
+	assert_int(_named(graveyard, "Checkpoint").size()).is_equal(1)
+	assert_int(_named(graveyard, "Waypoint").size()).is_equal(1)
+	var targets := _named(graveyard, "ZoneExit").map(func(exit: ZoneExit) -> String: return exit.target)
+	assert_array(targets).contains_exactly_in_any_order(["town", "crypt"])
+	assert_vector(graveyard.hero_start).is_equal(Graveyard.ARRIVALS["stairs"])
