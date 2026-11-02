@@ -12,8 +12,8 @@ pad, B always steps back, and the world never cuts away between menus. The hero 
 M1.
 
 **M1 - feel.** The hero gets up to speed quickly, walks or runs by how far the stick is pushed, and
-rolls out of trouble on the right stick (untouchable for most of the roll). Each class has its primary
-on A: the Barbarian's Bash steps in to reach and knocks skeletons back; the Mage's Magic Missile curls
+rolls out of trouble on LT or a flick of the right stick (untouchable for most of the roll). Each
+class has its primary on A: the Barbarian's Bash steps in to reach and knocks skeletons back; the Mage's Magic Missile curls
 onto whatever aim assist picked. Hits land with a hit-stop, a white flash and squash, a damage number,
 camera shake, rumble and a crunch; skeletons burst into bones and their corpses sink away. The camera
 leans ahead of a running hero and dithers away any wall in the way. Hit feel is tuned in one place,
@@ -78,7 +78,7 @@ Pad first; keys exist for testing.
 | Move | Left stick | WASD / arrows |
 | Skills | A, X, Y, B, RB, RT | J, K, L, ;, U, O |
 | Potion | LB | Q |
-| Evade roll | Right stick (flick) | C |
+| Evade roll | LT, or flick the right stick | C |
 | Pause | Start | Esc |
 | Pick up (loot in reach, nothing hostile close) | A | J |
 | Hold to equip what you picked up | D-pad up | F |

@@ -1,6 +1,6 @@
 class_name HeroMotor
 extends RefCounted
-# Walks the hero where the left stick points and rolls where the right stick flicks. The camera never
+# Walks the hero where the left stick points and rolls on LT or a right stick flick. The camera never
 # rotates, so stick up is always screen up (world -Z). The hero gets up to speed quickly but not
 # instantly, turns to face the way they're going, walks when the stick is barely pushed and runs when
 # it's pushed home. The roll is the evade: a burst of speed that slows as it ends, with the first part
@@ -74,7 +74,7 @@ func roll(direction: Vector3) -> bool:
 	Sound.play("roll", randf_range(0.95, 1.05))
 	return true
 
-# The right stick (a flick out from the middle) or the debug key, which rolls the way the hero is moving
+# The right stick (a flick out from the middle), or LT / the debug key, which roll the way the hero is going
 func _roll_wanted() -> Vector3:
 	var aim := hero.slot.aim_vector()
 	var flick := flicked(_stick_centred, aim)
