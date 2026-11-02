@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="SkillDef" format=3]
+
+[ext_resource type="Script" path="res://src/skills/skill_def.gd" id="1"]
+[ext_resource type="Script" path="res://src/skills/mage/magic_missile.gd" id="2"]
+
+[resource]
+script = ExtResource("1")
+id = &"magic_missile"
+display_name = "Magic Missile"
+description = "Loose a seeking bolt of arcane force for 110% weapon damage as Arcane. Costs nothing."
+effect = ExtResource("2")
+animation = "Spellcast_Shoot"
+hit_time = 0.15
+recovery = 0.42
+damage_multiplier = 1.1
+damage_kind = 4
+reach = 16.0
+cone_degrees = 30.0
+knockback = 0.3
+params = {
+"impact_sound": "missile_hit",
+"life": 1.1,
+"shake": 0.06,
+"hit_stop": 0.0,
+"speed": 20.0,
+"turn": 7.0
+}

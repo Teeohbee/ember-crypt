@@ -129,12 +129,12 @@ func test_rolling_heroes_evade_hits() -> void:
 
 func _monster(at: Vector3) -> Monster:
 	var monster: Monster = auto_free(Monster.new(MINION))
+	monster.position = at
 	add_child(monster)
-	monster.global_position = at
 	return monster
 
 func _hero(at: Vector3) -> Hero:
 	var hero: Hero = auto_free(Hero.new(Session.CLASSES[0], PlayerSlot.new(3)))
+	hero.position = at
 	add_child(hero)
-	hero.global_position = at
 	return hero
