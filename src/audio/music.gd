@@ -8,7 +8,7 @@ const SILENT_DB := -40.0
 const DUCKED_DB := -10.0
 
 # Each track's level in the mix
-const LEVELS := {"title": -2.0, "crypt": -4.0}
+const LEVELS := {"title": -2.0, "crypt": -4.0, "town": -5.0, "graveyard": -4.0, "boss": -3.0}
 
 var current := ""
 var _streams := {}
