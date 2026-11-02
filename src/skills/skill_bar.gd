@@ -15,6 +15,8 @@ const ASSIST_CONE := 110.0
 var caster: Combatant
 var skills: Array[SkillDef] = []
 var last_target: Combatant
+# The caster's level, which gates skills by unlock_level; 0 (monsters) means nothing is gated
+var level := 0
 var _cooldowns := PackedFloat32Array()
 var _cooldown_lengths := PackedFloat32Array()
 var _busy_for := 0.0
@@ -39,9 +41,14 @@ func cooldown_left(index: int) -> float:
 func cooldown_fraction(index: int) -> float:
 	return 0.0 if _cooldown_lengths[index] <= 0.0 else _cooldowns[index] / _cooldown_lengths[index]
 
+# False for an empty slot or a skill the caster's level hasn't reached
+func is_unlocked(index: int) -> bool:
+	var skill := skills[index]
+	return skill != null and (level <= 0 or skill.unlock_level <= level)
+
 func can_use(index: int) -> bool:
 	var skill := skills[index]
-	return skill != null and caster.alive and not busy and _cooldowns[index] <= 0.0 and caster.power + 0.001 >= skill.cost
+	return is_unlocked(index) and caster.alive and not busy and _cooldowns[index] <= 0.0 and caster.power + 0.001 >= skill.cost
 
 # Uses the skill in slot index, aimed roughly along aim. False if it couldn't be used.
 func use(index: int, aim: Vector3) -> bool:
