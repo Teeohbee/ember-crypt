@@ -1,21 +1,31 @@
 class_name Graveyard
 extends Zone
-# The Hollow Graveyard, the outdoor zone between the town and the crypt: rows of dug graves and
-# leaning headstones inside an iron-and-stone railing, a paved path up the middle to the mausoleum
-# whose door goes down into the crypt. Moonlight and thick fog do most of the work.
-#
-# The plan wanted KayKit's Halloween Bits here; that pack isn't in the repo, so it's built from the
-# dungeon kit: headstones are squashed wall end caps, graves are the dirt tiles (which read as holes
-# from above), the railing is the balustrade. Swap the pieces in _grave and _fence when the pack lands.
+# The Hollow Graveyard, the outdoor zone between the town and the crypt, built from KayKit's Halloween
+# Bits: rows of headstones inside an iron fence, a stone path from the south arch up to the mausoleum
+# whose door goes down into the crypt, dead trees inside and autumn pines crowding the fence outside.
+# Lantern posts light the path and jack-o'-lanterns grin between the graves; moonlight and thick fog do
+# the rest. Nothing solid stands on the path, so the way from the gate to the door is always open.
 
 const ARRIVALS := {"": Vector3(0, 0, 14), "gate": Vector3(0, 0, 14), "waypoint": Vector3(3, 0, 9), "stairs": Vector3(0, 0, -15)}
-const HALF_X := 5
-const NORTH := -5
-const SOUTH := 4
+# The fence: east and west runs at +-WEST_EAST_X, the north run behind the mausoleum, the south with
+# the arch in its middle
+const WEST_EAST_X := 23.0
+const NORTH_Z := -22.0
+const GATE_Z := 18.0
+# The mausoleum sits in the gap in the north fence, its door facing the path
+const CRYPT_Z := -25.0
+const CRYPT_DOOR_Z := -20.5
 const GRAVE_COLUMNS := [-18.0, -14.0, -10.0, -6.0, 6.0, 10.0, 14.0, 18.0]
 const GRAVE_ROWS := [-12.0, -6.0, 0.0, 6.0]
 const PACKS := [Vector3(-12, 0, -9), Vector3(12, 0, -3), Vector3(-12, 0, 3), Vector3(13, 0, 9), Vector3(0, 0, -11)]
-const HEADSTONE_SCALE := Vector3(0.7, 0.24, 0.32)
+# Headstones and their footprints (x, z) in metres
+const HEADSTONES := {
+	"grave_A": Vector2(2.0, 1.0), "grave_B": Vector2(2.0, 1.0), "grave_A_destroyed": Vector2(2.0, 1.0),
+	"gravestone": Vector2(1.4, 0.5), "gravemarker_A": Vector2(0.8, 0.4), "gravemarker_B": Vector2(0.8, 0.4),
+}
+const LANTERN_ROWS := [11.0, -1.0, -14.0]
+const JACKS := [Vector3(-4, 0, 8), Vector3(8, 0, -9), Vector3(-15, 0, -4), Vector3(17, 0, 3), Vector3(3.2, 0, -18)]
+const PUMPKIN := Color("ff8a2a")
 
 func _init() -> void:
 	id = "graveyard"
@@ -31,18 +41,16 @@ func build() -> void:
 	rng.seed = 1031
 	add_child(Look.moon(0.65))
 	_ground()
-	for z in range(NORTH, SOUTH + 1):
-		CryptKit.place(self, "floor_tile_large" if rng.randf() > 0.3 else "floor_tile_large_rocks", Vector3(0, 0, z * CryptKit.CELL), rng.randi_range(0, 3) * 90.0)
+	_path(rng)
 	_fence(rng)
 	_mausoleum()
 	for x in GRAVE_COLUMNS:
 		for z in GRAVE_ROWS:
 			if rng.randf() < 0.82:
 				_grave(Vector3(x + rng.randf_range(-0.4, 0.4), 0, z + rng.randf_range(-0.3, 0.3)), rng)
-	for at in [Vector3(-5, 0, 10), Vector3(5, 0, -16)]:
-		RoomBuilder.brazier(self, at)
-	CryptKit.place(self, "rubble_half", Vector3(-19, 0, 12), 40)
-	CryptKit.place(self, "rubble_half", Vector3(18, 0, -17), 200)
+	_trees(rng)
+	_lanterns()
+	_dressing(rng)
 	var monsters := Dungeon.pack_monsters()
 	var made := Dungeon.packs()
 	for pack: Vector3 in PACKS:
@@ -56,77 +64,148 @@ func build() -> void:
 	waypoint.position = Vector3(4, 0, 11)
 	add_child(waypoint)
 	var gate := ZoneExit.new("Back to Emberfall", "town", "gate")
-	gate.position = Vector3(0, 0, 16.5)
+	gate.position = Vector3(0, 0, GATE_Z - 1.5)
 	add_child(gate)
 	hero_start = ARRIVALS.get(Session.arrival, ARRIVALS[""])
 
-# Bare earth under everything, with the odd patch of turned dirt
+# Bare earth running off into the fog. (The pack's dirt tiles leave a grid of seams from above.)
 func _ground() -> void:
-	var ground := MeshInstance3D.new()
+	var under := MeshInstance3D.new()
 	var plane := PlaneMesh.new()
-	plane.size = Vector2(64, 56)
+	plane.size = Vector2(110, 100)
 	var earth := StandardMaterial3D.new()
-	earth.albedo_color = Color("1d1b16")
+	earth.albedo_color = Color("3b342c")
 	earth.roughness = 1.0
 	plane.material = earth
-	ground.mesh = plane
-	ground.position = Vector3(0, -0.06, -2)
-	add_child(ground)
+	under.mesh = plane
+	under.position = Vector3(0, -0.02, -4)
+	add_child(under)
 
-# Balustrade round three sides with a gap for the path at the south, a high wall behind the mausoleum
+# Flagstones from the arch to the mausoleum door, laid a little crooked
+func _path(rng: RandomNumberGenerator) -> void:
+	var z := GATE_Z + 1.0
+	while z > CRYPT_DOOR_Z:
+		for x in [-0.95, 0.95]:
+			var stone: String = ["path_A", "path_B", "path_C", "path_D"][rng.randi_range(0, 3)]
+			HalloweenKit.place(self, stone, Vector3(x + rng.randf_range(-0.1, 0.1), 0, z), rng.randi_range(0, 3) * 90.0)
+		z -= 1.9
+
+# Iron fence all round, broken here and there, with stone pillars at the corners and an arch for the
+# way in at the south. The mausoleum fills the gap in the north run.
 func _fence(rng: RandomNumberGenerator) -> void:
-	var west := -HALF_X
-	var east := HALF_X + 1
-	var south := SOUTH + 1
-	RoomBuilder.wall_run(self, Vector2i(west, NORTH), Vector2i(east, NORTH), HALF_X, false, rng)
-	for side in [[Vector2i(west, NORTH), Vector2i(west, south)], [Vector2i(east, NORTH), Vector2i(east, south)]]:
-		CryptKit.wall(self, side[0], side[1], func(i: int) -> String: return "barrier_column" if i % 2 == 0 else "barrier")
-		var length := (south - NORTH) * CryptKit.CELL
-		var x: float = (side[0].x - 0.5) * CryptKit.CELL
-		CryptKit.blocker(self, Vector3(x, 1.5, (NORTH - 0.5) * CryptKit.CELL + length * 0.5), Vector3(1, 3, length))
-	var z := (south - 0.5) * CryptKit.CELL
-	for i in east - west:
-		if west + i != 0:
-			CryptKit.place(self, "barrier_column" if i % 2 == 0 else "barrier", Vector3((west + i) * CryptKit.CELL, 0, z))
-	var span := (HALF_X + 0.5) * CryptKit.CELL - CryptKit.CELL * 0.5
 	for side in [-1.0, 1.0]:
-		CryptKit.blocker(self, Vector3(side * (CryptKit.CELL * 0.5 + span * 0.5), 1.5, z), Vector3(span, 3, 1))
-	CryptKit.blocker(self, Vector3(0, 1.5, z + 1.5), Vector3(CryptKit.CELL, 3, 1))
+		var x: float = side * WEST_EAST_X
+		var z := NORTH_Z + 2.0
+		while z < GATE_Z:
+			_fence_piece(Vector3(x, 0, z), 90.0, rng)
+			z += 4.0
+		for run_z in [NORTH_Z, GATE_Z]:
+			var along := 5.0
+			while along < WEST_EAST_X:
+				_fence_piece(Vector3(side * along, 0, run_z), 0.0, rng)
+				along += 4.0
+			HalloweenKit.place(self, "pillar", Vector3(x, 0, run_z))
+		var length := GATE_Z - NORTH_Z
+		CryptKit.blocker(self, Vector3(x, 1.5, NORTH_Z + length * 0.5), Vector3(1, 3, length))
+		var span := WEST_EAST_X - 3.0
+		CryptKit.blocker(self, Vector3(side * (3.0 + span * 0.5), 1.5, NORTH_Z), Vector3(span, 3, 1))
+		CryptKit.blocker(self, Vector3(side * (3.0 + span * 0.5), 1.5, GATE_Z), Vector3(span, 3, 1))
+		HalloweenKit.place(self, "fence_pillar", Vector3(side * 2.6, 0, GATE_Z))
+	HalloweenKit.place(self, "arch", Vector3(0, 0, GATE_Z))
+	# Past the arch is the road back to town, which the gate's exit stands for; nobody walks out that way
+	CryptKit.blocker(self, Vector3(0, 1.5, GATE_Z + 1.5), Vector3(4, 3, 1))
 
-# The mausoleum door is the doorway in the north wall, pillared and lit by a shaft of moonlight
+func _fence_piece(at: Vector3, yaw: float, rng: RandomNumberGenerator) -> void:
+	HalloweenKit.place(self, "fence_broken" if rng.randf() < 0.18 else "fence", at, yaw)
+
+# The mausoleum, lit by a shaft of moonlight, with candles at its door
 func _mausoleum() -> void:
-	var door_z := (NORTH - 0.5) * CryptKit.CELL
-	var door_x := 0.0
+	HalloweenKit.place(self, "crypt", Vector3(0, 0, CRYPT_Z))
+	CryptKit.blocker(self, Vector3(0, 2, CRYPT_Z), Vector3(6, 4, 8))
 	for side in [-1.0, 1.0]:
-		RoomBuilder.prop_at(self, "pillar_decorated", Vector3(door_x + side * 3.2, 0, door_z + 1.2))
-		CryptKit.place(self, "candle_triple", Vector3(door_x + side * 1.6, 0, door_z + 1.4))
-	CryptKit.blocker(self, Vector3(door_x, 2, door_z - 1.5), Vector3(4, 4, 1))
+		HalloweenKit.place(self, "candle_triple", Vector3(side * 1.9, 0, CRYPT_DOOR_Z + 0.4))
+		HalloweenKit.solid(self, "shrine_candles", Vector3(side * 4.4, 0, CRYPT_DOOR_Z + 1.0), Vector2(1.1, 1.1))
 	var shaft := Look.spotlight(Look.MOONLIGHT, 7.0, 26.0)
-	shaft.position = Vector3(door_x, 9, door_z + 4)
+	shaft.position = Vector3(0, 9, CRYPT_DOOR_Z + 6)
 	shaft.rotation_degrees.x = -70
 	add_child(shaft)
 	var candles := OmniLight3D.new()
 	candles.light_color = Look.CANDLE
 	candles.light_energy = 1.4
 	candles.omni_range = 5.0
-	candles.position = Vector3(door_x, 1.4, door_z + 2)
+	candles.position = Vector3(0, 1.4, CRYPT_DOOR_Z + 1.5)
 	candles.set_script(Flicker)
 	add_child(candles)
 	var stairs := ZoneExit.new("Descend into the crypt", "crypt", "stairs")
-	stairs.position = Vector3(door_x, 0, door_z + 2)
+	stairs.position = Vector3(0, 0, CRYPT_DOOR_Z + 1.5)
 	add_child(stairs)
 
-# A dug grave with its headstone, now and then a post instead, now and then a candle someone left
+# A headstone, most often a proper grave, leaning a little; now and then a candle someone left
 func _grave(at: Vector3, rng: RandomNumberGenerator) -> void:
-	CryptKit.place(self, ["floor_dirt_small_A", "floor_dirt_small_B", "floor_dirt_small_C"][rng.randi_range(0, 2)], at)
-	var head := at + Vector3(0, 0, -1.3)
-	var lean := rng.randf_range(-12, 12)
-	if rng.randf() < 0.75:
-		var stone := CryptKit.place(self, "wall_endcap", head, lean)
-		stone.scale = HEADSTONE_SCALE
-		stone.rotation_degrees.x = rng.randf_range(-8, 6)
-	else:
-		CryptKit.place(self, "column", head, lean)
-	CryptKit.blocker(self, head + Vector3(0, 0.5, 0), Vector3(0.9, 1, 0.5))
+	var names := HEADSTONES.keys()
+	var piece: String = names[rng.randi_range(0, names.size() - 1)]
+	var head := at + Vector3(0, 0, -1.0)
+	var node := HalloweenKit.solid(self, piece, head, HEADSTONES[piece])
+	node.rotation_degrees.y = rng.randf_range(-8, 8)
+	node.rotation_degrees.z = rng.randf_range(-5, 5)
 	if rng.randf() < 0.18:
-		CryptKit.place(self, "candle_lit", at + Vector3(0.7, 0, -0.9))
+		HalloweenKit.place(self, ["candle", "candle_melted", "candle_thin"][rng.randi_range(0, 2)], at + Vector3(1.1, 0, -0.4))
+
+# Dead trees in among the graves, and a wall of autumn pines outside the fence so the graveyard has
+# an edge against the sky
+func _trees(rng: RandomNumberGenerator) -> void:
+	for at in [Vector3(-9, 0, -16), Vector3(9.5, 0, 13), Vector3(-17, 0, 10), Vector3(16, 0, -16), Vector3(-20, 0, -8)]:
+		var piece: String = ["tree_dead_large", "tree_dead_large_decorated", "tree_dead_medium"][rng.randi_range(0, 2)]
+		HalloweenKit.solid(self, piece, at, Vector2(0.8, 0.8), rng.randf_range(0, 360))
+	var pines := ["tree_pine_orange_large", "tree_pine_orange_medium", "tree_pine_yellow_large", "tree_pine_yellow_medium", "tree_dead_large"]
+	for side in [-1.0, 1.0]:
+		var z := NORTH_Z - 6.0
+		while z < GATE_Z + 6.0:
+			HalloweenKit.place(self, pines[rng.randi_range(0, pines.size() - 1)], Vector3(side * rng.randf_range(26.5, 30.0), 0, z), rng.randf_range(0, 360))
+			z += rng.randf_range(4.5, 6.5)
+	var x := -WEST_EAST_X
+	while x < WEST_EAST_X:
+		if absf(x) > 5.0:
+			HalloweenKit.place(self, pines[rng.randi_range(0, pines.size() - 1)], Vector3(x, 0, NORTH_Z - rng.randf_range(4.0, 7.0)), rng.randf_range(0, 360))
+		x += rng.randf_range(4.5, 6.5)
+
+# Lantern posts in pairs along the path, each hanging its lantern over the stones
+func _lanterns() -> void:
+	for z: float in LANTERN_ROWS:
+		for side in [-1.0, 1.0]:
+			var at := Vector3(side * 2.6, 0, z)
+			HalloweenKit.place(self, "post_lantern", at, -90.0 * side)
+			CryptKit.blocker(self, at + Vector3(0, 1.0, 0), Vector3(0.5, 2.0, 0.5))
+			var light := OmniLight3D.new()
+			light.light_color = Look.CANDLE
+			light.light_energy = 1.8
+			light.omni_range = 7.0
+			light.omni_attenuation = 1.8
+			light.light_volumetric_fog_energy = 1.2
+			light.position = at + Vector3(-side * 1.1, 2.5, 0)
+			light.set_script(Flicker)
+			add_child(light)
+
+# Jack-o'-lanterns with a little orange glow, pumpkins, bones, coffins and the odd bench
+func _dressing(rng: RandomNumberGenerator) -> void:
+	for at: Vector3 in JACKS:
+		HalloweenKit.solid(self, ["pumpkin_orange_jackolantern", "pumpkin_yellow_jackolantern"][rng.randi_range(0, 1)], at, Vector2(1.2, 1.2), rng.randf_range(150, 210))
+		var glow := OmniLight3D.new()
+		glow.light_color = PUMPKIN
+		glow.light_energy = 1.2
+		glow.omni_range = 3.5
+		glow.position = at + Vector3(0, 0.7, 0.6)
+		glow.set_script(Flicker)
+		add_child(glow)
+	for i in 16:
+		var at := Vector3(rng.randf_range(-21, 21), 0, rng.randf_range(-19, 16))
+		if absf(at.x) < 3.5:
+			continue
+		var piece: String = ["pumpkin_orange", "pumpkin_orange_small", "pumpkin_yellow_small", "skull", "bone_A", "bone_B", "bone_C", "ribcage"][rng.randi_range(0, 7)]
+		HalloweenKit.place(self, piece, at, rng.randf_range(0, 360))
+	HalloweenKit.place(self, "floor_dirt_grave", Vector3(-16, 0, -17))
+	HalloweenKit.solid(self, "coffin", Vector3(-12.5, 0, -17), Vector2(2.0, 3.0), 90.0)
+	HalloweenKit.solid(self, "coffin_decorated", Vector3(15, 0, 14.5), Vector2(2.0, 3.0), 90.0)
+	HalloweenKit.solid(self, "bench_decorated", Vector3(-6, 0, 13), Vector2(2.0, 1.0))
+	HalloweenKit.solid(self, "plaque_candles", Vector3(6, 0, -16), Vector2(2.0, 2.0))
+	CryptKit.blocker(self, Vector3(-16, 1.0, -17), Vector3(4, 2, 4))

@@ -40,3 +40,19 @@ func test_the_graveyard_has_monsters_a_checkpoint_and_ways_back_and_down() -> vo
 	var targets := _named(graveyard, "ZoneExit").map(func(exit: ZoneExit) -> String: return exit.target)
 	assert_array(targets).contains_exactly_in_any_order(["town", "crypt"])
 	assert_vector(graveyard.hero_start).is_equal(Graveyard.ARRIVALS["stairs"])
+
+func test_the_graveyard_is_dressed_from_halloween_bits() -> void:
+	var graveyard: Graveyard = _build("graveyard")
+	var pieces := graveyard.find_children("*", "Node3D", true, false) \
+		.map(func(node: Node3D) -> String: return node.scene_file_path) \
+		.filter(func(path: String) -> bool: return path.contains("/halloween/"))
+	assert_int(pieces.size()).is_greater(80)
+	assert_bool(pieces.any(func(path: String) -> bool: return path.ends_with("/crypt.gltf"))).is_true()
+
+func test_the_path_from_the_gate_to_the_crypt_door_is_clear() -> void:
+	var graveyard: Graveyard = _build("graveyard")
+	var lane := AABB(Vector3(-1.0, 0.0, Graveyard.CRYPT_DOOR_Z), Vector3(2.0, 2.0, Graveyard.GATE_Z - Graveyard.CRYPT_DOOR_Z))
+	for body: StaticBody3D in _named(graveyard, "StaticBody3D"):
+		var box: BoxShape3D = body.get_child(0).shape
+		var solid := AABB(body.position - box.size * 0.5, box.size)
+		assert_bool(solid.intersects(lane)).override_failure_message("something solid at %s blocks the path" % body.position).is_false()
