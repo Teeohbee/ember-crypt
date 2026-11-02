@@ -6,7 +6,7 @@ on the Steam Deck / Steam Machine. Never to be released; art is [KayKit](https:/
 
 ## where it's up to
 
-**M0 - the shell.** Splash, title, main menu, class select (Barbarian or Mage), a test room with the
+**M0 - the shell.** Title, main menu, class select (Barbarian or Mage), a test room with the
 chosen hero, pause, and options (audio, display, gameplay, the pad layout). Every screen works on the
 pad, B always steps back, and the world never cuts away between menus. The hero can't move yet; that's
 M1.

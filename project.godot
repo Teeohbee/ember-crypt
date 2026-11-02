@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Ember Crypt"
-run/main_scene="res://src/frontend/splash.tscn"
+run/main_scene="res://src/frontend/front_end.tscn"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"
 boot_splash/bg_color=Color(0.039, 0.031, 0.027, 1)
