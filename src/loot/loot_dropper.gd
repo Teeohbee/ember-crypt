@@ -30,21 +30,23 @@ func _on_monster_killed(monster: Monster, event: DamageEvent) -> void:
 	var slot: PlayerSlot = event.source.slot if event and event.source is Hero else Session.slots[0]
 	drop_for(monster, slot)
 
+# What an elite or a boss adds to its roll: guaranteed extra items, a rarity floor, and magic and
+# gold find on top of the hero's
+static func boost(is_boss: bool, elite: bool) -> Dictionary:
+	if is_boss:
+		return {"rolls": 4, "min_rarity": Item.Rarity.RARE, "magic_find": 1.0, "gold_find": 1.0}
+	if elite:
+		return {"rolls": 2, "min_rarity": Item.Rarity.MAGIC, "magic_find": 0.5, "gold_find": 0.5}
+	return {"rolls": 0, "min_rarity": Item.Rarity.NORMAL, "magic_find": 0.0, "gold_find": 0.0}
+
 func drop_for(monster: Monster, slot: PlayerSlot) -> void:
 	var hero := slot.hero if slot and is_instance_valid(slot.hero) else null
 	var table := monster.def.loot_table if monster.def.loot_table else default_table
-	var bonus := 0
-	var min_rarity := Item.Rarity.NORMAL
-	if monster.def.is_boss:
-		bonus = 3
-		min_rarity = Item.Rarity.RARE
-	elif monster.elite:
-		bonus = 1
-		min_rarity = Item.Rarity.MAGIC
+	var extra := boost(monster.def.is_boss, monster.elite)
 	var drops := roller.roll_drops(table, monster.def.level,
-		hero.stats.value(Stats.MAGIC_FIND) if hero else 0.0,
-		hero.stats.value(Stats.GOLD_FIND) if hero else 0.0,
-		hero.hero_class.id if hero else "", bonus, min_rarity)
+		(hero.stats.value(Stats.MAGIC_FIND) if hero else 0.0) + extra.magic_find,
+		(hero.stats.value(Stats.GOLD_FIND) if hero else 0.0) + extra.gold_find,
+		hero.hero_class.id if hero else "", extra.rolls, extra.min_rarity)
 	var parent := monster.get_parent()
 	var from := monster.global_position + Vector3.UP * 0.8
 	var count: int = drops.items.size() + (1 if drops.gold > 0 else 0)

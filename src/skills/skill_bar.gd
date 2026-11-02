@@ -75,6 +75,7 @@ func _start(index: int, skill: SkillDef, target: Combatant, aim: Vector3) -> boo
 	aim = aim.normalized()
 	caster.face(aim)
 	var speed := maxf(caster.stats.value(Stats.ATTACK_SPEED), 0.1)
+	_lunge(skill, target, skill.hit_time / speed)
 	var cooldown := skill.cooldown * (1.0 - clampf(caster.stats.value(Stats.COOLDOWN_REDUCTION), 0.0, 0.8))
 	_cooldowns[index] = cooldown
 	_cooldown_lengths[index] = cooldown
@@ -85,6 +86,18 @@ func _start(index: int, skill: SkillDef, target: Combatant, aim: Vector3) -> boo
 	Events.skill_used.emit(caster, skill)
 	_fire_later(index, skill, target, aim, skill.hit_time / speed)
 	return true
+
+# Melee skills step-lunge into reach: with params "strike_range" set, a target further off than that is
+# closed on during the wind-up, so the blow lands at hit_time
+func _lunge(skill: SkillDef, target: Combatant, wind_up: float) -> void:
+	var strike_range: float = skill.params.get("strike_range", 0.0)
+	if strike_range <= 0.0 or target == null:
+		return
+	var gap := target.global_position - caster.global_position
+	gap.y = 0.0
+	var distance := gap.length()
+	if distance > strike_range + 0.05:
+		Shove.apply(caster, gap / distance * (distance - strike_range), maxf(wind_up, 0.08))
 
 func _fire_later(index: int, skill: SkillDef, target: Combatant, aim: Vector3, delay: float) -> void:
 	if delay > 0.0:

@@ -128,3 +128,20 @@ func test_gold_rolls_in_range_and_gold_find_adds_to_it() -> void:
 func test_bonus_rolls_add_drops() -> void:
 	var drops := _roller().roll_drops(_table(), 1, 0.0, 0.0, "", 2)
 	assert_int(drops.items.size()).is_equal(3)
+
+func test_elites_and_bosses_roll_more_and_better() -> void:
+	var table := _table(0.0)
+	table.rarity_weights = {0: 100, 1: 10, 2: 1, 3: 0}
+	var plain := LootDropper.boost(false, false)
+	var elite := LootDropper.boost(false, true)
+	var boss := LootDropper.boost(true, false)
+	var normal_drops := _roller().roll_drops(table, 1, plain.magic_find, 0.0, "", plain.rolls, plain.min_rarity)
+	var elite_drops := _roller().roll_drops(table, 1, elite.magic_find, 0.0, "", elite.rolls, elite.min_rarity)
+	var boss_drops := _roller().roll_drops(table, 1, boss.magic_find, 0.0, "", boss.rolls, boss.min_rarity)
+	assert_int(normal_drops.items.size()).is_equal(0)
+	assert_int(elite_drops.items.size()).is_equal(2)
+	assert_int(boss_drops.items.size()).is_greater(elite_drops.items.size())
+	for item: Item in elite_drops.items:
+		assert_int(item.rarity).is_greater_equal(Item.Rarity.MAGIC)
+	for item: Item in boss_drops.items:
+		assert_int(item.rarity).is_greater_equal(Item.Rarity.RARE)

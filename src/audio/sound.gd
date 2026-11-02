@@ -1,8 +1,8 @@
 extends Node
-# One-shot UI sounds on the Sounds bus, from the WAVs Compositions renders. A small pool of players
+# One-shot UI and combat sounds on the Sounds bus, from the WAVs Compositions renders. A small pool of players
 # lets sounds overlap; a burst bigger than the pool cuts off the oldest.
 
-const POOL_SIZE := 8
+const POOL_SIZE := 16
 
 var _sounds := {}
 var _players: Array[AudioStreamPlayer] = []

@@ -33,6 +33,8 @@ const ACTIONS := {
 	"skill_6": {"keys": [KEY_O], "triggers": [JOY_AXIS_TRIGGER_RIGHT]},
 	"potion": {"keys": [KEY_Q], "buttons": [JOY_BUTTON_LEFT_SHOULDER]},
 	"target_lock": {"keys": [KEY_SHIFT], "triggers": [JOY_AXIS_TRIGGER_LEFT]},
+	# The evade is the right stick (read through PlayerSlot.aim_vector); this is its debug key
+	"evade": {"keys": [KEY_C]},
 	# M4: hold to wear what you just picked up
 	"equip": {"keys": [KEY_F], "buttons": [JOY_BUTTON_DPAD_UP]},
 }

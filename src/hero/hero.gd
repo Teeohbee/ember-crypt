@@ -62,6 +62,8 @@ func _physics_process(delta: float) -> void:
 	motor.physics_step(delta)
 	if slot.just_pressed(&"potion") and not potion.drink():
 		Sound.play("denied")
+	if motor.rolling:
+		return
 	var picking_up := pickup.physics_step()
 	if not picking_up and slot.just_pressed(SKILL_ACTIONS[0]) and _interact():
 		return

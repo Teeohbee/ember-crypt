@@ -19,6 +19,8 @@ var health := 0.0
 # Fury / Arcane Power for heroes; monsters have it but rarely use it
 var power := 0.0
 var rng := RandomNumberGenerator.new()
+# While true, hits pass through: a hero's evade roll
+var invulnerable := false
 var alive: bool:
 	get: return health > 0.0
 
@@ -44,7 +46,7 @@ func max_health() -> float:
 	return stats.value(Stats.MAX_HEALTH)
 
 func take_hit(event: DamageEvent) -> void:
-	if not alive:
+	if not alive or invulnerable:
 		return
 	health = maxf(health - event.amount, 0.0)
 	event.killed = health <= 0.0
