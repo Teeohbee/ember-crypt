@@ -11,6 +11,14 @@ chosen hero, pause, and options (audio, display, gameplay, the pad layout). Ever
 pad, B always steps back, and the world never cuts away between menus. The hero can't move yet; that's
 M1.
 
+**M5 - progression.** Kills pay XP (more for tougher monsters and elites) up a level curve to 30; each
+level grows the class's stats, heals, and sets off a shaft of gold light, a toll and a banner naming
+what it unlocked. Skills stay locked until their `SkillDef.unlock_level`. Each skill takes one rune
+(`RuneDef`, in `src/skills/runes/<skill id>/`), chosen on the skills screen (D-pad left). Characters
+are saved to `user://characters.json` - class, level, XP, runes, bags, gear, zone - on level-ups,
+pickups, checkpoints and leaving; the main menu has Continue, a character list (X deletes) and New
+Game.
+
 ## controls
 
 Pad first; keys exist for testing.
@@ -20,6 +28,7 @@ Pad first; keys exist for testing.
 | Menus | Left stick / D-pad, A, B | Arrows / WASD, Enter, Esc |
 | Options tabs | LB / RB | Q / E |
 | Pause | Start | Esc |
+| Skills screen | D-pad left | P |
 
 ## running
 
