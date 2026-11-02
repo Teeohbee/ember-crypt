@@ -39,7 +39,11 @@ func _physics_process(delta: float) -> void:
 	var before := _eased(_elapsed / _duration)
 	_elapsed = minf(_elapsed + delta, _duration)
 	var step := _offset * (_eased(_elapsed / _duration) - before)
-	if body.move_and_collide(step) != null:
+	var height := body.global_position.y
+	var blocked := body.move_and_collide(step) != null
+	# Shoves are flat: never climb whatever the body was pushed into
+	body.global_position.y = height
+	if blocked:
 		# Hit a wall or another body: the rest of the shove is spent
 		_elapsed = _duration
 

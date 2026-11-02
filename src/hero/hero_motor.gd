@@ -148,8 +148,10 @@ func _animate(walking: bool) -> void:
 # it's driven: slides along whatever it meets, a few times at most
 func _slide(delta: float) -> void:
 	var motion := hero.velocity * delta
+	var height := hero.global_position.y
 	for i in 4:
 		var collision := hero.move_and_collide(motion)
+		hero.global_position.y = height
 		if collision == null:
 			return
 		var normal := collision.get_normal()
