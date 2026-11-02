@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="SkillDef" format=3]
+
+[ext_resource type="Script" path="res://src/skills/skill_def.gd" id="1"]
+[ext_resource type="Script" path="res://src/skills/mage/teleport.gd" id="2"]
+
+[resource]
+script = ExtResource("1")
+id = &"teleport"
+display_name = "Teleport"
+description = "Vanish and reappear a short way off in the direction you point."
+effect = ExtResource("2")
+animation = "Spellcasting"
+hit_time = 0.1
+recovery = 0.3
+cooldown = 6.0
+cost = 15.0
+generate = 0.0
+damage_multiplier = 0.0
+damage_kind = 4
+reach = 0.0
+radius = 0.0
+cone_degrees = 90.0
+knockback = 0.0
+unlock_level = 6
+params = {
+"distance": 8.0
+}
