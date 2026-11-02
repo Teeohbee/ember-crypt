@@ -19,8 +19,11 @@ boot_splash/show_image=false
 
 [autoload]
 
+Settings="*res://src/core/settings.gd"
+Controls="*res://src/core/controls.gd"
 Sound="*res://src/audio/sound.gd"
 Music="*res://src/audio/music.gd"
+SceneManager="*res://src/core/scene_manager.gd"
 
 [display]
 
