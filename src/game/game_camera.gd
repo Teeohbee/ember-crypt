@@ -4,13 +4,13 @@ extends Camera3D
 # until co-op) with a little lag. It leans a little ahead of where the heroes are running, so there's
 # more to see in front than behind; shakes when Feedback says so; and dissolves walls in the way.
 
-# About 50 degrees down, low enough to see the walls you're walking toward, close enough to read a
-# skeleton's face
-const OFFSET := Vector3(0, 11.0, 9.5)
+# About 50 degrees down and pulled well back, D3 style: a whole room and the pack coming at you on
+# screen, at the cost of reading a skeleton's face
+const OFFSET := Vector3(0, 15.5, 13.3)
 const FOLLOW := 6.0
 # Lead: this many seconds of the heroes' velocity, at most MAX_LEAD metres, eased in and out
 const LEAD_SECONDS := 0.3
-const MAX_LEAD := 2.0
+const MAX_LEAD := 2.8
 const LEAD_EASE := 2.5
 # At full shake: metres the view slides and radians it rolls
 const SHAKE_SLIDE := 0.4

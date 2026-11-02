@@ -52,7 +52,7 @@ static func _label(words: String, size: int, colour: Color) -> Label3D:
 	label.text = words
 	label.font = UiTheme.heading_font(700)
 	label.font_size = size
-	label.pixel_size = 0.006
+	label.pixel_size = 0.0085
 	label.modulate = colour
 	label.outline_modulate = Color(0, 0, 0, 0.9)
 	label.outline_size = 10

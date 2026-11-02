@@ -37,7 +37,7 @@ func _init() -> void:
 		label.font_size = FONT_SIZE
 		label.outline_size = 14
 		label.outline_modulate = Color(0.05, 0.02, 0.02, 0.9)
-		label.pixel_size = 0.006
+		label.pixel_size = 0.0085
 		label.visible = false
 		labels.append(label)
 		add_child(label)

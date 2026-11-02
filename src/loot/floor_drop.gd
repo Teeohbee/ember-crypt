@@ -111,7 +111,7 @@ func _build() -> void:
 	label.font = UiTheme.body_font("Bold")
 	label.font_size = 36
 	label.outline_size = 10
-	label.pixel_size = 0.004
+	label.pixel_size = 0.0056
 	label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 	label.no_depth_test = true
 	label.modulate = colour()
