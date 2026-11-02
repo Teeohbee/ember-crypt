@@ -7,7 +7,7 @@ script = ExtResource("1")
 id = &"magic_missile_charged_blast"
 skill = &"magic_missile"
 display_name = "Charged Blast"
-description = "Crackles with lightning for 35% more damage, for a quarter more Arcane Power."
+description = "Crackles with lightning: 35% more damage for a quarter more Arcane Power."
 unlock_level = 3
 multiply = {
 "damage_multiplier": 1.35,
