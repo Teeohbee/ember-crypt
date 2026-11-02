@@ -1,7 +1,7 @@
 class_name XpBar
 extends Control
-# The XP bar: a thin gold line along the bottom of the screen, under the action bar, with the hero's level at its left end,
-# notched in tenths the way Diablo's is. It fills smoothly as XP comes in, sweeps to the end and empties
+# The XP bar: a thin gold line along the bottom of the screen, under the action bar, with the hero's
+# level at its left end, notched in tenths the way Diablo's is. It fills smoothly as XP comes in, sweeps to the end and empties
 # on a level-up, and at the level cap it stays full.
 
 const WIDTH := 880.0
