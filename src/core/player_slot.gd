@@ -9,6 +9,9 @@ const STICK_DEADZONE := 0.2
 var index := 0
 var device := -1
 var hero: Hero
+# Actions held when the game came back from a pause: they read as not pressed until let go, so the B
+# that closed a menu doesn't also fire the B skill
+var _swallowed := {}
 
 func _init(slot_index := 0, device_id := -1) -> void:
 	index = slot_index
@@ -25,7 +28,17 @@ func aim_vector() -> Vector2:
 	return _stick(JOY_AXIS_RIGHT_X, JOY_AXIS_RIGHT_Y)
 
 func pressed(action: StringName) -> bool:
+	if _swallowed.has(action):
+		if Input.is_action_pressed(action):
+			return false
+		_swallowed.erase(action)
 	return Input.is_action_pressed(action)
+
+# Ignores whichever of actions are held right now until each is let go
+func swallow_held(actions: Array[StringName]) -> void:
+	for action in actions:
+		if Input.is_action_pressed(action):
+			_swallowed[action] = true
 
 func just_pressed(action: StringName) -> bool:
 	return Input.is_action_just_pressed(action)

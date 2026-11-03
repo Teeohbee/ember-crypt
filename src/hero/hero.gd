@@ -17,6 +17,7 @@ var inventory := Inventory.new()
 var equipment: Equipment
 # Loot underfoot: gold scooped up, items picked up on A (M4)
 var pickup: HeroPickup
+var _last_physics_frame := 0
 var level := 1
 var xp := 0
 
@@ -53,10 +54,12 @@ func _init(chosen: HeroClass, player_slot: PlayerSlot) -> void:
 func _ready() -> void:
 	super()
 	slot.hero = self
+	_last_physics_frame = Engine.get_physics_frames()
 	power = hero_class.starting_power
 	Events.hero_spawned.emit(self)
 
 func _physics_process(delta: float) -> void:
+	_swallow_after_pause()
 	if not alive:
 		return
 	motor.physics_step(delta)
@@ -73,6 +76,15 @@ func _physics_process(delta: float) -> void:
 		if slot.pressed(SKILL_ACTIONS[i]) and skill_bar.can_use(i):
 			skill_bar.use(i, aim_direction())
 			break
+
+# Physics frames keep counting while the game is paused, but this doesn't run; a gap of more than one
+# frame means a menu (or
+# the stash, or a scene change) has just let go, and any button still down was pressed for that
+func _swallow_after_pause() -> void:
+	var frame := Engine.get_physics_frames()
+	if frame > _last_physics_frame + 1:
+		slot.swallow_held(SKILL_ACTIONS)
+	_last_physics_frame = frame
 
 # A uses whatever is in reach (a waypoint, the stash) when nothing hostile is close (M6)
 func _interact() -> bool:
