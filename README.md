@@ -121,5 +121,6 @@ tests/run.sh res://tests/test_front_end.gd   # one suite
 ## credits
 
 - Characters, weapons, dungeon and Halloween Bits: KayKit by Kay Lousberg, CC0
+- Panel and slot frames: Kenney's Fantasy UI Borders, CC0, recoloured
 - Skill icons: "496 pixel art icons for medieval/fantasy RPG" by 7Soul, CC0
 - Cinzel (Natanael Gama) and Alegreya Sans (Huerta Tipográfica), SIL Open Font License
