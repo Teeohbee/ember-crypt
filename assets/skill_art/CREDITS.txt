@@ -1,0 +1,5 @@
+"496 pixel art icons for medieval/fantasy RPG" by 7Soul (Henrique Lazarini), CC0 1.0
+https://opengameart.org/content/496-pixel-art-icons-for-medievalfantasy-rpg
+Scaled 4x, nearest neighbour, renamed by skill:
+  bash S_Physic01, cleave S_Sword06, leap S_Earth07, war_cry S_Buff01,
+  magic_missile S_Light01, arcane_orb S_Light03, frost_nova S_Ice02, teleport S_Magic05
