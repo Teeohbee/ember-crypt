@@ -19,7 +19,7 @@ func execute(caster: Combatant, skill: SkillDef, _target: Combatant, _aim: Vecto
 		if raised:
 			raised.face(at - caster.global_position)
 			raised.brain.rise()
-			raised.brain.alert(monster.brain.target)
+			raised.brain.alert(monster.brain.target, true)
 			monster.brain.summons.append(raised)
 			caster.get_parent().add_child(Telegraph.ring(at, 1.0, 0.9, Telegraph.SUMMON))
 	Sound.play("summon", randf_range(0.95, 1.05))
