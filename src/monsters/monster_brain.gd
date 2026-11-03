@@ -134,7 +134,8 @@ func pick_skill() -> int:
 	return -1
 
 # Turns on a hero, and calls the rest of the pack in
-func alert(to: Combatant) -> void:
+# quietly: woken by a packmate or raised by a summoner, so the pack's one rattle has already sounded
+func alert(to: Combatant, quietly := false) -> void:
 	if to == null or not is_instance_valid(to) or not to.alive or state == State.DIE or to == target:
 		return
 	if to.team == monster.team:
@@ -146,11 +147,13 @@ func alert(to: Combatant) -> void:
 		_announced = true
 		Sound.play("elite")
 	if state == State.IDLE:
+		if not quietly:
+			Sound.play("skeleton_wake", randf_range(0.85, 1.1))
 		_set_state(State.CHASE)
 	for mate in pack:
 		if is_instance_valid(mate) and mate != monster and mate.alive \
 				and mate.global_position.distance_to(monster.global_position) <= PACK_CALL:
-			mate.brain.alert(to)
+			mate.brain.alert(to, true)
 
 # Called by a summoning: lie still while the rising animation plays
 func rise() -> void:

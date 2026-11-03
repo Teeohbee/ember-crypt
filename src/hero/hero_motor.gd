@@ -18,6 +18,10 @@ const WALK_BELOW := 0.55           # stick pushed less than this walks
 const WALK_FRACTION := 0.45        # of move speed
 const RUN_ANIM_SPEED := 6.0        # metres per second at which Running_A plays at its own pace
 const WALK_ANIM_SPEED := 2.4
+# Ground covered between footfalls: anim speed x cycle length / 2 feet, so steps land on the feet
+const RUN_STRIDE := 2.4
+const WALK_STRIDE := 1.28
+const WALK_STEP_VOLUME_DB := -4.0
 
 const ROLL_DISTANCE := 4.5
 const ROLL_SECONDS := 0.4
@@ -38,6 +42,8 @@ var _roll_direction := Vector3.FORWARD
 var _roll_elapsed := ROLL_SECONDS
 var _roll_cooldown := 0.0
 var _stick_centred := true
+# Metres left until the next footfall
+var _stride_left := 0.0
 
 func _init(owner_hero: Hero) -> void:
 	hero = owner_hero
@@ -118,6 +124,7 @@ func move(delta: float, stick: Vector2) -> void:
 		gait = Gait.OTHER
 	else:
 		_animate(stick.length() < WALK_BELOW)
+	_step_sounds(delta)
 
 func _animate(walking: bool) -> void:
 	var speed := Vector2(hero.velocity.x, hero.velocity.z).length()
@@ -143,6 +150,18 @@ func _animate(walking: bool) -> void:
 		animations.speed_scale = clampf(speed / WALK_ANIM_SPEED, 0.6, 1.6)
 	elif gait == Gait.RUN:
 		animations.speed_scale = clampf(speed / RUN_ANIM_SPEED, 0.6, 1.5)
+
+# A footfall every stride while walking or running, on the zone's ground
+func _step_sounds(delta: float) -> void:
+	if gait != Gait.WALK and gait != Gait.RUN:
+		_stride_left = 0.0
+		return
+	var stride := WALK_STRIDE if gait == Gait.WALK else RUN_STRIDE
+	_stride_left -= Vector2(hero.velocity.x, hero.velocity.z).length() * delta
+	if _stride_left <= 0.0:
+		_stride_left += stride
+		var volume := WALK_STEP_VOLUME_DB if gait == Gait.WALK else 0.0
+		Sound.play_foley(Foley.footsteps_for(Session.zone_id), randf_range(0.9, 1.1), volume)
 
 # move_and_slide by hand, over this step's delta rather than the engine's, so a step is a step however
 # it's driven: slides along whatever it meets, a few times at most
