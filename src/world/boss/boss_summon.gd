@@ -20,7 +20,7 @@ func execute(caster: Combatant, skill: SkillDef, target: Combatant, _aim: Vector
 			raised.face(at - boss.global_position)
 			raised.brain.rise()
 			if is_instance_valid(target):
-				raised.brain.alert(target)
+				raised.brain.alert(target, true)
 			brain.summons.append(raised)
 			boss.get_parent().add_child(Telegraph.ring(at, 1.0, 0.9, Telegraph.SUMMON))
 	Sound.play("summon", 0.85)
