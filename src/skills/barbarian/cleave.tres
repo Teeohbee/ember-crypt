@@ -2,10 +2,12 @@
 
 [ext_resource type="Script" path="res://src/skills/skill_def.gd" id="1"]
 [ext_resource type="Script" path="res://src/skills/barbarian/cleave.gd" id="2"]
+[ext_resource type="Texture2D" path="res://assets/skill_art/cleave.png" id="icon"]
 
 [resource]
 script = ExtResource("1")
 id = &"cleave"
+icon = ExtResource("icon")
 display_name = "Cleave"
 description = "A wide swing that strikes every enemy in an arc in front of you."
 effect = ExtResource("2")

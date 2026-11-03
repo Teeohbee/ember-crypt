@@ -1,6 +1,6 @@
 class_name SkillRow
 extends Button
-# One skill on the skills screen: its button, its name and the rune set in it. Left and right step
+# One skill on the skills screen: its button, its icon, its name and the rune set in it. Left and right step
 # through the runes the hero has unlocked for it (and "No rune"), setting each as it lands, so there's
 # nothing to confirm. A locked skill says when it unlocks and won't take a rune.
 
@@ -29,6 +29,14 @@ func _init(slot_index: int, slot_skill: SkillDef, hero_progress: HeroProgress) -
 	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(row)
 	row.add_child(ButtonGlyph.new(GLYPHS[slot_index], 40))
+	var icon := TextureRect.new()
+	icon.name = "Icon"
+	icon.custom_minimum_size = Vector2(48, 48)
+	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	icon.texture = skill.icon if skill else null
+	icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	row.add_child(icon)
 	name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	name_label.add_theme_font_override("font", UiTheme.heading_font(600))
 	row.add_child(name_label)
