@@ -41,3 +41,29 @@ func test_the_inventory_wears_drops_and_closes_on_the_pad() -> void:
 	await press("ui_cancel")
 	assert_bool(screen.is_open).is_false()
 	assert_bool(get_tree().paused).is_false()
+
+func test_the_screen_holds_still_whatever_is_under_focus() -> void:
+	var game: Node = await open_screen(GAME)
+	var hero: Hero = game.hero
+	var screen: InventoryScreen = game.get_node("Inventory0")
+	var random := RandomNumberGenerator.new()
+	random.seed = 3
+	var roller := LootRoller.new(random)
+	# A plain ring, then the wordiest kind of thing there is: a legendary shield with all its affixes
+	hero.inventory.add(_item(&"ring"))
+	hero.inventory.add(roller.roll_item(ItemLibrary.base(&"tower_shield"), Item.Rarity.LEGENDARY, 30))
+	await press("inventory")
+	await await_idle_frame()
+	var bag_at := screen.bag[0].global_position
+	var doll_at := screen.doll[0].global_position
+	var card_at := screen.card.global_position
+	var card_size := screen.card.size
+	for step in ["ui_right", "ui_right"]:
+		await press(step)
+		await await_idle_frame()
+		assert_vector(screen.bag[0].global_position).is_equal(bag_at)
+		assert_vector(screen.doll[0].global_position).is_equal(doll_at)
+		if screen.card.visible:
+			assert_vector(screen.card.global_position).is_equal(card_at)
+			assert_vector(screen.card.size).is_equal(card_size)
+	await press("ui_cancel")

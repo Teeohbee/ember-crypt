@@ -2,7 +2,7 @@ class_name InventoryScreen
 extends CanvasLayer
 # Select opens the hero's bags and paper doll. The world pauses behind it. Move around the squares
 # on the stick or D-pad; the card on the right shows the item under focus and, for anything in the
-# bags, what wearing it would change. A wears or takes off, X drops it on the floor, B or Select
+# bags, what wearing it would change. The character sheet sits under the paper doll. A wears or takes off, X drops it on the floor, B or Select
 # closes.
 
 const DOLL_ORDER: Array[ItemBase.Slot] = [ItemBase.Slot.HEAD, ItemBase.Slot.WEAPON, ItemBase.Slot.CHEST,
@@ -49,22 +49,15 @@ func _ready() -> void:
 	centre.add_child(columns)
 	columns.add_child(_doll_panel())
 	columns.add_child(_bag_panel())
+	# The card fills the column, whatever it holds, so a long item doesn't resize the row and send the
+	# whole screen sliding to re-centre itself
 	var right := VBoxContainer.new()
 	right.custom_minimum_size.x = 520
+	card.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	right.add_child(card)
 	_empty_note = UiTheme.text("", 26, UiTheme.FADED)
+	_empty_note.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	right.add_child(_empty_note)
-	var gap := Control.new()
-	gap.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	right.add_child(gap)
-	var sheet_panel := PanelContainer.new()
-	var sheet_rows := VBoxContainer.new()
-	sheet_panel.add_child(sheet_rows)
-	sheet_rows.add_child(UiTheme.heading("Character", 30, UiTheme.FADED))
-	_sheet.columns = 2
-	_sheet.add_theme_constant_override("h_separation", 24)
-	sheet_rows.add_child(_sheet)
-	right.add_child(sheet_panel)
 	columns.add_child(right)
 	_prompts = PromptBar.in_corner(_root)
 	_link_focus()
@@ -90,6 +83,12 @@ func _doll_panel() -> Control:
 		_hook(square)
 		grid.add_child(square)
 		doll.append(square)
+	rows.add_child(UiTheme.divider(260))
+	rows.add_child(UiTheme.heading("Character", 28, UiTheme.FADED))
+	_sheet.columns = 2
+	_sheet.add_theme_constant_override("h_separation", 24)
+	_sheet.add_theme_constant_override("v_separation", 0)
+	rows.add_child(_sheet)
 	return panel
 
 func _bag_panel() -> Control:
