@@ -3,6 +3,8 @@ extends Button
 # One square in the bags or on the paper doll: the item's glyph framed in its rarity colour, or the
 # slot's name faded when it's empty. Gold frame and a glow when it has focus.
 
+# The fill stops short of the frame's notched corners
+const EDGE_INSET := 4.0
 const EMPTY_GLYPHS := {
 	ItemBase.Slot.WEAPON: "sword", ItemBase.Slot.OFFHAND: "shield", ItemBase.Slot.HEAD: "helm",
 	ItemBase.Slot.CHEST: "chest", ItemBase.Slot.HANDS: "gloves", ItemBase.Slot.FEET: "boots",
@@ -30,15 +32,15 @@ func show_item(shown: Item) -> void:
 func _draw() -> void:
 	var rect := Rect2(Vector2.ZERO, size)
 	var lit := has_focus()
-	var box := StyleBoxFlat.new()
-	box.bg_color = Color(UiTheme.ASH, 0.9) if item else Color(UiTheme.VOID, 0.75)
-	box.border_color = UiTheme.GOLD if lit else (Color(item.colour(), 0.8) if item else UiTheme.BRONZE)
-	box.set_border_width_all(4 if lit else 2)
-	box.set_corner_radius_all(3)
+	var fill := StyleBoxFlat.new()
+	fill.bg_color = Color(UiTheme.ASH, 0.9) if item else Color(UiTheme.VOID, 0.75)
 	if lit:
-		box.shadow_color = Color(UiTheme.EMBER, 0.35)
-		box.shadow_size = 12
-	draw_style_box(box, rect)
+		fill.shadow_color = Color(UiTheme.EMBER, 0.35)
+		fill.shadow_size = 12
+	draw_style_box(fill, rect.grow(-EDGE_INSET))
+	var edge := UiTheme.slot_edge()
+	edge.modulate_color = UiTheme.GOLD if lit else (Color(item.colour(), 0.8) if item else UiTheme.BRONZE)
+	draw_style_box(edge, rect)
 	var inner := rect.grow(-size.x * 0.16)
 	if item:
 		ItemIcon.paint(self, item.base.kind, inner, item.colour())

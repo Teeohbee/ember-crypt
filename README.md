@@ -126,5 +126,6 @@ tests/run.sh res://tests/test_front_end.gd   # one suite
 
 - Characters, weapons, dungeon and Halloween Bits: KayKit by Kay Lousberg, CC0
 - Impact Sounds and RPG Audio: Kenney, CC0; bones, skeleton and creature sounds from OpenGameArt, CC0 (see `assets/audio/foley/CREDITS.txt`)
+- Panel and slot frames: Kenney's Fantasy UI Borders, CC0, recoloured
 - Skill icons: "496 pixel art icons for medieval/fantasy RPG" by 7Soul, CC0
 - Cinzel (Natanael Gama) and Alegreya Sans (Huerta Tipográfica), SIL Open Font License
