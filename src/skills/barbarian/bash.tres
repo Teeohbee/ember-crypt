@@ -2,10 +2,12 @@
 
 [ext_resource type="Script" path="res://src/skills/skill_def.gd" id="1"]
 [ext_resource type="Script" path="res://src/skills/barbarian/bash.gd" id="2"]
+[ext_resource type="Texture2D" path="res://assets/skill_art/bash.png" id="icon"]
 
 [resource]
 script = ExtResource("1")
 id = &"bash"
+icon = ExtResource("icon")
 display_name = "Bash"
 description = "Smash up to three foes in front of you for 160% weapon damage, knocking them back. Steps in to reach anything close. Generates 8 Fury per foe hit."
 effect = ExtResource("2")

@@ -1,7 +1,7 @@
 class_name SkillSlot
 extends Control
-# One socket on the skill bar: the skill's icon (its texture if it has one, otherwise its initials on
-# a disc in the colour of its damage), a dark sweep that unwinds clockwise as the cooldown runs out
+# One socket on the skill bar: the skill's icon (its texture on a disc in the colour of its damage, or
+# its initials if it has none), a dark sweep that unwinds clockwise as the cooldown runs out
 # with the seconds left on top, a red wash when there isn't enough power, a gold flare when it comes
 # ready, and the pad button that fires it. An empty socket is just a dim ring; one holding a skill the
 # hero hasn't reached yet shows a padlock and the level it opens at. The potion uses one too.
@@ -17,6 +17,8 @@ const KIND_COLOURS := {
 	DamageEvent.Kind.POISON: Color("5f9a45"),
 }
 const SWEEP_SEGMENTS := 32
+# Half the icon's side, as a fraction of the socket's radius: 0.7 keeps its corners inside the ring
+const ICON_FRACTION := 0.7
 
 var button: String
 var empty := true
@@ -103,8 +105,10 @@ func _draw() -> void:
 			_letters("Lv %d" % locked_level, centre + Vector2(0, radius * 0.42), 18, Color(UiTheme.PARCHMENT, 0.7))
 		return
 	if icon:
-		var box := Rect2(centre - Vector2(radius, radius) * 0.86, Vector2(radius, radius) * 1.72)
-		draw_texture_rect(icon, box, false)
+		# On a disc of its damage colour; the square stays inside the ring, corners and all
+		draw_circle(centre, radius, tint.darkened(0.7))
+		var half := radius * ICON_FRACTION
+		draw_texture_rect(icon, Rect2(centre - Vector2(half, half), Vector2(half, half) * 2.0), false)
 	else:
 		draw_circle(centre, radius, tint.darkened(0.55))
 		draw_circle(centre + Vector2(0, -radius * 0.12), radius * 0.78, tint.darkened(0.2))

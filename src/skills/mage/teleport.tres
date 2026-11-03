@@ -2,10 +2,12 @@
 
 [ext_resource type="Script" path="res://src/skills/skill_def.gd" id="1"]
 [ext_resource type="Script" path="res://src/skills/mage/teleport.gd" id="2"]
+[ext_resource type="Texture2D" path="res://assets/skill_art/teleport.png" id="icon"]
 
 [resource]
 script = ExtResource("1")
 id = &"teleport"
+icon = ExtResource("icon")
 display_name = "Teleport"
 description = "Vanish and reappear a short way off in the direction you point."
 effect = ExtResource("2")

@@ -2,10 +2,12 @@
 
 [ext_resource type="Script" path="res://src/skills/skill_def.gd" id="1"]
 [ext_resource type="Script" path="res://src/skills/mage/frost_nova.gd" id="2"]
+[ext_resource type="Texture2D" path="res://assets/skill_art/frost_nova.png" id="icon"]
 
 [resource]
 script = ExtResource("1")
 id = &"frost_nova"
+icon = ExtResource("icon")
 display_name = "Frost Nova"
 description = "A ring of ice bursts out around you, hurting and chilling every enemy close by."
 effect = ExtResource("2")

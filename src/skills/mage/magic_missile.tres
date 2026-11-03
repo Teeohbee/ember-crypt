@@ -2,10 +2,12 @@
 
 [ext_resource type="Script" path="res://src/skills/skill_def.gd" id="1"]
 [ext_resource type="Script" path="res://src/skills/mage/magic_missile.gd" id="2"]
+[ext_resource type="Texture2D" path="res://assets/skill_art/magic_missile.png" id="icon"]
 
 [resource]
 script = ExtResource("1")
 id = &"magic_missile"
+icon = ExtResource("icon")
 display_name = "Magic Missile"
 description = "Loose a seeking bolt of arcane force for 110% weapon damage as Arcane. Costs nothing."
 effect = ExtResource("2")
