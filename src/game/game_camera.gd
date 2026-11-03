@@ -4,9 +4,14 @@ extends Camera3D
 # until co-op) with a little lag. It leans a little ahead of where the heroes are running, so there's
 # more to see in front than behind; shakes when Feedback says so; and dissolves walls in the way.
 
-# About 50 degrees down and pulled well back, D3 style: a whole room and the pack coming at you on
-# screen, at the cost of reading a skeleton's face
-const OFFSET := Vector3(0, 15.5, 13.3)
+# Isometric, Diablo II style: turned YAW degrees round from looking north (so rooms sit as
+# diamonds), tilted PITCH degrees down, and orthographic, so nothing shrinks with distance.
+# VIEW_HEIGHT is how many metres of world fit top to bottom; DISTANCE only keeps the camera clear
+# of the walls.
+const YAW := 45.0
+const PITCH := 30.0
+const DISTANCE := 28.0
+const VIEW_HEIGHT := 20.0
 const FOLLOW := 6.0
 # Lead: this many seconds of the heroes' velocity, at most MAX_LEAD metres, eased in and out
 const LEAD_SECONDS := 0.3
@@ -23,7 +28,20 @@ var _rest_rotation := Vector3.ZERO
 
 func _init() -> void:
 	name = "GameCamera"
-	fov = 44.0
+	projection = Camera3D.PROJECTION_ORTHOGONAL
+	size = VIEW_HEIGHT
+	near = 0.5
+	far = 200.0
+
+# From what the camera looks at to the camera
+static func offset() -> Vector3:
+	var yaw := deg_to_rad(YAW)
+	var pitch := deg_to_rad(PITCH)
+	return Vector3(sin(yaw) * cos(pitch), sin(pitch), cos(yaw) * cos(pitch)) * DISTANCE
+
+# A stick direction as a direction on the ground: up on the stick is up the screen
+static func ground(stick: Vector2) -> Vector3:
+	return Vector3(stick.x, 0, stick.y).rotated(Vector3.UP, deg_to_rad(YAW))
 
 func _ready() -> void:
 	add_child(wall_fade)
@@ -32,7 +50,7 @@ func _ready() -> void:
 func focus() -> Vector3:
 	var heroes := Session.heroes()
 	if heroes.is_empty():
-		return global_position - OFFSET - _lead
+		return global_position - offset() - _lead
 	var middle := Vector3.ZERO
 	for hero in heroes:
 		middle += hero.global_position
@@ -46,7 +64,7 @@ static func lead_for(velocity: Vector3) -> Vector3:
 func snap() -> void:
 	var target := focus()
 	_lead = Vector3.ZERO
-	global_position = target + OFFSET
+	global_position = target + offset()
 	look_at(target + Vector3(0, 1.0, 0))
 	_rest_rotation = rotation
 
@@ -58,7 +76,7 @@ func _process(delta: float) -> void:
 	if not heroes.is_empty():
 		velocity /= heroes.size()
 	_lead = _lead.lerp(lead_for(velocity), 1.0 - exp(-LEAD_EASE * delta))
-	global_position = global_position.lerp(focus() + _lead + OFFSET, 1.0 - exp(-FOLLOW * delta))
+	global_position = global_position.lerp(focus() + _lead + offset(), 1.0 - exp(-FOLLOW * delta))
 	_shake(delta)
 
 # Slides and rolls the view by the shake, around where it rests; smooth layered waves rather than noise,

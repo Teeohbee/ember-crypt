@@ -8,6 +8,16 @@ func test_the_camera_leans_ahead_of_a_running_hero_but_not_too_far() -> void:
 	assert_vector(GameCamera.lead_for(Vector3(4, 0, 0))).is_equal_approx(Vector3(1.2, 0, 0), Vector3.ONE * 0.001)
 	assert_float(GameCamera.lead_for(Vector3(0, 0, -50)).length()).is_equal_approx(GameCamera.MAX_LEAD, 0.001)
 
+func test_up_on_the_stick_runs_up_the_screen() -> void:
+	var camera: GameCamera = auto_free(GameCamera.new())
+	add_child(camera)
+	camera.snap()
+	var screen_up := -camera.global_basis.z
+	screen_up.y = 0
+	assert_float(GameCamera.ground(Vector2.UP).dot(screen_up.normalized())).is_greater(0.999)
+	var screen_right := camera.global_basis.x
+	assert_float(GameCamera.ground(Vector2.RIGHT).dot(screen_right)).is_greater(0.999)
+
 func test_shake_moves_the_view_and_settles_back() -> void:
 	var camera: GameCamera = auto_free(GameCamera.new())
 	add_child(camera)

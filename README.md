@@ -16,8 +16,9 @@ rolls out of trouble on LT or a flick of the right stick (untouchable for most o
 class has its primary on A: the Barbarian's Bash steps in to reach and sweeps up to three skeletons
 back; the Mage's Magic Missile curls onto whatever aim assist picked. Hits land with a hit-stop, a
 white flash and squash, sparks, a damage number, camera shake, rumble and a crunch; killing blows
-throw the body, which bursts into bones and sinks away. The camera
-leans ahead of a running hero and dithers away any wall in the way. Hit feel is tuned in one place,
+throw the body, which bursts into bones and sinks away. The camera is isometric, Diablo II style
+(orthographic, turned 45 degrees, so up on the stick runs up the screen); it
+leans ahead of a running hero and dithers away any wall or pillar in the way. Hit feel is tuned in one place,
 `src/core/feedback.gd`, and per skill through its `params` (`hit_stop`, `shake`, `strike_range`...).
 
 **M2 - the combat kit.** Health and power globes either side of a skill bar, D3 style: a socket per
