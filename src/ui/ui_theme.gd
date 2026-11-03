@@ -1,6 +1,6 @@
 class_name UiTheme
 extends RefCounted
-# The look of every menu: soot-black panels edged in tarnished bronze, parchment text, and gold for
+# The look of every menu: soot-black panels in a tarnished bronze fretwork frame, parchment text, and gold for
 # whatever has focus. Cinzel for headings, Alegreya Sans for everything you read. Built in code and
 # merged into Godot's default theme at boot: a theme on the root window doesn't reach Controls under
 # a CanvasLayer, which is where all the UI lives.
@@ -18,7 +18,15 @@ const DISABLED := Color("5a5047")
 
 const BODY_SIZE := 30
 
+const PANEL_FRAME := "res://assets/ui_frames/panel.png"
+const SLOT_FRAME := "res://assets/ui_frames/slot_edge.png"
+# Pixels at each corner of a frame texture that don't stretch
+const FRAME_CORNER := 24
+
 static var _heading: Font
+# Frame textures, loaded once and held: a stylebox built in a _draw() is gone before the frame renders,
+# and a texture nothing else holds goes with it, leaving the border drawn as a solid block
+static var _frames := {}
 static var _fonts := {}
 
 static func heading_font(weight := 700) -> Font:
@@ -84,15 +92,25 @@ static func build() -> Theme:
 	theme.set_stylebox("panel", "Panel", panel())
 	return theme
 
-static func panel() -> StyleBoxFlat:
-	var box := StyleBoxFlat.new()
-	box.bg_color = Color(SOOT, 0.94)
-	box.border_color = BRONZE
-	box.set_border_width_all(2)
-	box.set_corner_radius_all(3)
-	box.shadow_color = Color(0, 0, 0, 0.7)
-	box.shadow_size = 30
+# Soot panel in a bronze fretwork frame (Kenney's Fantasy UI Borders, recoloured), stretched by its middle
+static func panel() -> StyleBoxTexture:
+	var box := StyleBoxTexture.new()
+	box.texture = frame(PANEL_FRAME)
+	box.set_texture_margin_all(FRAME_CORNER)
 	box.set_content_margin_all(36)
+	return box
+
+static func frame(path: String) -> Texture2D:
+	if not _frames.has(path):
+		_frames[path] = load(path)
+	return _frames[path]
+
+# A slot's frame edge, white so it can be tinted by rarity or focus; draw the fill under it
+static func slot_edge() -> StyleBoxTexture:
+	var box := StyleBoxTexture.new()
+	box.texture = frame(SLOT_FRAME)
+	box.set_texture_margin_all(FRAME_CORNER)
+	box.draw_center = false
 	return box
 
 static func heading(text: String, size := 56, colour := GOLD) -> Label:
