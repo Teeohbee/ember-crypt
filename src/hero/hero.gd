@@ -96,7 +96,7 @@ func _interact() -> bool:
 # Where the player is pointing: the left stick if held, otherwise the way the hero faces
 func aim_direction() -> Vector3:
 	var stick := slot.move_vector()
-	return Vector3(stick.x, 0, stick.y).normalized() if stick.length() > 0.1 else facing()
+	return GameCamera.ground(stick).normalized() if stick.length() > 0.1 else facing()
 
 # Weapons and shields show in the hands; the rest of the gear has no model
 func _show_gear(gear_slot: ItemBase.Slot, item: Item) -> void:

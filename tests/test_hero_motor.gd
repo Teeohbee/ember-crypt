@@ -21,13 +21,15 @@ func _steps(seconds: float) -> void:
 		hero.motor.physics_step(STEP)
 
 func test_the_hero_gets_up_to_speed_quickly_but_not_at_once() -> void:
+	# Right on the stick is right on the screen, which the isometric camera turns on the ground
+	var screen_right := GameCamera.ground(Vector2.RIGHT)
 	Input.action_press("ui_right")
 	_steps(STEP)
 	var top_speed := hero.stats.value(Stats.MOVE_SPEED)
-	assert_float(hero.velocity.x).is_between(0.1, top_speed * 0.5)
+	assert_float(hero.velocity.dot(screen_right)).is_between(0.1, top_speed * 0.5)
 	_steps(0.3)
-	assert_float(hero.velocity.x).is_equal_approx(top_speed, 0.01)
-	assert_float(hero.global_position.x).is_greater(1.0)
+	assert_float(hero.velocity.dot(screen_right)).is_equal_approx(top_speed, 0.01)
+	assert_float(hero.global_position.dot(screen_right)).is_greater(1.0)
 	assert_str(String(hero.model.animations.current_animation)).is_equal(HeroMotor.RUN)
 
 func test_letting_go_slides_to_a_stop_and_idles() -> void:
@@ -63,7 +65,7 @@ func test_pulling_lt_rolls_the_way_the_hero_faces() -> void:
 func test_the_hero_turns_to_face_the_way_they_go() -> void:
 	Input.action_press("ui_left")
 	_steps(0.3)
-	assert_float(hero.facing().dot(Vector3.LEFT)).is_greater(0.99)
+	assert_float(hero.facing().dot(GameCamera.ground(Vector2.LEFT))).is_greater(0.99)
 
 func test_a_roll_covers_its_distance_untouchable_at_first() -> void:
 	assert_bool(hero.motor.roll(Vector3.BACK)).is_true()

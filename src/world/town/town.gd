@@ -30,7 +30,7 @@ func build() -> void:
 	RoomBuilder.floor_tiles(self, Vector2i(-4, -3), Vector2i(4, 3), 0.12, rng)
 	RoomBuilder.wall_run(self, Vector2i(-4, -3), Vector2i(5, -3), 4, false, rng)
 	RoomBuilder.wall_run(self, Vector2i(-4, -3), Vector2i(-4, 4), -1, false, rng)
-	RoomBuilder.wall_run(self, Vector2i(5, -3), Vector2i(5, 4), -1, false, rng)
+	RoomBuilder.wall_run(self, Vector2i(5, -3), Vector2i(5, 4), -1, true, rng)
 	RoomBuilder.wall_run(self, Vector2i(-4, 4), Vector2i(5, 4), -1, true, rng)
 	_gate()
 	_square()

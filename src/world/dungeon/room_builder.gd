@@ -6,8 +6,8 @@ extends RefCounted
 # meshes have none.
 #
 # Rooms are 5 x 5 tiles with one tile of passage between them, so room centres sit 6 tiles (24 m)
-# apart. The camera looks north, so south walls are low balustrades: a full wall there would hide
-# the hero.
+# apart. The camera looks north-west, so south and east walls are low balustrades: a full wall
+# there would hide the hero.
 
 const ROOM_TILES := 5
 const SPACING := 6
@@ -32,6 +32,9 @@ const SOLID := {
 	"table_long_decorated_A": Vector2(2.0, 4.0), "table_medium": Vector2(2.0, 2.0), "rubble_large": Vector2(6.0, 2.6),
 }
 
+# Props tall enough to hide a hero
+const TALL := ["pillar", "pillar_decorated", "column"]
+
 # Room centre in world space
 static func centre(cell: Vector2i) -> Vector3:
 	return Vector3(cell.x, 0, cell.y) * SPACING * CryptKit.CELL
@@ -47,7 +50,7 @@ static func build(parent: Node3D, room: DungeonLayout.Room, seed_value: int) -> 
 	wall_run(parent, low, Vector2i(high.x, low.y), _door(room, DungeonLayout.NORTH), false, rng)
 	wall_run(parent, Vector2i(low.x, high.y), high, _door(room, DungeonLayout.SOUTH), true, rng)
 	wall_run(parent, low, Vector2i(low.x, high.y), _door(room, DungeonLayout.WEST), false, rng)
-	wall_run(parent, Vector2i(high.x, low.y), high, _door(room, DungeonLayout.EAST), false, rng)
+	wall_run(parent, Vector2i(high.x, low.y), high, _door(room, DungeonLayout.EAST), true, rng)
 	if room.has_door(DungeonLayout.EAST):
 		_passage(parent, Vector2i(c.x + HALF + 1, c.y), true, rng)
 	if room.has_door(DungeonLayout.SOUTH):
@@ -114,7 +117,7 @@ static func _passage(parent: Node3D, cell: Vector2i, east_west: bool, rng: Rando
 		wall_run(parent, cell + Vector2i(0, 1), cell + Vector2i(1, 1), -1, true, rng)
 	else:
 		wall_run(parent, cell, cell + Vector2i(0, 1), -1, false, rng)
-		wall_run(parent, cell + Vector2i(1, 0), cell + Vector2i(1, 1), -1, false, rng)
+		wall_run(parent, cell + Vector2i(1, 0), cell + Vector2i(1, 1), -1, true, rng)
 
 # Two torches on the north wall, either side of where a doorway would be. Only one casts shadows,
 # to keep the Deck's shadow atlas light.
@@ -159,6 +162,9 @@ static func prop_at(parent: Node3D, piece: String, at: Vector3, yaw := 0.0) -> N
 		parent.add_child(breakable)
 		return breakable
 	var node := CryptKit.place(parent, piece, at, yaw)
+	# Pillars dissolve like walls when they stand in front of a hero
+	if piece in TALL:
+		node.add_to_group(WallFade.GROUP)
 	if SOLID.has(piece):
 		var footprint: Vector2 = SOLID[piece]
 		if int(roundf(yaw / 90.0)) % 2 != 0:

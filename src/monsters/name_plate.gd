@@ -8,6 +8,8 @@ const RARE := Color("f0cf5a")
 const HEIGHT := 2.7
 const BAR_WIDTH := 1.4
 const BAR_HEIGHT := 0.09
+# Below the affixes, clear of their outline
+const BAR_DROP := -0.3
 # The whole plate is drawn this much larger than its world size, to read from the pulled-back camera
 const SCALE := 1.4
 
@@ -27,8 +29,8 @@ func _init(owner_monster: Monster, name_text: String, affix_text: String) -> voi
 	subtitle = _label(affix_text, 30, UiTheme.PARCHMENT)
 	subtitle.position.y = 0.2
 	add_child(subtitle)
-	add_child(_bar(Vector3(-BAR_WIDTH * 0.5 - 0.02, 0, -0.01), BAR_WIDTH + 0.04, BAR_HEIGHT + 0.04, Color(0, 0, 0, 0.85), 0))
-	_fill = _bar(Vector3(-BAR_WIDTH * 0.5, 0, 0), BAR_WIDTH, BAR_HEIGHT, UiTheme.BLOOD.lightened(0.15), 1)
+	add_child(_bar(Vector3(-BAR_WIDTH * 0.5 - 0.02, BAR_DROP, -0.01), BAR_WIDTH + 0.04, BAR_HEIGHT + 0.04, Color(0, 0, 0, 0.85), 0))
+	_fill = _bar(Vector3(-BAR_WIDTH * 0.5, BAR_DROP, 0), BAR_WIDTH, BAR_HEIGHT, UiTheme.BLOOD.lightened(0.15), 1)
 	add_child(_fill)
 
 func _ready() -> void:

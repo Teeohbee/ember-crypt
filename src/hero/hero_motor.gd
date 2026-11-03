@@ -89,7 +89,7 @@ func _roll_wanted() -> Vector3:
 	elif flick:
 		_stick_centred = false
 	if flick:
-		return Vector3(aim.x, 0, aim.y)
+		return GameCamera.ground(aim)
 	if hero.slot.just_pressed(&"evade"):
 		return hero.aim_direction()
 	return Vector3.ZERO
@@ -115,7 +115,7 @@ func move(delta: float, stick: Vector2) -> void:
 	var target := Vector3.ZERO
 	if stick.length() > 0.1 and not busy:
 		var top_speed := hero.stats.value(Stats.MOVE_SPEED) * (WALK_FRACTION if stick.length() < WALK_BELOW else 1.0)
-		target = Vector3(stick.x, 0, stick.y).normalized() * top_speed
+		target = GameCamera.ground(stick).normalized() * top_speed
 		hero.rotation.y = lerp_angle(hero.rotation.y, atan2(target.x, target.z), 1.0 - exp(-TURN_SPEED * delta))
 	var rate := ACCELERATION if target.length() > hero.velocity.length() else (BUSY_DECELERATION if busy else DECELERATION)
 	hero.velocity = hero.velocity.move_toward(target, rate * delta)
