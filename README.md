@@ -109,6 +109,9 @@ tests/run.sh res://tests/test_front_end.gd   # one suite
   the embedded copies away on import and points each mesh at one shared material per atlas in
   `assets/kaykit/materials/`, so the atlas is in VRAM once. Character rigs come holding every prop
   they were modelled with; a `HeroClass` lists the ones it keeps.
+- **The grade.** KayKit's atlases are regraded grimmer (drained, rust-and-bone toned, grimed) by
+  `tools/regrade_kaykit.gd`, from the untouched copies in `assets/kaykit_originals/`. Tune `GRADES` and rerun:
+  `godot --headless --path . -s tools/regrade_kaykit.gd && godot --headless --path . --import`
 - **The dark.** `src/world/look.gd` holds the environment, torch and hero lights, and flames. Tune the
   tone there.
 - **Audio** is composed in code (`src/audio/compositions.gd`) and rendered to WAVs, which are committed.
