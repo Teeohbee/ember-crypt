@@ -142,3 +142,16 @@ func _monster(at: Vector3) -> Monster:
 	monster.position = at
 	add_child(monster)
 	return monster
+
+func test_a_swing_after_the_last_target_was_freed_still_finds_a_new_one() -> void:
+	var hero := _hero(0, Vector3.ZERO)
+	var gone := Monster.new(MINION)
+	add_child(gone)
+	hero.skill_bar.last_target = gone
+	gone.free()
+	var next := _monster(Vector3(0, 0, -1.5))
+	var skill: SkillDef = BASH.duplicate()
+	skill.hit_time = 0.0
+	hero.skill_bar.set_skill(0, skill)
+	assert_bool(hero.skill_bar.use(0, Vector3.FORWARD)).is_true()
+	assert_object(hero.skill_bar.last_target).is_same(next)
