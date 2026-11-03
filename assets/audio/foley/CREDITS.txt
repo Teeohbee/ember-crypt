@@ -1,0 +1,10 @@
+All CC0 1.0 (public domain). Credit is a courtesy, not a requirement.
+
+Kenney (kenney.nl), CC0 - licences alongside:
+  Impact Sounds: hit, hit_heavy, hero_struck, wood_smash, pumpkin_squash, ground_slam, footstep_stone, footstep_grass
+  RPG Audio: coins, leather, cloth, chest_creak
+
+OpenGameArt.org, CC0:
+  bone_rattle   - "Bones Rattle" (opengameart.org/content/bones-rattle)
+  skeleton_wake - "Skeleton SFX short pack" (opengameart.org/content/skeletonsfxshortpack)
+  beast_roar    - "80 CC0 creature SFX" by rubberduck (opengameart.org/content/80-cc0-creature-sfx)
