@@ -14,6 +14,7 @@ func _ready() -> void:
 	var env := WorldEnvironment.new()
 	env.environment = zone.environment()
 	add_child(env)
+	add_child(Look.vignette())
 	add_child(zone)
 	for slot in Session.slots:
 		var spawned := Hero.new(Session.hero_class, slot)

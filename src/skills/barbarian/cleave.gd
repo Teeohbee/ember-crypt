@@ -9,6 +9,7 @@ func execute(caster: Combatant, skill: SkillDef, _target: Combatant, aim: Vector
 	Sound.play("cleave", randf_range(0.92, 1.08))
 	var world := caster.get_parent()
 	var front := caster.global_position + aim * skill.radius * 0.55
+	SkillVfx.slash(world, caster.global_position, aim, skill.radius, skill.cone_degrees, SkillVfx.FURY, 0.22)
 	SkillVfx.ring(world, front, 0.4, skill.radius * 0.7, SkillVfx.DUST, 0.3, 0.2)
 	SkillVfx.burst(world, front, SkillVfx.DUST, 10, 4.0, 0.4)
 	if not caught.is_empty():

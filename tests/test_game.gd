@@ -38,3 +38,8 @@ func test_the_hud_shows_globes_and_skills_and_lb_drinks() -> void:
 	await frames(1)
 	assert_float(bar.health_globe.fraction).is_equal_approx(hero.health / hero.max_health(), 0.01)
 	assert_bool(bar.skill_slots[1].empty).is_false()
+
+func test_the_world_darkens_towards_the_screen_edges_under_the_hud() -> void:
+	var game: Node = await open_screen(GAME)
+	var vignette: CanvasLayer = game.get_node("Vignette")
+	assert_int(vignette.layer).is_less(game.huds[0].layer)

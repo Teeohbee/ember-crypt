@@ -14,6 +14,8 @@ const DUST := Color(0.75, 0.62, 0.45)
 static var _torus: TorusMesh
 static var _disc: CylinderMesh
 static var _spark: QuadMesh
+# Crescents for slash(), by arc width in whole degrees
+static var _crescents := {}
 
 # A glowing, see-through material in colour; energy above 1 pushes it into the glow
 static func glow_material(colour: Color, energy := 2.0) -> StandardMaterial3D:
@@ -107,6 +109,60 @@ static func burst(parent: Node, at: Vector3, colour: Color, amount := 16, speed 
 	particles.emitting = true
 	particles.finished.connect(particles.queue_free)
 	return particles
+
+# The smear of a swing: a crescent at waist height across the arc in front of from, brightest at
+# its outer edge, that sweeps a little further round as it fades. Reads the swing from above, where the
+# weapon itself is hard to see.
+static func slash(parent: Node, from: Vector3, aim: Vector3, radius: float, degrees: float, colour: Color,
+		seconds := 0.16) -> MeshInstance3D:
+	var mesh := MeshInstance3D.new()
+	mesh.mesh = _crescent(int(degrees))
+	mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	var material := glow_material(Color(colour, 0.9), 1.8)
+	material.vertex_color_use_as_albedo = true
+	mesh.material_override = material
+	parent.add_child(mesh)
+	mesh.global_position = from + Vector3(0, 0.9, 0)
+	var yaw := atan2(aim.x, aim.z)
+	mesh.rotation.y = yaw + deg_to_rad(degrees * 0.15)
+	mesh.scale = Vector3(radius * 0.85, 1.0, radius * 0.85)
+	var tween := mesh.create_tween().set_parallel()
+	tween.tween_property(mesh, "rotation:y", yaw - deg_to_rad(degrees * 0.15), seconds).set_ease(Tween.EASE_OUT)
+	tween.tween_property(mesh, "scale", Vector3(radius, 1.0, radius), seconds).set_ease(Tween.EASE_OUT)
+	tween.tween_property(material, "albedo_color:a", 0.0, seconds).set_ease(Tween.EASE_IN)
+	tween.chain().tween_callback(mesh.queue_free)
+	return mesh
+
+# A flat ring sector of unit radius around +Z (the way combatants face), degrees wide
+static func _crescent(degrees: int) -> ArrayMesh:
+	if _crescents.has(degrees):
+		return _crescents[degrees]
+	const STEPS := 16
+	const INNER := 0.55
+	var vertices := PackedVector3Array()
+	var colours := PackedColorArray()
+	var indices := PackedInt32Array()
+	for i in STEPS + 1:
+		var angle := deg_to_rad(-degrees * 0.5 + degrees * float(i) / STEPS)
+		var out := Vector3(sin(angle), 0, cos(angle))
+		# Fades out towards both tips, so the crescent has no hard ends
+		var tip := sin(PI * float(i) / STEPS)
+		vertices.append(out * INNER)
+		colours.append(Color(1, 1, 1, 0.0))
+		vertices.append(out)
+		colours.append(Color(1, 1, 1, tip))
+		if i > 0:
+			var a := (i - 1) * 2
+			indices.append_array([a, a + 1, a + 2, a + 1, a + 3, a + 2])
+	var arrays := []
+	arrays.resize(Mesh.ARRAY_MAX)
+	arrays[Mesh.ARRAY_VERTEX] = vertices
+	arrays[Mesh.ARRAY_COLOR] = colours
+	arrays[Mesh.ARRAY_INDEX] = indices
+	var mesh := ArrayMesh.new()
+	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+	_crescents[degrees] = mesh
+	return mesh
 
 # A soft glowing disc to sit under a combatant while a status lasts (hand it to Statuses.apply)
 static func aura(colour: Color, radius := 0.9) -> MeshInstance3D:

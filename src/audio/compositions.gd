@@ -57,6 +57,10 @@ const SOUNDS := {
 	"molten": [0.5, [[0.0, 40, 0.3, "thud", 0.6], [0.05, 34, 0.4, "thud", 0.5]]],
 	# Death: the big bell, low, on D minor. Coming back: D major rising, the only major chord in the game
 	"hero_death": [4.0, [[0.0, 26, 4.0, "toll", 0.55], [0.0, 38, 3.0, "toll", 0.35], [0.0, 50, 2.5, "bell", 0.12], [0.0, 53, 2.5, "bell", 0.1]]],
+	# Destructibles: splintering wood, and a pumpkin giving way
+	"smash": [0.5, [[0.0, 62, 0.14, "crunch", 0.55], [0.0, 43, 0.22, "thud", 0.5], [0.05, 92, 0.1, "crunch", 0.3],
+		[0.11, 76, 0.1, "crunch", 0.22], [0.18, 84, 0.08, "crunch", 0.14]]],
+	"squelch": [0.45, [[0.0, 40, 0.25, "thud", 0.6], [0.0, 52, 0.3, "hiss", 0.3], [0.04, 47, 0.2, "thud", 0.3]]],
 	"respawn": [2.5, [[0.0, 62, 2.0, "bell", 0.22], [0.12, 66, 2.0, "bell", 0.2], [0.24, 69, 2.1, "bell", 0.2], [0.36, 74, 2.0, "bell", 0.18], [0.0, 38, 0.5, "thud", 0.4]]],
 	# M4 Loot
 	# Drops land with a sound that says how rare they are before you read the name: a dull knock for

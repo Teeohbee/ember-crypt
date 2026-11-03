@@ -1,8 +1,9 @@
 class_name RoomBuilder
 extends RefCounted
 # Turns a DungeonLayout room into kit pieces: floor, walls with doorways where the layout opens, a
-# short passage to the next room east and south, wall torches, and the chunk's props and fires. Every
-# wall gets a box of collision; the kit's meshes have none.
+# short passage to the next room east and south, wall torches, the chunk's props and fires, and a few
+# stacks of barrels and crates in clear corners to smash. Every wall gets a box of collision; the kit's
+# meshes have none.
 #
 # Rooms are 5 x 5 tiles with one tile of passage between them, so room centres sit 6 tiles (24 m)
 # apart. The camera looks north, so south walls are low balustrades: a full wall there would hide
@@ -15,6 +16,12 @@ const WALL_HEIGHT := 4.0
 const DOOR_SLOT := 2
 # The arch in a doorway piece is about 2 m wide; collision covers the metre either side
 const DOOR_POST := 1.0
+# Stacks to smash: how likely each corner gets one, what they're made of, and how far a corner must be
+# from a chunk's props, fires and packs to take one
+const CORNER_CHANCE := 0.6
+const CORNER := 7.4
+const CORNER_CLEARANCE := 3.0
+const STACK_PIECES := ["barrel_small", "barrel_small", "box_small", "barrel_large", "box_large", "keg"]
 # Props you can't walk through, and the footprint of their collision in metres
 const SOLID := {
 	"pillar": Vector2(1.5, 1.5), "pillar_decorated": Vector2(1.5, 1.5), "column": Vector2(0.7, 0.7),
@@ -48,6 +55,7 @@ static func build(parent: Node3D, room: DungeonLayout.Room, seed_value: int) -> 
 	_torches(parent, c)
 	if room.chunk:
 		_furnish(parent, room.chunk, centre(room.cell))
+		_stacks(parent, room.chunk, centre(room.cell), rng)
 
 static func _door(room: DungeonLayout.Room, direction: int) -> int:
 	return DOOR_SLOT if room.has_door(direction) else -1
@@ -127,9 +135,29 @@ static func _furnish(parent: Node3D, chunk: RoomChunk, at: Vector3) -> void:
 	for fire in chunk.fires:
 		brazier(parent, at + fire)
 
-# One prop, with collision if it's something you'd walk into. Quarter turns only for the collision,
-# which is all the chunks use.
+# A few barrels and crates huddled in each clear corner, to smash
+static func _stacks(parent: Node3D, chunk: RoomChunk, at: Vector3, rng: RandomNumberGenerator) -> void:
+	var taken: Array[Vector3] = []
+	for prop: Array in chunk.props:
+		taken.append(prop[1])
+	for point in Array(chunk.fires) + Array(chunk.packs):
+		taken.append(point)
+	for corner in [Vector3(-1, 0, -1), Vector3(1, 0, -1), Vector3(-1, 0, 1), Vector3(1, 0, 1)]:
+		var spot: Vector3 = corner * CORNER
+		if rng.randf() > CORNER_CHANCE or taken.any(func(other: Vector3) -> bool: return other.distance_to(spot) < CORNER_CLEARANCE):
+			continue
+		for i in rng.randi_range(1, 3):
+			var offset := Vector3(-corner.x * rng.randf_range(0.0, 2.2), 0, -corner.z * rng.randf_range(0.0, 2.2)) if i > 0 else Vector3.ZERO
+			prop_at(parent, STACK_PIECES[rng.randi_range(0, STACK_PIECES.size() - 1)], at + spot + offset, rng.randi_range(0, 3) * 90.0)
+
+# One prop, with collision if it's something you'd walk into, or as a Breakable if it's something to
+# smash. Quarter turns only for the collision, which is all the chunks use.
 static func prop_at(parent: Node3D, piece: String, at: Vector3, yaw := 0.0) -> Node3D:
+	if Breakable.is_breakable(piece):
+		var breakable := Breakable.make(piece, yaw)
+		breakable.position = at
+		parent.add_child(breakable)
+		return breakable
 	var node := CryptKit.place(parent, piece, at, yaw)
 	if SOLID.has(piece):
 		var footprint: Vector2 = SOLID[piece]

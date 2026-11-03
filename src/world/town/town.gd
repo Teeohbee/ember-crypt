@@ -1,8 +1,10 @@
 class_name Town
 extends Zone
-# Emberfall, the hub: a walled square under the moon with a waypoint in the middle, the stash chest in
-# one corner and the merchant's stall in the other. The gate north leads out to the graveyard. No
-# monsters, so A always talks rather than swings.
+# Emberfall, the hub: a walled square under the moon, dressed for harvest, with a waypoint in the
+# middle, the stash chest in one corner and the merchant's stall in the other. A cobbled road runs from
+# the waypoint to the gate north, which two knights keep, out to the graveyard. Lantern posts, autumn
+# pines, a pumpkin stall, benches and a tavern table with a mage nursing a drink make it a place people
+# live. No monsters, so A always talks rather than swings (the pumpkins on the floor do smash).
 
 const MERCHANT := "Hilde the Pedlar"
 const STOCK := 8
@@ -34,6 +36,9 @@ func build() -> void:
 	_square()
 	_stash_corner()
 	_stall()
+	_road(rng)
+	_harvest(rng)
+	_folk()
 	var waypoint := Waypoint.new(id)
 	waypoint.position = Vector3(0, 0, 2)
 	add_child(waypoint)
@@ -99,7 +104,7 @@ func _stall() -> void:
 	CryptKit.place(self, "bottle_A_labeled_brown", Vector3(11.2, 1, -8.8))
 	CryptKit.place(self, "bottle_B_green", Vector3(11.7, 1, -9.1))
 	CryptKit.place(self, "sword_shield", Vector3(13.6, 0, -11.5))
-	add_child(_merchant_model(Vector3(11, 0, -11)))
+	add_child(_npc("Rogue_Hooded", Vector3(11, 0, -11), 0.0, [], "Idle"))
 	var lamp := OmniLight3D.new()
 	lamp.light_color = Look.CANDLE
 	lamp.light_energy = 2.0
@@ -118,16 +123,79 @@ func _stall() -> void:
 			vendor.stock = Vendor.roll_stock(Vendor.all_bases(), hero.level, rng, STOCK)
 		WorldScreen.show_screen(VendorScreen.new(vendor, MERCHANT), hero))
 
-# Hilde: the hooded rogue with her knives put away, idling behind the stall
-func _merchant_model(at: Vector3) -> Node3D:
-	var rig: Node3D = load("res://assets/kaykit/adventurers/characters/Rogue_Hooded.glb").instantiate()
+# Cobbles from the waypoint up to the gate
+func _road(rng: RandomNumberGenerator) -> void:
+	var z := 0.4
+	while z > -13.0:
+		for x in [-0.95, 0.95]:
+			var stone: String = ["path_A", "path_B", "path_C", "path_D"][rng.randi_range(0, 3)]
+			HalloweenKit.place(self, stone, Vector3(x + rng.randf_range(-0.1, 0.1), 0.02, z), rng.randi_range(0, 3) * 90.0)
+		z -= 1.9
+
+# Lantern posts round the square, autumn pines along the north wall, a pumpkin stall by Hilde's,
+# jack-o'-lanterns at the gate, benches by the waypoint and a tavern table in the south-west corner
+func _harvest(rng: RandomNumberGenerator) -> void:
+	for at in [Vector3(-8.5, 0, -5), Vector3(8.5, 0, -5), Vector3(-8.5, 0, 9), Vector3(8.5, 0, 9)]:
+		var side := signf(at.x)
+		HalloweenKit.place(self, "post_lantern", at, 90.0 * side)
+		CryptKit.blocker(self, at + Vector3(0, 1.0, 0), Vector3(0.5, 2.0, 0.5))
+		var light := OmniLight3D.new()
+		light.light_color = Look.CANDLE
+		light.light_energy = 1.6
+		light.omni_range = 7.0
+		light.omni_attenuation = 1.8
+		light.position = at + Vector3(-side * 1.1, 2.5, 0)
+		light.set_script(Flicker)
+		add_child(light)
+	for tree in [["tree_pine_orange_medium", Vector3(-16, 0, -5)], ["tree_pine_yellow_medium", Vector3(16, 0, 3.5)],
+			["tree_pine_yellow_small", Vector3(6.5, 0, -12.6)], ["tree_pine_orange_small", Vector3(-7, 0, -12.6)]]:
+		HalloweenKit.solid(self, tree[0], tree[1], Vector2(1.2, 1.2), rng.randf_range(0, 360))
+	RoomBuilder.prop_at(self, "table_medium", Vector3(5.5, 0, -9.5))
+	for at in [Vector3(5.0, 1.0, -9.8), Vector3(6.0, 1.0, -9.2)]:
+		HalloweenKit.place(self, ["pumpkin_orange_small", "pumpkin_yellow_small"][rng.randi_range(0, 1)], at, rng.randf_range(0, 360))
+	for at in [Vector3(4.0, 0, -8.0), Vector3(7.2, 0, -7.6), Vector3(3.4, 0, -10.8), Vector3(-15.5, 0, 0.5), Vector3(15.5, 0, -8.5)]:
+		var pumpkin := Breakable.make(["pumpkin_orange", "pumpkin_yellow", "pumpkin_orange_small"][rng.randi_range(0, 2)], rng.randi_range(0, 3) * 90.0)
+		pumpkin.position = at
+		add_child(pumpkin)
+	for at in [Vector3(-5.5, 0, -12.6), Vector3(5.5, 0, -12.6) + Vector3(-1.4, 0, 0.8), Vector3(-9.6, 0, -12.2), Vector3(13.6, 0, -6.2)]:
+		HalloweenKit.solid(self, ["pumpkin_orange_jackolantern", "pumpkin_yellow_jackolantern"][rng.randi_range(0, 1)], at, Vector2(1.2, 1.2), 180.0)
+		var glow := OmniLight3D.new()
+		glow.light_color = Graveyard.PUMPKIN
+		glow.light_energy = 1.1
+		glow.omni_range = 3.5
+		glow.position = at + Vector3(0, 0.7, 0.6)
+		glow.set_script(Flicker)
+		add_child(glow)
+	for x in [-4.0, 4.0]:
+		HalloweenKit.solid(self, "bench", Vector3(x, 0, 6.5), Vector2(2.0, 0.8))
+	RoomBuilder.prop_at(self, "table_medium", Vector3(-10, 0, 6))
+	CryptKit.place(self, "plate_food_A", Vector3(-10.3, 1.0, 6.1))
+	CryptKit.place(self, "bottle_A_brown", Vector3(-9.6, 1.0, 5.8))
+	for at in [Vector3(-11.6, 0, 6), Vector3(-10, 0, 7.6)]:
+		CryptKit.place(self, "stool", at)
+
+# Two knights keeping the gate, and a mage taking her ease at the tavern table
+func _folk() -> void:
+	for side in [-1.0, 1.0]:
+		var guard := _npc("Knight", Vector3(side * 2.8, 0, -11.6), 0.0, ["1H_Sword", "Round_Shield"], "Idle")
+		guard.name = "Guard%s" % ("West" if side < 0 else "East")
+		add_child(guard)
+		CryptKit.blocker(self, Vector3(side * 2.8, 1.0, -11.6), Vector3(0.9, 2.0, 0.9))
+	CryptKit.place(self, "chair", Vector3(-8.4, 0, 6), -90.0)
+	add_child(_npc("Mage", Vector3(-8.4, 0, 6), -90.0, [], "Sit_Chair_Idle"))
+
+# A townsperson: one of the adventurer rigs holding only `held`, looping `idle`
+func _npc(rig_name: String, at: Vector3, yaw: float, held: Array, idle: String) -> Node3D:
+	var rig: Node3D = load("res://assets/kaykit/adventurers/characters/%s.glb" % rig_name).instantiate()
 	rig.position = at
+	rig.rotation_degrees.y = yaw
 	for slot in HeroModel.HAND_SLOTS:
 		var bone := rig.find_child(slot, true, false)
 		if bone:
 			for prop in bone.get_children():
-				prop.free()
+				if not prop.name in held:
+					prop.free()
 	var animations: AnimationPlayer = rig.find_child("AnimationPlayer", true, false)
-	animations.get_animation("Idle").loop_mode = Animation.LOOP_LINEAR
-	animations.autoplay = "Idle"
+	animations.get_animation(idle).loop_mode = Animation.LOOP_LINEAR
+	animations.autoplay = idle
 	return rig

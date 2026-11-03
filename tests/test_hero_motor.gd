@@ -45,6 +45,21 @@ func test_a_gentle_push_walks() -> void:
 	assert_float(hero.velocity.length()).is_equal_approx(hero.stats.value(Stats.MOVE_SPEED) * HeroMotor.WALK_FRACTION, 0.01)
 	assert_str(String(hero.model.animations.current_animation)).is_equal(HeroMotor.WALK)
 
+func test_pulling_lt_rolls_the_way_the_hero_faces() -> void:
+	hero.face(Vector3.LEFT)
+	var pull := InputEventJoypadMotion.new()
+	pull.device = 0
+	pull.axis = JOY_AXIS_TRIGGER_LEFT
+	pull.axis_value = 1.0
+	assert_bool(InputMap.event_is_action(pull, &"evade")).is_true()
+	Input.action_press(&"evade")
+	hero.motor.physics_step(STEP)
+	Input.action_release(&"evade")
+	assert_bool(hero.motor.rolling).is_true()
+	assert_float(hero.velocity.normalized().dot(Vector3.LEFT)).is_greater(0.99)
+	# A press stays "just pressed" for the rest of the frame, even released; let it pass
+	await get_tree().process_frame
+
 func test_the_hero_turns_to_face_the_way_they_go() -> void:
 	Input.action_press("ui_left")
 	_steps(0.3)

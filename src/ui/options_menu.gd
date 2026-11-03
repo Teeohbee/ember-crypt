@@ -14,9 +14,9 @@ const TABS := [
 ]
 
 const PAD_LAYOUT := [
-	["ls", "Move"], ["rs", "Evade roll"], ["a", "Primary skill / pick up"], ["x", "Skill 2"],
+	["ls", "Move"], ["rs", "Evade roll (flick)"], ["a", "Primary skill / pick up"], ["x", "Skill 2"],
 	["y", "Skill 3"], ["b", "Skill 4"], ["rb", "Skill 5"], ["rt", "Skill 6"], ["lb", "Health potion"],
-	["lt", "Lock on to target"], ["start", "Pause"], ["view", "Inventory"], ["dpad", "Skills (left)"],
+	["lt", "Evade roll"], ["start", "Pause"], ["view", "Inventory"], ["dpad", "Skills (left)"],
 ]
 
 var tab := 0

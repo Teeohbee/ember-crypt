@@ -111,6 +111,21 @@ func test_a_hit_on_a_monster_pops_its_number_and_knocks_it_back() -> void:
 		shove._physics_process(1.0 / 60.0)
 	assert_float(monster.global_position.z).is_equal_approx(-3.5, 0.05)
 
+func test_a_blow_on_a_monster_throws_sparks_from_it_and_reuses_them() -> void:
+	var hero := _hero(Vector3.ZERO)
+	var monster := _monster(Vector3(0, 0, -2))
+	var event := DamageEvent.new()
+	event.source = hero
+	event.target = monster
+	event.amount = 7.0
+	Feedback.hit(event)
+	var lit := Feedback.sparks.pool.filter(func(spray: GPUParticles3D) -> bool: return spray.emitting)
+	assert_int(lit.size()).is_equal(1)
+	assert_float(lit[0].global_position.distance_to(monster.global_position)).is_less(1.6)
+	for i in HitSparks.POOL * 2:
+		Feedback.hit(event)
+	assert_int(Feedback.sparks.pool.size()).is_equal(HitSparks.POOL)
+
 func test_a_dead_monster_bursts_into_bones() -> void:
 	var monster := _monster(Vector3(3, 0, 0))
 	var event := DamageEvent.new()

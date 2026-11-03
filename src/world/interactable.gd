@@ -42,7 +42,8 @@ static func find_for(hero: Hero) -> Interactable:
 	if best == null:
 		return null
 	for hostile in hero.hostiles():
-		if _flat_distance(hero.global_position, hostile.global_position) < SAFE_RADIUS:
+		# A barrel isn't a threat
+		if hostile is not Breakable and _flat_distance(hero.global_position, hostile.global_position) < SAFE_RADIUS:
 			return null
 	return best
 

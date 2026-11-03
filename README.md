@@ -12,17 +12,18 @@ pad, B always steps back, and the world never cuts away between menus. The hero 
 M1.
 
 **M1 - feel.** The hero gets up to speed quickly, walks or runs by how far the stick is pushed, and
-rolls out of trouble on the right stick (untouchable for most of the roll). Each class has its primary
-on A: the Barbarian's Bash steps in to reach and knocks skeletons back; the Mage's Magic Missile curls
-onto whatever aim assist picked. Hits land with a hit-stop, a white flash and squash, a damage number,
-camera shake, rumble and a crunch; skeletons burst into bones and their corpses sink away. The camera
+rolls out of trouble on LT or a flick of the right stick (untouchable for most of the roll). Each
+class has its primary on A: the Barbarian's Bash steps in to reach and sweeps up to three skeletons
+back; the Mage's Magic Missile curls onto whatever aim assist picked. Hits land with a hit-stop, a
+white flash and squash, sparks, a damage number, camera shake, rumble and a crunch; killing blows
+throw the body, which bursts into bones and sinks away. The camera
 leans ahead of a running hero and dithers away any wall in the way. Hit feel is tuned in one place,
 `src/core/feedback.gd`, and per skill through its `params` (`hit_stop`, `shake`, `strike_range`...).
 
 **M2 - the combat kit.** Health and power globes either side of a skill bar, D3 style: a socket per
 button with a cooldown sweep, a red wash when you can't afford it and a shake when you press it anyway.
-A health potion on LB heals 60% and then needs 30 seconds. Fury drains away steadily, so keep landing
-blows; Arcane Power flows back on its own. Three skills each on X, Y and B (A is the primary, M1):
+A health potion on LB heals 60% and then needs 30 seconds. Fury holds while you fight and drains once
+things go quiet for a few seconds; Arcane Power flows back on its own. Three skills each on X, Y and B (A is the primary, M1):
 
 - Barbarian: **Cleave** (an arc of axe, costs Fury), **Leap** (crash down on a target), **War Cry**
   (armour for you and allies close by, and 30 Fury to start a fight with)
@@ -56,16 +57,17 @@ are saved to `user://characters.json` - class, level, XP, runes, bags, gear, zon
 pickups, checkpoints and leaving; the main menu has Continue, a character list (X deletes) and New
 Game.
 
-**M6 - the world.** New characters start in **Emberfall**, a walled town square under the moon with
-a waypoint, a shared stash (A moves items between bag and chest) and a merchant (A buys and sells;
+**M6 - the world.** New characters start in **Emberfall**, a walled town square under the moon, dressed
+for harvest and guarded by two knights, with a waypoint, a shared stash (A moves items between bag and chest) and a merchant (A buys and sells;
 she pays a quarter of what she charges). The north gate leads to **the Hollow Graveyard**, rows of
-graves in thick fog, and the mausoleum there goes down into **the Ember Crypt**: a dungeon grown
-from a seed out of hand-made rooms (`src/world/dungeon/chunks/*.tres`; a new room is a new resource),
+headstones in thick fog behind an iron fence, with lanterns along the path and jack-o'-lanterns
+between the graves; its mausoleum goes down into **the Ember Crypt**: a dungeon grown from a seed out of hand-made rooms (`src/world/dungeon/chunks/*.tres`; a new room is a new resource),
 with a checkpoint halfway and the boss in the furthest dead end. **Vargoth, the Bone Warden** fights
 in three phases - quicker each time, raising the dead from the second - and paints his slam on the
-floor before it lands; killing him opens a waypoint home. A uses whatever is in reach (waypoint,
+floor before it lands; killing him opens a waypoint home. Barrels, crates, kegs and pumpkins smash at
+a blow, now and then spilling a little gold. A uses whatever is in reach (waypoint,
 stash, merchant, stairs) when nothing hostile is close. Waypoints you've touched, the crypt's seed and
-the stash are saved. The graveyard is built from the dungeon kit until the Halloween Bits pack lands.
+the stash are saved.
 
 ## controls
 
@@ -78,7 +80,7 @@ Pad first; keys exist for testing.
 | Move | Left stick | WASD / arrows |
 | Skills | A, X, Y, B, RB, RT | J, K, L, ;, U, O |
 | Potion | LB | Q |
-| Evade roll | Right stick (flick) | C |
+| Evade roll | LT, or flick the right stick | C |
 | Pause | Start | Esc |
 | Pick up (loot in reach, nothing hostile close) | A | J |
 | Hold to equip what you picked up | D-pad up | F |
@@ -118,5 +120,5 @@ tests/run.sh res://tests/test_front_end.gd   # one suite
 
 ## credits
 
-- Characters, weapons and dungeon: KayKit by Kay Lousberg, CC0
+- Characters, weapons, dungeon and Halloween Bits: KayKit by Kay Lousberg, CC0
 - Cinzel (Natanael Gama) and Alegreya Sans (Huerta Tipográfica), SIL Open Font License

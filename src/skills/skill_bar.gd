@@ -55,6 +55,9 @@ func use(index: int, aim: Vector3) -> bool:
 	if not can_use(index):
 		return false
 	var skill := skills[index]
+	# The last target may be gone (a corpse sinks and is freed); a freed object can't be passed on
+	if not is_instance_valid(last_target):
+		last_target = null
 	var target := Targeting.best_target(caster.global_position, aim, caster.hostiles(), skill.reach, ASSIST_CONE, last_target)
 	return _start(index, skill, target, aim)
 
@@ -107,8 +110,6 @@ func _fire_later(index: int, skill: SkillDef, target: Combatant, aim: Vector3, d
 	if not is_instance_valid(target) or not target.alive:
 		target = null
 	skill.instantiate_effect().execute(caster, skill, target, aim)
-	if target and skill.generate > 0.0:
-		caster.gain_power(skill.generate)
 	fired.emit(index, skill, target)
 
 func _process(delta: float) -> void:

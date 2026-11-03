@@ -20,6 +20,11 @@ static func scene(piece: String) -> PackedScene:
 # One piece at `at`, turned `yaw` degrees about the vertical.
 static func place(parent: Node3D, piece: String, at: Vector3, yaw := 0.0) -> Node3D:
 	var node: Node3D = scene(piece).instantiate()
+	# The doorway piece comes with its door shut, which heroes and skeletons would walk straight
+	# through; our doorways all stand open
+	var door := node.find_child("wall_doorway_door")
+	if door:
+		door.free()
 	node.position = at
 	node.rotation_degrees.y = yaw
 	parent.add_child(node)

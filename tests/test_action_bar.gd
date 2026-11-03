@@ -80,6 +80,22 @@ func test_the_bar_mirrors_the_hero() -> void:
 	# Arcane Orb was cast; Frost Nova still costs more than what's left
 	assert_bool(bar.skill_slots[1].affordable).is_false()
 
+func test_a_skill_still_locked_shows_the_level_it_opens_at() -> void:
+	var slot := PlayerSlot.new(3)
+	var hero: Hero = auto_free(Hero.new(Session.CLASSES[0], slot))
+	add_child(hero)
+	var bar: ActionBar = auto_free(ActionBar.new(slot))
+	add_child(bar)
+	bar.refresh()
+	var cleave: SkillDef = hero.skill_bar.skills[1]
+	assert_bool(bar.skill_slots[1].empty).is_true()
+	assert_int(bar.skill_slots[1].locked_level).is_equal(cleave.unlock_level)
+	assert_int(bar.skill_slots[4].locked_level).is_equal(0)
+	hero.progress.set_level(cleave.unlock_level, 0)
+	bar.refresh()
+	assert_bool(bar.skill_slots[1].empty).is_false()
+	assert_int(bar.skill_slots[1].locked_level).is_equal(0)
+
 func test_the_bar_copes_without_a_hero() -> void:
 	var bar: ActionBar = auto_free(ActionBar.new(PlayerSlot.new(5)))
 	add_child(bar)

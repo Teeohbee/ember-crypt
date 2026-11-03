@@ -32,9 +32,9 @@ const ACTIONS := {
 	"skill_5": {"keys": [KEY_U], "buttons": [JOY_BUTTON_RIGHT_SHOULDER]},
 	"skill_6": {"keys": [KEY_O], "triggers": [JOY_AXIS_TRIGGER_RIGHT]},
 	"potion": {"keys": [KEY_Q], "buttons": [JOY_BUTTON_LEFT_SHOULDER]},
-	"target_lock": {"keys": [KEY_SHIFT], "triggers": [JOY_AXIS_TRIGGER_LEFT]},
-	# The evade is the right stick (read through PlayerSlot.aim_vector); this is its debug key
-	"evade": {"keys": [KEY_C]},
+	# LT rolls the way the hero is going, with the right thumb still free for skills; a flick of the
+	# right stick (read through PlayerSlot.aim_vector) rolls too
+	"evade": {"keys": [KEY_C], "triggers": [JOY_AXIS_TRIGGER_LEFT]},
 	# M4: hold to wear what you just picked up
 	"equip": {"keys": [KEY_F], "buttons": [JOY_BUTTON_DPAD_UP]},
 }

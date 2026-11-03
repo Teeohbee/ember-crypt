@@ -9,6 +9,8 @@ const MAX_STOP := 0.2
 const TRAUMA_DECAY := 1.6
 const BURST_POOL := 6
 const NUMBER_HEIGHT := 2.3
+# A killing blow throws the body this much further than a blow it survives
+const KILL_THROW := 2.6
 
 const COLOURS := {
 	DamageEvent.Kind.PHYSICAL: Color("f2e8d5"),
@@ -27,6 +29,7 @@ var trauma := 0.0
 var numbers := DamageNumbers.new()
 var flashes := HitFlash.new()
 var bursts: Array[BoneBurst] = []
+var sparks := HitSparks.new()
 var stopped: bool:
 	get: return _stop_left > 0.0
 
@@ -38,6 +41,7 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	add_child(numbers)
 	add_child(flashes)
+	add_child(sparks)
 	for i in BURST_POOL:
 		var burst := BoneBurst.new()
 		bursts.append(burst)
@@ -51,17 +55,26 @@ func hit(event: DamageEvent) -> void:
 		return
 	var target := event.target
 	var params: Dictionary = event.skill.params if event.skill else {}
+	# Smashing a barrel is a crunch and a jolt, not a fight: no number, no knockback
+	if target is Breakable:
+		if is_instance_valid(event.source):
+			sparks.spark(target.global_position, event.source.global_position)
+		hit_stop(0.03)
+		shake(0.1)
+		return
 	var on_hero := target.team == Combatant.Team.HEROES
 	var colour: Color = HURT if on_hero else (CRIT if event.crit else COLOURS.get(event.kind, Color.WHITE))
 	number(target.global_position + Vector3(0, NUMBER_HEIGHT, 0), str(maxi(roundi(event.amount), 1)), colour, event.crit)
 	flashes.flash(target, HitFlash.RED if on_hero else HitFlash.WHITE)
 	if event.knockback > 0.0 and is_instance_valid(event.source):
-		knockback(target, target.global_position - event.source.global_position, event.knockback * (1.6 if event.killed else 1.0))
+		knockback(target, target.global_position - event.source.global_position, event.knockback * (KILL_THROW if event.killed else 1.0))
 	if on_hero:
 		shake(0.35)
 		Sound.play("hurt", randf_range(0.9, 1.05))
 		_rumble(target, 0.4, 0.6, 0.18)
 		return
+	if is_instance_valid(event.source):
+		sparks.spark(target.global_position, event.source.global_position)
 	var stop: float = params.get("hit_stop", 0.025)
 	var heft: float = params.get("shake", 0.12)
 	if event.crit:
@@ -127,6 +140,7 @@ func reset() -> void:
 	for burst in bursts:
 		burst.visible = false
 		burst.set_physics_process(false)
+	sparks.clear()
 
 func _process(delta: float) -> void:
 	# delta is game time; during a stop the game runs at STOP_SCALE, so this is the time it would have been

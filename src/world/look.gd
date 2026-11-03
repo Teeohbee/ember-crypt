@@ -1,11 +1,12 @@
 class_name Look
 extends RefCounted
 # The darker tone, in one place: KayKit's cheerful colours pushed down under a near-black sky, a cold
-# blue-grey ambient so shadows aren't pure black, warm pools from torches, thin volumetric fog for
-# the light to catch in, and glow on anything bright. Filmic tonemapping keeps the torches from
-# blowing out. Every 3D scene takes its environment from here, so the tone is tuned once.
+# blue-grey ambient so shadows aren't pure black, tight warm pools from torches with gloom between
+# them, thin volumetric fog for the light to catch in, glow on anything bright, and a vignette closing
+# in at the screen's edges. Filmic tonemapping keeps the torches from blowing out. Every 3D scene
+# takes its environment from here, so the tone is tuned once.
 
-const AMBIENT := Color("2b3240")
+const AMBIENT := Color("252c3c")
 const TORCH := Color("ff9a4a")
 const CANDLE := Color("ffb86b")
 const MOONLIGHT := Color("8fa3c8")
@@ -16,16 +17,16 @@ static func environment() -> Environment:
 	env.background_color = Color("050404")
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
 	env.ambient_light_color = AMBIENT
-	env.ambient_light_energy = 0.55
+	env.ambient_light_energy = 0.5
 	env.tonemap_mode = Environment.TONE_MAPPER_FILMIC
-	env.tonemap_exposure = 1.05
+	env.tonemap_exposure = 1.0
 	env.glow_enabled = true
 	env.glow_intensity = 0.7
 	env.glow_bloom = 0.08
 	env.glow_hdr_threshold = 0.9
 	env.glow_blend_mode = Environment.GLOW_BLEND_MODE_SOFTLIGHT
 	env.volumetric_fog_enabled = true
-	env.volumetric_fog_density = 0.018
+	env.volumetric_fog_density = 0.024
 	env.volumetric_fog_albedo = Color("8a8f9c")
 	env.volumetric_fog_emission = Color("0b0a0e")
 	env.volumetric_fog_length = 48.0
@@ -34,17 +35,18 @@ static func environment() -> Environment:
 	env.ssao_radius = 1.2
 	env.ssao_intensity = 1.6
 	env.adjustment_enabled = true
-	env.adjustment_contrast = 1.08
-	env.adjustment_saturation = 0.82
+	env.adjustment_contrast = 1.16
+	env.adjustment_saturation = 0.78
 	return env
 
-# A torch's light: warm, flickering, with soft shadows.
+# A torch's light: warm, flickering, with soft shadows, falling off steeply so it lights a pool
+# rather than the room.
 static func torch_light(energy := 3.2, reach := 9.0) -> OmniLight3D:
 	var light := OmniLight3D.new()
 	light.light_color = TORCH
-	light.light_energy = energy
-	light.omni_range = reach
-	light.omni_attenuation = 1.4
+	light.light_energy = energy * 1.25
+	light.omni_range = reach * 0.9
+	light.omni_attenuation = 1.9
 	light.shadow_enabled = true
 	light.light_volumetric_fog_energy = 1.5
 	light.set_script(Flicker)
@@ -113,16 +115,18 @@ static func _soft_dot() -> Texture2D:
 		_dot = texture
 	return _dot
 
-# The light every hero carries, as in Diablo: a warm pool a few metres across that walks with them,
-# so they never vanish into the gloom and the dark is always just ahead. No shadows; the torches cast those.
+# The light every hero carries, as in Diablo: a small warm pool that walks with them, close and bright
+# enough that the hero stands out from the floor and never vanishes into the gloom, with the dark
+# always just ahead. It hangs straight overhead, since the hero turns and the camera doesn't. No
+# shadows; the torches cast those.
 static func hero_light() -> OmniLight3D:
 	var light := OmniLight3D.new()
 	light.name = "HeroLight"
-	light.position = Vector3(0, 3.0, 0.5)
+	light.position = Vector3(0, 2.6, 0)
 	light.light_color = Color("ffd9a8")
-	light.light_energy = 1.6
-	light.omni_range = 8.0
-	light.omni_attenuation = 1.2
+	light.light_energy = 2.3
+	light.omni_range = 6.5
+	light.omni_attenuation = 1.8
 	light.light_volumetric_fog_energy = 0.4
 	return light
 
@@ -166,3 +170,35 @@ static func moon(energy := 0.55) -> DirectionalLight3D:
 	light.directional_shadow_max_distance = 40.0
 	light.light_volumetric_fog_energy = 0.8
 	return light
+
+# The screen's edges sinking into darkness, between the world and the HUD
+static func vignette() -> CanvasLayer:
+	var layer := CanvasLayer.new()
+	layer.name = "Vignette"
+	layer.layer = -1
+	var shade := ColorRect.new()
+	shade.set_anchors_preset(Control.PRESET_FULL_RECT)
+	shade.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var material := ShaderMaterial.new()
+	material.shader = _vignette_shader()
+	shade.material = material
+	layer.add_child(shade)
+	return layer
+
+static var _vignette: Shader
+
+static func _vignette_shader() -> Shader:
+	if _vignette == null:
+		_vignette = Shader.new()
+		_vignette.code = """
+shader_type canvas_item;
+uniform float strength = 0.72;
+uniform float inner = 0.42;
+void fragment() {
+	vec2 size = 1.0 / SCREEN_PIXEL_SIZE;
+	vec2 offset = (SCREEN_UV - 0.5) * vec2(size.x / size.y, 1.0);
+	float shade = smoothstep(inner, inner + 0.55, length(offset));
+	COLOR = vec4(0.0, 0.0, 0.01, shade * strength);
+}
+"""
+	return _vignette

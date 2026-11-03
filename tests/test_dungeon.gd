@@ -36,6 +36,12 @@ func test_the_crypt_has_packs_a_checkpoint_and_walls_to_bump_into() -> void:
 	assert_int(dungeon.find_children("*", "StaticBody3D", true, false).size()).is_greater(100)
 	assert_vector(dungeon.hero_start).is_equal(RoomBuilder.centre(dungeon.layout.start.cell) + Vector3(0, 0, 3))
 
+func test_the_crypt_doorways_stand_open() -> void:
+	var dungeon: Dungeon = auto_free(Dungeon.new(5))
+	dungeon.build()
+	assert_int(dungeon.find_children("wall_doorway*", "", true, false).size()).is_greater(0)
+	assert_array(dungeon.find_children("wall_doorway_door", "", true, false)).is_empty()
+
 func test_the_crypt_remembers_its_seed_between_visits() -> void:
 	var before := Session.dungeon_seed
 	Session.dungeon_seed = 0

@@ -8,6 +8,8 @@ const RARE := Color("f0cf5a")
 const HEIGHT := 2.7
 const BAR_WIDTH := 1.4
 const BAR_HEIGHT := 0.09
+# The whole plate is drawn this much larger than its world size, to read from the pulled-back camera
+const SCALE := 1.4
 
 var monster: Monster
 var title: Label3D
@@ -18,6 +20,7 @@ func _init(owner_monster: Monster, name_text: String, affix_text: String) -> voi
 	name = "NamePlate"
 	monster = owner_monster
 	top_level = true
+	scale = Vector3.ONE * SCALE
 	title = _label(name_text, 44, RARE)
 	title.position.y = 0.42
 	add_child(title)
@@ -31,7 +34,7 @@ func _init(owner_monster: Monster, name_text: String, affix_text: String) -> voi
 func _ready() -> void:
 	monster.health_changed.connect(_on_health_changed)
 	monster.died.connect(func(_event: DamageEvent) -> void:
-		create_tween().tween_property(self, "scale", Vector3(1, 0, 1), 0.3).finished.connect(hide))
+		create_tween().tween_property(self, "scale", Vector3(SCALE, 0, SCALE), 0.3).finished.connect(hide))
 	_on_health_changed(monster.health, monster.max_health())
 	_follow()
 

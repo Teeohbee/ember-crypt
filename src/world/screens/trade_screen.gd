@@ -61,17 +61,14 @@ func _choose(column: ItemColumn, item: Item) -> void:
 		return
 	refresh(column, row)
 
-# One line about an item: its slot, what it gives, and its level
+# One line about an item: its slot, what it gives, and its level, worded as the item card words them
 static func describe(item: Item) -> String:
 	var parts: Array[String] = [String(ItemBase.Slot.keys()[item.base.slot]).capitalize()]
 	for stat: StringName in item.base.base_stats:
-		parts.append("%s %s" % [_number(item.base.base_stats[stat]), String(stat).capitalize()])
+		parts.append(StatText.line(stat, float(item.base.base_stats[stat]), 0.0, false))
 	for rolled in item.affixes:
 		var affix := ItemLibrary.affix(rolled.id)
 		if affix:
-			parts.append(affix.text % (rolled.value * 100.0 if affix.percent else rolled.value))
+			parts.append(StatText.line(affix.stat, 0.0 if affix.percent else rolled.value, rolled.value if affix.percent else 0.0))
 	parts.append("Level %d" % item.item_level)
 	return "  -  ".join(parts)
-
-static func _number(amount: float) -> String:
-	return str(int(amount)) if is_equal_approx(amount, roundf(amount)) else "%.1f" % amount
